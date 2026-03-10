@@ -2,6 +2,30 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor } from 'lucide-react';
 
+// --- Custom Icons ---
+const Behance = ({ size = 24, className = "" }: { size?: number; className?: string }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    {/* B */}
+    <path d="M3 7v10h4.5c1.5 0 2.5-1 2.5-2.5S9 12 7.5 12H3" />
+    <path d="M3 12h4c1.5 0 2.5-1 2.5-2.5S8.5 7 7 7H3" />
+    {/* e */}
+    <circle cx="17.5" cy="13.5" r="3.5" />
+    <path d="M14 13.5h7" />
+    {/* line above e */}
+    <path d="M15.5 8h4" />
+  </svg>
+);
+
 // --- Types ---
 interface Project {
   id: number;
@@ -39,6 +63,34 @@ const PROJECTS: Project[] = [
     title: "Krypton Wallet",
     category: "Fintech • Web3",
     image: "https://picsum.photos/seed/krypton/1200/800",
+    year: "2022"
+  },
+  {
+    id: 5,
+    title: "EcoSphere App",
+    category: "Sustainability • Mobile",
+    image: "https://picsum.photos/seed/eco/1200/800",
+    year: "2024"
+  },
+  {
+    id: 6,
+    title: "Nova CRM",
+    category: "Enterprise • Web",
+    image: "https://picsum.photos/seed/nova/1200/800",
+    year: "2023"
+  },
+  {
+    id: 7,
+    title: "Pulse Music",
+    category: "Streaming • UI/UX",
+    image: "https://picsum.photos/seed/pulse/1200/800",
+    year: "2024"
+  },
+  {
+    id: 8,
+    title: "Aura Real Estate",
+    category: "Proptech • Web",
+    image: "https://picsum.photos/seed/aura/1200/800",
     year: "2022"
   }
 ];
@@ -417,7 +469,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   );
 };
 
-const Work = () => (
+const Work = ({ onViewAll }: { onViewAll: () => void }) => (
   <section id="work" className="px-6 py-40 overflow-hidden">
     <div className="max-w-7xl mx-auto">
       <div className="mb-32 space-y-4">
@@ -431,7 +483,7 @@ const Work = () => (
       </div>
 
       <div className="space-y-20">
-        {PROJECTS.map((project, i) => (
+        {PROJECTS.slice(0, 4).map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i} />
         ))}
       </div>
@@ -440,6 +492,7 @@ const Work = () => (
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={onViewAll}
           className="group flex items-center gap-4 px-10 py-5 rounded-full border border-accent/20 hover:bg-accent hover:text-primary transition-all duration-500"
         >
           <span className="text-xs font-bold uppercase tracking-widest">View All Projects</span>
@@ -450,73 +503,244 @@ const Work = () => (
   </section>
 );
 
+const AllProjects = ({ onClose }: { onClose: () => void }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 100 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 100 }}
+    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    className="fixed inset-0 z-[110] bg-primary overflow-y-auto custom-scrollbar"
+  >
+    <div className="max-w-7xl mx-auto px-6 py-20">
+      <div className="flex justify-between items-end mb-20">
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-px bg-accent" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Full Archive</span>
+          </div>
+          <h2 className="text-6xl md:text-8xl font-display font-bold tracking-tighter leading-none">
+            ALL <br /> <span className="text-stroke">PROJECTS</span>
+          </h2>
+        </div>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onClose}
+          className="p-6 bg-accent/5 hover:bg-accent/10 rounded-full transition-colors border border-accent/10"
+        >
+          <X size={32} />
+        </motion.button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        {PROJECTS.map((project, i) => (
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="group cursor-pointer space-y-6"
+          >
+            <div className="overflow-hidden rounded-2xl bg-accent/5 aspect-video relative">
+              <motion.img
+                src={project.image}
+                alt={project.title}
+                whileHover={{ scale: 1.05 }}
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-accent text-primary flex items-center justify-center">
+                  <ArrowUpRight size={24} />
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-2xl font-display font-bold tracking-tight">{project.title}</h3>
+                <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">{project.category}</p>
+              </div>
+              <span className="text-xs font-mono opacity-40">{project.year}</span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+);
+
 const Services = () => {
+  const [hoveredIndex, setHoveredIndex] = useState<string | null>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
   const services = [
     {
       id: "01",
       title: "User Research & Strategy",
-      description: "Understanding user behavior, pain points, and business goals to define a clear product roadmap."
+      description: "Understanding user behavior, pain points, and business goals to define a clear product roadmap.",
+      image: "https://picsum.photos/seed/research/600/400"
     },
     {
       id: "02",
       title: "Wireframing & Prototyping",
-      description: "Building the structural foundation and interactive flows to validate ideas early in the process."
+      description: "Building the structural foundation and interactive flows to validate ideas early in the process.",
+      image: "https://picsum.photos/seed/wireframe/600/400"
     },
     {
       id: "03",
       title: "Visual Interface Design",
-      description: "Creating high-fidelity, pixel-perfect interfaces that are both aesthetically pleasing and functional."
+      description: "Creating high-fidelity, pixel-perfect interfaces that are both aesthetically pleasing and functional.",
+      image: "https://picsum.photos/seed/visual/600/400"
     },
     {
       id: "04",
       title: "Interaction Design",
-      description: "Defining how users interact with the product through micro-interactions and smooth transitions."
+      description: "Defining how users interact with the product through micro-interactions and smooth transitions.",
+      image: "https://picsum.photos/seed/interaction/600/400"
     },
     {
       id: "05",
       title: "Design Systems",
-      description: "Scaling design across platforms with a consistent library of reusable components and guidelines."
+      description: "Scaling design across platforms with a consistent library of reusable components and guidelines.",
+      image: "https://picsum.photos/seed/systems/600/400"
     }
   ];
 
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setMousePos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+    }
+  };
+
   return (
-    <section id="services" className="px-6 py-40 border-t border-accent/5">
-      <div className="max-w-7xl mx-auto">
+    <section 
+      id="services" 
+      className="px-6 py-40 border-t border-accent/5 relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+      ref={containerRef}
+    >
+      {/* Huge Background Text Reveal */}
+      <AnimatePresence>
+        {hoveredIndex && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 0.03, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.2 }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
+          >
+            <span className="text-[30vw] font-display font-black uppercase tracking-tighter whitespace-nowrap">
+              {services.find(s => s.id === hoveredIndex)?.title.split(' ')[0]}
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Image Follower */}
+      <motion.div
+        className="fixed w-80 h-52 pointer-events-none z-[60] rounded-2xl overflow-hidden shadow-2xl hidden lg:block"
+        animate={{
+          x: mousePos.x + 40,
+          y: mousePos.y - 100,
+          opacity: hoveredIndex ? 1 : 0,
+          scale: hoveredIndex ? 1 : 0.5,
+          rotate: (mousePos.x / 100) - 5 // Subtle dynamic rotation
+        }}
+        transition={{ type: "spring", stiffness: 150, damping: 20, mass: 0.5 }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={hoveredIndex}
+            src={services.find(s => s.id === hoveredIndex)?.image}
+            initial={{ opacity: 0, scale: 1.2 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+          />
+        </AnimatePresence>
+      </motion.div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
           {/* Left Column: Title */}
           <div className="lg:col-span-4">
             <div className="sticky top-40 space-y-6">
-              <div className="flex items-center gap-4">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="flex items-center gap-4"
+              >
                 <div className="w-12 h-px bg-accent" />
                 <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Capabilities</span>
-              </div>
-              <h2 className="text-6xl md:text-7xl font-display font-bold tracking-tighter leading-none">
+              </motion.div>
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="text-6xl md:text-7xl font-display font-bold tracking-tighter leading-none"
+              >
                 MY <br /> <span className="text-stroke">SERVICES</span>
-              </h2>
-              <p className="text-sm opacity-50 max-w-xs leading-relaxed">
+              </motion.h2>
+              <motion.p 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className="text-sm opacity-50 max-w-xs leading-relaxed"
+              >
                 I provide a full range of design services to help startups and brands build products that people love to use.
-              </p>
+              </motion.p>
             </div>
           </div>
 
           {/* Right Column: Services List */}
           <div className="lg:col-span-8 space-y-px">
-            {services.map((service) => (
+            {services.map((service, i) => (
               <motion.div
                 key={service.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="group py-12 border-b border-accent/10 flex flex-col md:flex-row gap-8 md:items-center hover:bg-accent/5 transition-colors px-4 -mx-4 rounded-lg"
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                onMouseEnter={() => setHoveredIndex(service.id)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className={`group relative py-12 border-b border-accent/10 flex flex-col md:flex-row gap-8 md:items-center transition-all duration-700 px-4 -mx-4 rounded-xl cursor-none ${
+                  hoveredIndex && hoveredIndex !== service.id ? 'opacity-20 blur-[2px]' : 'opacity-100 blur-0'
+                }`}
               >
-                <span className="text-xs font-mono opacity-30 group-hover:opacity-100 transition-opacity">{service.id}</span>
-                <h3 className="text-3xl md:text-4xl font-display font-bold flex-1 group-hover:translate-x-4 transition-transform duration-500">
-                  {service.title}
-                </h3>
-                <p className="text-sm opacity-50 max-w-xs md:text-right group-hover:opacity-100 transition-opacity">
-                  {service.description}
-                </p>
+                <div className="flex items-center gap-6 flex-1">
+                  <span className="text-xs font-mono opacity-30 group-hover:opacity-100 transition-opacity group-hover:text-accent">
+                    {service.id}
+                  </span>
+                  <h3 className="text-3xl md:text-6xl font-display font-bold group-hover:translate-x-8 transition-transform duration-700 group-hover:text-accent">
+                    {service.title}
+                  </h3>
+                </div>
+
+                <div className="md:w-1/3">
+                  <p className="text-sm opacity-50 leading-relaxed group-hover:opacity-100 transition-opacity group-hover:text-accent/80">
+                    {service.description}
+                  </p>
+                </div>
+
+                {/* Arrow Reveal */}
+                <motion.div 
+                  animate={{ 
+                    rotate: hoveredIndex === service.id ? 45 : 0,
+                    scale: hoveredIndex === service.id ? 1.5 : 1,
+                    opacity: hoveredIndex === service.id ? 1 : 0.2
+                  }}
+                  className="hidden md:block text-accent transition-all duration-500"
+                >
+                  <ArrowUpRight size={32} />
+                </motion.div>
               </motion.div>
             ))}
           </div>
@@ -540,10 +764,13 @@ const About = () => (
           With over 5 years of experience in the digital space, I've helped startups and established brands define their visual language and user experience. My approach is rooted in research, empathy, and a relentless pursuit of simplicity.
         </p>
         <div className="pt-8 flex gap-6">
-          <Github className="hover:opacity-50 cursor-pointer" />
-          <Linkedin className="hover:opacity-50 cursor-pointer" />
-          <Twitter className="hover:opacity-50 cursor-pointer" />
-          <Instagram className="hover:opacity-50 cursor-pointer" />
+          <a href="https://www.instagram.com/mr.fazi.uiux.x/" target="_blank" rel="noopener noreferrer">
+            <Instagram className="hover:opacity-50 cursor-pointer transition-opacity" />
+          </a>
+          <Linkedin className="hover:opacity-50 cursor-pointer transition-opacity" />
+          <a href="https://www.behance.net/faizanakram12" target="_blank" rel="noopener noreferrer">
+            <Behance className="hover:opacity-50 cursor-pointer transition-opacity" />
+          </a>
         </div>
       </div>
     </div>
@@ -577,8 +804,13 @@ const Contact = () => (
               </a>
             </div>
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">Call Me</p>
-              <a href="tel:+923056531604" className="text-2xl md:text-3xl font-display font-bold hover:text-stroke transition-all duration-300">
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">WhatsApp Me</p>
+              <a 
+                href="https://wa.me/923056531604" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-2xl md:text-3xl font-display font-bold hover:text-stroke transition-all duration-300"
+              >
                 +92 3056531604
               </a>
             </div>
@@ -651,18 +883,26 @@ const Contact = () => (
 
 export default function App() {
   const [isCVOpen, setIsCVOpen] = useState(false);
+  const [isAllProjectsOpen, setIsAllProjectsOpen] = useState(false);
 
   return (
     <div className="bg-primary text-accent selection:bg-accent selection:text-primary">
       <Navbar onOpenCV={() => setIsCVOpen(true)} />
       <main>
         <Hero />
-        <Work />
+        <Work onViewAll={() => setIsAllProjectsOpen(true)} />
         <Services />
         <About />
         <Contact />
       </main>
+
       <CVModal isOpen={isCVOpen} onClose={() => setIsCVOpen(false)} />
+      
+      <AnimatePresence>
+        {isAllProjectsOpen && (
+          <AllProjects onClose={() => setIsAllProjectsOpen(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
