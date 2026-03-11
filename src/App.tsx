@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor } from 'lucide-react';
+import AdminLogin from './components/AdminLogin';
+import AdminDashboard from './components/AdminDashboard';
 
 // --- Custom Icons ---
 const Behance = ({ size = 24, className = "" }: { size?: number; className?: string }) => (
@@ -36,7 +39,7 @@ interface Project {
 }
 
 // --- Constants ---
-const PROJECTS: Project[] = [
+const DEFAULT_PROJECTS: Project[] = [
   {
     id: 1,
     title: "Lumina Health",
@@ -469,7 +472,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   );
 };
 
-const Work = ({ onViewAll }: { onViewAll: () => void }) => (
+const Work = ({ projects, onViewAll }: { projects: Project[]; onViewAll: () => void }) => (
   <section id="work" className="px-6 py-40 overflow-hidden">
     <div className="max-w-7xl mx-auto">
       <div className="mb-32 space-y-4">
@@ -483,7 +486,7 @@ const Work = ({ onViewAll }: { onViewAll: () => void }) => (
       </div>
 
       <div className="space-y-20">
-        {PROJECTS.slice(0, 4).map((project, i) => (
+        {projects.slice(0, 4).map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i} />
         ))}
       </div>
@@ -503,7 +506,7 @@ const Work = ({ onViewAll }: { onViewAll: () => void }) => (
   </section>
 );
 
-const AllProjects = ({ onClose }: { onClose: () => void }) => (
+const AllProjects = ({ projects, onClose }: { projects: Project[]; onClose: () => void }) => (
   <motion.div
     initial={{ opacity: 0, y: 100 }}
     animate={{ opacity: 1, y: 0 }}
@@ -533,7 +536,7 @@ const AllProjects = ({ onClose }: { onClose: () => void }) => (
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {PROJECTS.map((project, i) => (
+        {projects.map((project, i) => (
           <motion.div
             key={project.id}
             initial={{ opacity: 0, y: 20 }}
@@ -881,16 +884,27 @@ const Contact = () => (
   </section>
 );
 
-export default function App() {
+const Home = () => {
   const [isCVOpen, setIsCVOpen] = useState(false);
   const [isAllProjectsOpen, setIsAllProjectsOpen] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    const savedProjects = localStorage.getItem('portfolio_projects');
+    if (savedProjects) {
+      setProjects(JSON.parse(savedProjects));
+    } else {
+      setProjects(DEFAULT_PROJECTS);
+      localStorage.setItem('portfolio_projects', JSON.stringify(DEFAULT_PROJECTS));
+    }
+  }, []);
 
   return (
     <div className="bg-primary text-accent selection:bg-accent selection:text-primary">
       <Navbar onOpenCV={() => setIsCVOpen(true)} />
       <main>
         <Hero />
-        <Work onViewAll={() => setIsAllProjectsOpen(true)} />
+        <Work projects={projects} onViewAll={() => setIsAllProjectsOpen(true)} />
         <Services />
         <About />
         <Contact />
@@ -900,9 +914,21 @@ export default function App() {
       
       <AnimatePresence>
         {isAllProjectsOpen && (
-          <AllProjects onClose={() => setIsAllProjectsOpen(false)} />
+          <AllProjects projects={projects} onClose={() => setIsAllProjectsOpen(false)} />
         )}
       </AnimatePresence>
     </div>
+  );
+};
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
