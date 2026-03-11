@@ -320,7 +320,7 @@ const CVModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
   </AnimatePresence>
 );
 
-const Hero = () => (
+const Hero = ({ data }: { data: any }) => (
   <section className="min-h-screen flex flex-col justify-center px-6 pt-32 pb-20 overflow-hidden">
     <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
       
@@ -334,14 +334,12 @@ const Hero = () => (
           <div className="flex items-center gap-4 mb-8">
             <div className="w-12 h-px bg-accent/30" />
             <span className="text-[10px] uppercase tracking-[0.4em] font-bold opacity-60">
-              BASED IN PAKISTAN • REMOTE WORLDWIDE
+              {data.subHeadline || 'BASED IN PAKISTAN • REMOTE WORLDWIDE'}
             </span>
           </div>
           
-          <h1 className="text-[14vw] lg:text-[10vw] font-display font-bold leading-[0.75] tracking-tighter">
-            DESIGNING <br />
-            <span className="text-stroke italic">FUTURE</span> <br />
-            INTERFACES
+          <h1 className="text-[14vw] lg:text-[10vw] font-display font-bold leading-[0.75] tracking-tighter whitespace-pre-line">
+            {data.headline || 'DESIGNING\nFUTURE\nINTERFACES'}
           </h1>
         </motion.div>
       </div>
@@ -371,7 +369,7 @@ const Hero = () => (
           className="max-w-xs text-right hidden lg:block"
         >
           <p className="text-sm opacity-60 leading-relaxed uppercase tracking-wider">
-            Mr.Fazi is a multi-disciplinary designer specializing in digital products and visual identities that stand out.
+            {data.description || 'Mr.Fazi is a multi-disciplinary designer specializing in digital products and visual identities that stand out.'}
           </p>
         </motion.div>
 
@@ -396,7 +394,7 @@ const Hero = () => (
         transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
         className="inline-block text-[10vh] font-display font-black uppercase tracking-tighter"
       >
-        UI/UX DESIGN • PRODUCT STRATEGY • BRAND IDENTITY • INTERACTION DESIGN • UI/UX DESIGN • PRODUCT STRATEGY • BRAND IDENTITY • INTERACTION DESIGN • 
+        {data.tickerText || 'UI/UX DESIGN • PRODUCT STRATEGY • BRAND IDENTITY • INTERACTION DESIGN • UI/UX DESIGN • PRODUCT STRATEGY • BRAND IDENTITY • INTERACTION DESIGN • '}
       </motion.div>
     </div>
   </section>
@@ -572,12 +570,12 @@ const AllProjects = ({ projects, onClose }: { projects: Project[]; onClose: () =
   </motion.div>
 );
 
-const Services = () => {
+const Services = ({ data }: { data: any[] }) => {
   const [hoveredIndex, setHoveredIndex] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const services = [
+  const defaultServices = [
     {
       id: "01",
       title: "User Research & Strategy",
@@ -610,6 +608,12 @@ const Services = () => {
     }
   ];
 
+  const displayServices = data && data.length > 0 ? data.map((s, i) => ({
+    ...s,
+    id: (i + 1).toString().padStart(2, '0'),
+    image: s.image || `https://picsum.photos/seed/service${i}/600/400`
+  })) : defaultServices;
+
   const handleMouseMove = (e: React.MouseEvent) => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
@@ -637,7 +641,7 @@ const Services = () => {
             className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
           >
             <span className="text-[30vw] font-display font-black uppercase tracking-tighter whitespace-nowrap">
-              {services.find(s => s.id === hoveredIndex)?.title.split(' ')[0]}
+              {displayServices.find(s => s.id === hoveredIndex)?.title.split(' ')[0]}
             </span>
           </motion.div>
         )}
@@ -658,7 +662,7 @@ const Services = () => {
         <AnimatePresence mode="wait">
           <motion.img
             key={hoveredIndex}
-            src={services.find(s => s.id === hoveredIndex)?.image}
+            src={displayServices.find(s => s.id === hoveredIndex)?.image}
             initial={{ opacity: 0, scale: 1.2 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
@@ -705,7 +709,7 @@ const Services = () => {
 
           {/* Right Column: Services List */}
           <div className="lg:col-span-8 space-y-px">
-            {services.map((service, i) => (
+            {displayServices.map((service, i) => (
               <motion.div
                 key={service.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -753,34 +757,42 @@ const Services = () => {
   );
 };
 
-const About = () => (
+const About = ({ data }: { data: any }) => (
   <section id="about" className="px-6 py-40 bg-accent text-primary">
     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
       <h2 className="text-6xl md:text-8xl font-display font-bold tracking-tighter leading-none">
-        DESIGN <br /> WITH <br /> PURPOSE.
+        {data.title || 'DESIGN WITH PURPOSE.'}
       </h2>
       <div className="space-y-8">
         <p className="text-2xl md:text-3xl leading-tight font-medium">
-          I believe that great design is invisible. It should feel natural, intuitive, and solve real problems without being loud.
+          {data.highlight || 'I believe that great design is invisible. It should feel natural, intuitive, and solve real problems without being loud.'}
         </p>
         <p className="text-lg opacity-70 leading-relaxed">
-          With over 5 years of experience in the digital space, I've helped startups and established brands define their visual language and user experience. My approach is rooted in research, empathy, and a relentless pursuit of simplicity.
+          {data.description || "With over 5 years of experience in the digital space, I've helped startups and established brands define their visual language and user experience. My approach is rooted in research, empathy, and a relentless pursuit of simplicity."}
         </p>
         <div className="pt-8 flex gap-6">
-          <a href="https://www.instagram.com/mr.fazi.uiux.x/" target="_blank" rel="noopener noreferrer">
-            <Instagram className="hover:opacity-50 cursor-pointer transition-opacity" />
-          </a>
-          <Linkedin className="hover:opacity-50 cursor-pointer transition-opacity" />
-          <a href="https://www.behance.net/faizanakram12" target="_blank" rel="noopener noreferrer">
-            <Behance className="hover:opacity-50 cursor-pointer transition-opacity" />
-          </a>
+          {data.instagram && (
+            <a href={data.instagram} target="_blank" rel="noopener noreferrer">
+              <Instagram className="hover:opacity-50 cursor-pointer transition-opacity" />
+            </a>
+          )}
+          {data.linkedin && (
+            <a href={data.linkedin} target="_blank" rel="noopener noreferrer">
+              <Linkedin className="hover:opacity-50 cursor-pointer transition-opacity" />
+            </a>
+          )}
+          {data.behance && (
+            <a href={data.behance} target="_blank" rel="noopener noreferrer">
+              <Behance className="hover:opacity-50 cursor-pointer transition-opacity" />
+            </a>
+          )}
         </div>
       </div>
     </div>
   </section>
 );
 
-const Contact = () => (
+const Contact = ({ data }: { data: any }) => (
   <section id="contact" className="px-6 py-40 border-t border-accent/5">
     <div className="max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
@@ -802,19 +814,19 @@ const Contact = () => (
           <div className="space-y-8">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">Email Me</p>
-              <a href="mailto:mf0578053@gmail.com" className="text-2xl md:text-3xl font-display font-bold hover:text-stroke transition-all duration-300">
-                mf0578053@gmail.com
+              <a href={`mailto:${data.email || 'mf0578053@gmail.com'}`} className="text-2xl md:text-3xl font-display font-bold hover:text-stroke transition-all duration-300">
+                {data.email || 'mf0578053@gmail.com'}
               </a>
             </div>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">WhatsApp Me</p>
               <a 
-                href="https://wa.me/923056531604" 
+                href={`https://wa.me/${data.whatsapp || '923056531604'}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-2xl md:text-3xl font-display font-bold hover:text-stroke transition-all duration-300"
               >
-                +92 3056531604
+                {data.phone || '+92 3056531604'}
               </a>
             </div>
           </div>
@@ -888,26 +900,38 @@ const Home = () => {
   const [isCVOpen, setIsCVOpen] = useState(false);
   const [isAllProjectsOpen, setIsAllProjectsOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [hero, setHero] = useState({});
+  const [services, setServices] = useState([]);
+  const [about, setAbout] = useState({});
+  const [contact, setContact] = useState({});
 
   useEffect(() => {
-    const savedProjects = localStorage.getItem('portfolio_projects');
-    if (savedProjects) {
-      setProjects(JSON.parse(savedProjects));
-    } else {
-      setProjects(DEFAULT_PROJECTS);
-      localStorage.setItem('portfolio_projects', JSON.stringify(DEFAULT_PROJECTS));
-    }
+    const load = (key: string, setter: Function, defaultValue: any) => {
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        setter(JSON.parse(saved));
+      } else if (defaultValue) {
+        setter(defaultValue);
+        localStorage.setItem(key, JSON.stringify(defaultValue));
+      }
+    };
+
+    load('portfolio_projects', setProjects, DEFAULT_PROJECTS);
+    load('portfolio_hero', setHero, null);
+    load('portfolio_services', setServices, null);
+    load('portfolio_about', setAbout, null);
+    load('portfolio_contact', setContact, null);
   }, []);
 
   return (
     <div className="bg-primary text-accent selection:bg-accent selection:text-primary">
       <Navbar onOpenCV={() => setIsCVOpen(true)} />
       <main>
-        <Hero />
+        <Hero data={hero} />
         <Work projects={projects} onViewAll={() => setIsAllProjectsOpen(true)} />
-        <Services />
-        <About />
-        <Contact />
+        <Services data={services} />
+        <About data={about} />
+        <Contact data={contact} />
       </main>
 
       <CVModal isOpen={isCVOpen} onClose={() => setIsCVOpen(false)} />
