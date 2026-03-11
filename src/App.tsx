@@ -757,40 +757,88 @@ const Services = ({ data }: { data: any[] }) => {
   );
 };
 
-const About = ({ data }: { data: any }) => (
-  <section id="about" className="px-6 py-40 bg-accent text-primary">
-    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-      <h2 className="text-6xl md:text-8xl font-display font-bold tracking-tighter leading-none">
-        {data.title || 'DESIGN WITH PURPOSE.'}
-      </h2>
-      <div className="space-y-8">
-        <p className="text-2xl md:text-3xl leading-tight font-medium">
-          {data.highlight || 'I believe that great design is invisible. It should feel natural, intuitive, and solve real problems without being loud.'}
-        </p>
-        <p className="text-lg opacity-70 leading-relaxed">
-          {data.description || "With over 5 years of experience in the digital space, I've helped startups and established brands define their visual language and user experience. My approach is rooted in research, empathy, and a relentless pursuit of simplicity."}
-        </p>
-        <div className="pt-8 flex gap-6">
-          {data.instagram && (
-            <a href={data.instagram} target="_blank" rel="noopener noreferrer">
-              <Instagram className="hover:opacity-50 cursor-pointer transition-opacity" />
-            </a>
-          )}
-          {data.linkedin && (
-            <a href={data.linkedin} target="_blank" rel="noopener noreferrer">
-              <Linkedin className="hover:opacity-50 cursor-pointer transition-opacity" />
-            </a>
-          )}
-          {data.behance && (
-            <a href={data.behance} target="_blank" rel="noopener noreferrer">
-              <Behance className="hover:opacity-50 cursor-pointer transition-opacity" />
-            </a>
-          )}
+const About = ({ data }: { data: any }) => {
+  const socialLinks = {
+    instagram: data.instagram || 'https://www.instagram.com/mr.fazi.uiux.x/',
+    linkedin: data.linkedin || '#',
+    behance: data.behance || 'https://www.behance.net/faizanakram12'
+  };
+
+  return (
+    <section id="about" className="px-6 py-40 bg-accent text-primary">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+        <motion.h2 
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-6xl md:text-8xl font-display font-bold tracking-tighter leading-none"
+        >
+          {data.title || 'DESIGN WITH PURPOSE.'}
+        </motion.h2>
+        <div className="space-y-8">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-2xl md:text-3xl leading-tight font-medium"
+          >
+            {data.highlight || 'I believe that great design is invisible. It should feel natural, intuitive, and solve real problems without being loud.'}
+          </motion.p>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-lg opacity-70 leading-relaxed"
+          >
+            {data.description || "With over 5 years of experience in the digital space, I've helped startups and established brands define their visual language and user experience. My approach is rooted in research, empathy, and a relentless pursuit of simplicity."}
+          </motion.p>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="pt-8 flex flex-col gap-4"
+          >
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40">Follow My Work</p>
+            <div className="flex gap-8">
+              <a 
+                href={socialLinks.instagram} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group relative"
+              >
+                <Instagram size={28} className="group-hover:text-primary/50 transition-all duration-300 group-hover:-translate-y-1" />
+                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300">Instagram</span>
+              </a>
+              <a 
+                href={socialLinks.linkedin} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group relative"
+              >
+                <Linkedin size={28} className="group-hover:text-primary/50 transition-all duration-300 group-hover:-translate-y-1" />
+                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300">LinkedIn</span>
+              </a>
+              <a 
+                href={socialLinks.behance} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group relative"
+              >
+                <Behance size={28} className="group-hover:text-primary/50 transition-all duration-300 group-hover:-translate-y-1" />
+                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300">Behance</span>
+              </a>
+            </div>
+          </motion.div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const Contact = ({ data }: { data: any }) => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });

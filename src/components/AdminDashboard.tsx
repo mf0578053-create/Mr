@@ -91,10 +91,10 @@ const AdminDashboard = () => {
 
   // Hero State
   const [hero, setHero] = useState<HeroData>({
-    headline: 'DESIGNING FUTURE INTERFACES',
-    subHeadline: 'BASED IN PAKISTAN • REMOTE WORLDWIDE',
-    description: 'Mr.Fazi is a multi-disciplinary designer specializing in digital products and visual identities that stand out.',
-    tickerText: 'UI/UX DESIGN • PRODUCT STRATEGY • BRAND IDENTITY • INTERACTION DESIGN • '
+    headline: '',
+    subHeadline: '',
+    description: '',
+    tickerText: ''
   });
 
   // Services State
@@ -108,20 +108,20 @@ const AdminDashboard = () => {
 
   // About State
   const [about, setAbout] = useState<AboutData>({
-    title: 'DESIGN WITH PURPOSE.',
-    highlight: 'I believe that great design is invisible. It should feel natural, intuitive, and solve real problems without being loud.',
-    description: "With over 5 years of experience in the digital space, I've helped startups and established brands define their visual language and user experience.",
-    instagram: 'https://www.instagram.com/mr.fazi.uiux.x/',
-    behance: 'https://www.behance.net/faizanakram12',
-    linkedin: '#'
+    title: '',
+    highlight: '',
+    description: '',
+    instagram: '',
+    behance: '',
+    linkedin: ''
   });
 
   // Contact State
   const [contact, setContact] = useState<ContactData>({
-    email: 'mf0578053@gmail.com',
-    phone: '+92 3056531604',
-    location: 'Faisalabad, Pakistan',
-    whatsapp: '923056531604'
+    email: '',
+    phone: '',
+    location: '',
+    whatsapp: ''
   });
 
   // Messages State
