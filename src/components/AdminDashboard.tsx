@@ -64,6 +64,16 @@ interface ContactData {
   whatsapp: string;
 }
 
+interface Message {
+  id: number;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  date: string;
+  status: string;
+}
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('projects');
@@ -114,6 +124,9 @@ const AdminDashboard = () => {
     whatsapp: '923056531604'
   });
 
+  // Messages State
+  const [messages, setMessages] = useState<Message[]>([]);
+
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAdminAuthenticated');
     if (!isAuthenticated) {
@@ -136,6 +149,9 @@ const AdminDashboard = () => {
 
     const savedContact = localStorage.getItem('portfolio_contact');
     if (savedContact) setContact(JSON.parse(savedContact));
+
+    const savedMessages = localStorage.getItem('portfolio_messages');
+    if (savedMessages) setMessages(JSON.parse(savedMessages));
   }, [navigate]);
 
   const triggerToast = () => {
@@ -213,12 +229,21 @@ const AdminDashboard = () => {
     triggerToast();
   };
 
+  // Messages Handlers
+  const handleDeleteMessage = (id: number) => {
+    const updated = messages.filter(m => m.id !== id);
+    setMessages(updated);
+    localStorage.setItem('portfolio_messages', JSON.stringify(updated));
+    triggerToast();
+  };
+
   const tabs = [
     { id: 'projects', label: 'Projects', icon: LayoutDashboard },
     { id: 'hero', label: 'Hero Section', icon: Star },
     { id: 'services', label: 'Services', icon: Layers },
     { id: 'about', label: 'About Me', icon: User },
     { id: 'contact', label: 'Contact Info', icon: Mail },
+    { id: 'messages', label: 'Messages', icon: Mail },
   ];
 
   return (
@@ -565,6 +590,50 @@ const AdminDashboard = () => {
               >
                 <Save className="w-5 h-5" /> Save Contact Info
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* Messages Tab */}
+        {activeTab === 'messages' && (
+          <div className="space-y-10">
+            <div>
+              <h2 className="text-4xl font-display font-bold">Messages</h2>
+              <p className="opacity-40 mt-1">View inquiries from your portfolio visitors</p>
+            </div>
+
+            <div className="space-y-6">
+              {messages.length === 0 ? (
+                <div className="text-center py-20 bg-accent/5 border border-dashed border-accent/10 rounded-3xl">
+                  <p className="opacity-40">No messages yet.</p>
+                </div>
+              ) : (
+                messages.map((msg) => (
+                  <div key={msg.id} className="bg-accent/5 border border-accent/10 rounded-3xl p-8 space-y-4 relative group">
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-3">
+                          <h4 className="text-xl font-bold">{msg.name}</h4>
+                          <span className="text-[10px] font-bold uppercase tracking-widest bg-accent/10 px-2 py-1 rounded-md opacity-60">
+                            {msg.date}
+                          </span>
+                        </div>
+                        <p className="text-sm text-accent/60">{msg.email}</p>
+                      </div>
+                      <button 
+                        onClick={() => handleDeleteMessage(msg.id)}
+                        className="p-3 text-red-400 hover:bg-red-400/10 rounded-xl transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                    <div className="pt-4 border-t border-accent/10">
+                      <p className="text-xs font-bold uppercase tracking-widest opacity-40 mb-2">Subject: {msg.subject}</p>
+                      <p className="text-lg leading-relaxed">{msg.message}</p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}

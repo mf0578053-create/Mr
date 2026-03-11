@@ -792,93 +792,139 @@ const About = ({ data }: { data: any }) => (
   </section>
 );
 
-const Contact = ({ data }: { data: any }) => (
-  <section id="contact" className="px-6 py-40 border-t border-accent/5">
-    <div className="max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
-        {/* Left Column: Contact Info */}
-        <div className="lg:col-span-5 space-y-12">
-          <div className="space-y-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-px bg-accent" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Get in touch</span>
+const Contact = ({ data }: { data: any }) => {
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      const messages = JSON.parse(localStorage.getItem('portfolio_messages') || '[]');
+      const newMessage = {
+        id: Date.now(),
+        ...formData,
+        date: new Date().toLocaleString(),
+        status: 'unread'
+      };
+      localStorage.setItem('portfolio_messages', JSON.stringify([newMessage, ...messages]));
+      
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      
+      setTimeout(() => setIsSuccess(false), 5000);
+    }, 1000);
+  };
+
+  return (
+    <section id="contact" className="px-6 py-40 border-t border-accent/5">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+          {/* Left Column: Contact Info */}
+          <div className="lg:col-span-5 space-y-12">
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-px bg-accent" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Get in touch</span>
+              </div>
+              <h2 className="text-6xl md:text-8xl font-display font-bold tracking-tighter leading-none">
+                LET'S <br /> <span className="text-stroke">CONNECT</span>
+              </h2>
+              <p className="text-lg opacity-60 max-w-sm leading-relaxed">
+                Have a project in mind? Or just want to say hi? Feel free to reach out. I'm always open to new opportunities and collaborations.
+              </p>
             </div>
-            <h2 className="text-6xl md:text-8xl font-display font-bold tracking-tighter leading-none">
-              LET'S <br /> <span className="text-stroke">CONNECT</span>
-            </h2>
-            <p className="text-lg opacity-60 max-w-sm leading-relaxed">
-              Have a project in mind? Or just want to say hi? Feel free to reach out. I'm always open to new opportunities and collaborations.
-            </p>
+
+            <div className="space-y-8">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">Email Me</p>
+                <a href={`mailto:${data.email || 'mf0578053@gmail.com'}`} className="text-2xl md:text-3xl font-display font-bold hover:text-stroke transition-all duration-300">
+                  {data.email || 'mf0578053@gmail.com'}
+                </a>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">WhatsApp Me</p>
+                <a 
+                  href={`https://wa.me/${data.whatsapp || '923056531604'}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-2xl md:text-3xl font-display font-bold hover:text-stroke transition-all duration-300"
+                >
+                  {data.phone || '+92 3056531604'}
+                </a>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-8">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">Email Me</p>
-              <a href={`mailto:${data.email || 'mf0578053@gmail.com'}`} className="text-2xl md:text-3xl font-display font-bold hover:text-stroke transition-all duration-300">
-                {data.email || 'mf0578053@gmail.com'}
-              </a>
-            </div>
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">WhatsApp Me</p>
-              <a 
-                href={`https://wa.me/${data.whatsapp || '923056531604'}`} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-2xl md:text-3xl font-display font-bold hover:text-stroke transition-all duration-300"
-              >
-                {data.phone || '+92 3056531604'}
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: Contact Form */}
-        <div className="lg:col-span-7">
-          <form className="space-y-8 bg-accent/5 p-8 md:p-12 rounded-3xl border border-accent/10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Right Column: Contact Form */}
+          <div className="lg:col-span-7">
+            <form onSubmit={handleSubmit} className="space-y-8 bg-accent/5 p-8 md:p-12 rounded-3xl border border-accent/10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Your Name</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="John Doe"
+                    className="w-full bg-transparent border-b border-accent/20 py-4 focus:border-accent outline-none transition-colors placeholder:opacity-20"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Email Address</label>
+                  <input 
+                    type="email" 
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="john@example.com"
+                    className="w-full bg-transparent border-b border-accent/20 py-4 focus:border-accent outline-none transition-colors placeholder:opacity-20"
+                  />
+                </div>
+              </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Your Name</label>
+                <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Subject</label>
                 <input 
                   type="text" 
-                  placeholder="John Doe"
+                  required
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  placeholder="Project Inquiry"
                   className="w-full bg-transparent border-b border-accent/20 py-4 focus:border-accent outline-none transition-colors placeholder:opacity-20"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Email Address</label>
-                <input 
-                  type="email" 
-                  placeholder="john@example.com"
-                  className="w-full bg-transparent border-b border-accent/20 py-4 focus:border-accent outline-none transition-colors placeholder:opacity-20"
+                <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Message</label>
+                <textarea 
+                  rows={4}
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  placeholder="Tell me about your project..."
+                  className="w-full bg-transparent border-b border-accent/20 py-4 focus:border-accent outline-none transition-colors placeholder:opacity-20 resize-none"
                 />
               </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Subject</label>
-              <input 
-                type="text" 
-                placeholder="Project Inquiry"
-                className="w-full bg-transparent border-b border-accent/20 py-4 focus:border-accent outline-none transition-colors placeholder:opacity-20"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Message</label>
-              <textarea 
-                rows={4}
-                placeholder="Tell me about your project..."
-                className="w-full bg-transparent border-b border-accent/20 py-4 focus:border-accent outline-none transition-colors placeholder:opacity-20 resize-none"
-              />
-            </div>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-6 bg-accent text-primary rounded-full font-bold uppercase tracking-widest text-xs hover:bg-accent/90 transition-colors shadow-xl shadow-accent/10"
-            >
-              Send Message
-            </motion.button>
-          </form>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                disabled={isSubmitting}
+                className="w-full py-6 bg-accent text-primary rounded-full font-bold uppercase tracking-widest text-xs hover:bg-accent/90 transition-colors shadow-xl shadow-accent/10 disabled:opacity-50"
+              >
+                {isSubmitting ? 'Sending...' : isSuccess ? 'Message Sent!' : 'Send Message'}
+              </motion.button>
+              {isSuccess && (
+                <p className="text-center text-[10px] font-bold uppercase tracking-widest text-emerald-500">
+                  Thank you! Your message has been received.
+                </p>
+              )}
+            </form>
+          </div>
         </div>
-      </div>
 
       {/* Footer Bottom */}
       <div className="mt-40 pt-12 border-t border-accent/10 flex flex-col md:flex-row justify-between items-center gap-8 text-sm opacity-50 uppercase tracking-widest">
@@ -894,7 +940,8 @@ const Contact = ({ data }: { data: any }) => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 const Home = () => {
   const [isCVOpen, setIsCVOpen] = useState(false);
