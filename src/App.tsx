@@ -506,128 +506,65 @@ const Work = ({ projects, onViewAll }: { projects: Project[]; onViewAll: () => v
 
 const AllProjects = ({ projects, onClose }: { projects: Project[]; onClose: () => void }) => (
   <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
+    initial={{ opacity: 0, y: 100 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 100 }}
+    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     className="fixed inset-0 z-[110] bg-primary overflow-y-auto custom-scrollbar"
   >
-    {/* Background Decorative Elements */}
-    <div className="fixed inset-0 pointer-events-none overflow-hidden">
-      <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-accent/5 rounded-full blur-[120px]" />
-      <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] bg-accent/3 rounded-full blur-[100px]" />
-    </div>
-
-    <div className="relative max-w-7xl mx-auto px-6 py-24">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-32">
-        <div className="space-y-6">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center gap-4"
-          >
-            <div className="w-12 h-px bg-accent/30" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-accent/60">Archive • {projects.length} Projects</span>
-          </motion.div>
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-7xl md:text-[10rem] font-display font-bold tracking-tighter leading-[0.85]"
-          >
-            THE <br /> <span className="text-stroke opacity-30">ARCHIVE</span>
-          </motion.h2>
+    <div className="max-w-7xl mx-auto px-6 py-20">
+      <div className="flex justify-between items-end mb-20">
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-px bg-accent" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Full Archive</span>
+          </div>
+          <h2 className="text-6xl md:text-8xl font-display font-bold tracking-tighter leading-none">
+            ALL <br /> <span className="text-stroke">PROJECTS</span>
+          </h2>
         </div>
-
         <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          whileHover={{ scale: 1.05, rotate: 90 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={onClose}
-          className="group relative p-8 bg-accent/5 hover:bg-accent text-accent hover:text-primary rounded-full transition-all duration-500 border border-accent/10"
+          className="p-6 bg-accent/5 hover:bg-accent/10 rounded-full transition-colors border border-accent/10"
         >
-          <X size={32} className="relative z-10" />
-          <div className="absolute inset-0 rounded-full bg-accent scale-0 group-hover:scale-100 transition-transform duration-500" />
+          <X size={32} />
         </motion.button>
       </div>
 
-      {/* Projects Grid - Bento Style */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-        {projects.map((project, i) => {
-          const isLarge = i % 5 === 0;
-          const isMedium = i % 5 === 2 || i % 5 === 3;
-          
-          return (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + (i * 0.05), duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className={`group relative cursor-none ${
-                isLarge ? 'md:col-span-12 lg:col-span-8' : 
-                isMedium ? 'md:col-span-6 lg:col-span-6' : 
-                'md:col-span-6 lg:col-span-4'
-              }`}
-            >
-              <div className="relative overflow-hidden rounded-[2rem] bg-accent/5 aspect-[16/10] md:aspect-auto md:h-[400px] lg:h-[500px]">
-                {/* Image */}
-                <motion.img
-                  src={project.image}
-                  alt={project.title}
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
-                  referrerPolicy="no-referrer"
-                />
-
-                {/* Overlay Info */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 flex flex-col justify-end p-10">
-                  <motion.div 
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    className="space-y-4"
-                  >
-                    <div className="flex justify-between items-end">
-                      <div className="space-y-2">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-accent/60">{project.category}</span>
-                        <h3 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-accent">{project.title}</h3>
-                      </div>
-                      <div className="w-16 h-16 rounded-full bg-accent text-primary flex items-center justify-center -rotate-45 group-hover:rotate-0 transition-transform duration-500">
-                        <ArrowUpRight size={28} />
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-
-                {/* Year Badge */}
-                <div className="absolute top-8 right-8 px-4 py-2 rounded-full bg-primary/20 backdrop-blur-md border border-white/10 text-[10px] font-mono text-accent/60">
-                  {project.year}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        {projects.map((project, i) => (
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="group cursor-pointer space-y-6"
+          >
+            <div className="overflow-hidden rounded-2xl bg-accent/5 aspect-video relative">
+              <motion.img
+                src={project.image}
+                alt={project.title}
+                whileHover={{ scale: 1.05 }}
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-accent text-primary flex items-center justify-center">
+                  <ArrowUpRight size={24} />
                 </div>
               </div>
-
-              {/* Mobile Info (Visible when not hovered on mobile) */}
-              <div className="mt-6 md:hidden flex justify-between items-start px-2">
-                <div>
-                  <h3 className="text-2xl font-display font-bold">{project.title}</h3>
-                  <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">{project.category}</p>
-                </div>
-                <span className="text-xs font-mono opacity-40">{project.year}</span>
+            </div>
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-2xl font-display font-bold tracking-tight">{project.title}</h3>
+                <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">{project.category}</p>
               </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Footer Decoration */}
-      <div className="mt-40 pt-20 border-t border-accent/10 flex flex-col md:flex-row justify-between items-center gap-8 opacity-30">
-        <p className="text-[10px] font-bold uppercase tracking-widest">© 2024 Faizan Akram • All Rights Reserved</p>
-        <div className="flex gap-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-100 transition-opacity">Instagram</span>
-          <span className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-100 transition-opacity">Behance</span>
-          <span className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-100 transition-opacity">LinkedIn</span>
-        </div>
+              <span className="text-xs font-mono opacity-40">{project.year}</span>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   </motion.div>

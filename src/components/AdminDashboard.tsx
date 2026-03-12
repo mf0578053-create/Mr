@@ -239,6 +239,11 @@ const AdminDashboard = () => {
 
   const tabs = [
     { id: 'projects', label: 'Projects', icon: LayoutDashboard },
+    { id: 'hero', label: 'Hero Section', icon: Star },
+    { id: 'services', label: 'Services', icon: Layers },
+    { id: 'about', label: 'About Me', icon: User },
+    { id: 'contact', label: 'Contact Info', icon: Mail },
+    { id: 'messages', label: 'Messages', icon: Mail },
   ];
 
   return (
@@ -343,6 +348,292 @@ const AdminDashboard = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Hero Tab */}
+        {activeTab === 'hero' && (
+          <div className="space-y-10">
+            <div>
+              <h2 className="text-4xl font-display font-bold">Hero Section</h2>
+              <p className="opacity-40 mt-1">Update the main introduction of your portfolio</p>
+            </div>
+
+            <div className="bg-accent/5 border border-accent/10 rounded-3xl p-8 space-y-8">
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest opacity-40">Main Headline</label>
+                <textarea
+                  value={hero.headline}
+                  onChange={(e) => setHero({...hero, headline: e.target.value})}
+                  className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30 h-32 resize-none font-display text-2xl font-bold"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest opacity-40">Sub Headline / Location</label>
+                <input
+                  type="text"
+                  value={hero.subHeadline}
+                  onChange={(e) => setHero({...hero, subHeadline: e.target.value})}
+                  className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest opacity-40">Description</label>
+                <textarea
+                  value={hero.description}
+                  onChange={(e) => setHero({...hero, description: e.target.value})}
+                  className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30 h-24 resize-none"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest opacity-40">Ticker Text (Marquee)</label>
+                <input
+                  type="text"
+                  value={hero.tickerText}
+                  onChange={(e) => setHero({...hero, tickerText: e.target.value})}
+                  className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30"
+                />
+              </div>
+
+              <button
+                onClick={saveHero}
+                className="w-full bg-accent text-primary font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+              >
+                <Save className="w-5 h-5" /> Save Hero Section
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Services Tab */}
+        {activeTab === 'services' && (
+          <div className="space-y-10">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-4xl font-display font-bold">Services</h2>
+                <p className="opacity-40 mt-1">List your core capabilities and expertise</p>
+              </div>
+              <button 
+                onClick={() => setIsAddingService(true)}
+                className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-accent text-primary font-bold hover:opacity-90 transition-opacity"
+              >
+                <Plus className="w-5 h-5" /> Add Service
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {services.map((service) => (
+                <div key={service.id} className="bg-accent/5 border border-accent/10 rounded-2xl p-6 flex items-center gap-6">
+                  <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center font-mono text-accent">
+                    {service.id}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-bold text-lg">{service.title}</h4>
+                    <p className="text-sm opacity-50 line-clamp-1">{service.description}</p>
+                  </div>
+                  <button 
+                    onClick={() => handleDeleteService(service.id)}
+                    className="p-3 text-red-400 hover:bg-red-400/10 rounded-xl transition-colors"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* About Tab */}
+        {activeTab === 'about' && (
+          <div className="space-y-10">
+            <div>
+              <h2 className="text-4xl font-display font-bold">About Me</h2>
+              <p className="opacity-40 mt-1">Edit your professional story and social links</p>
+            </div>
+
+            <div className="bg-accent/5 border border-accent/10 rounded-3xl p-8 space-y-8">
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest opacity-40">About Title</label>
+                <input
+                  type="text"
+                  value={about.title}
+                  onChange={(e) => setAbout({...about, title: e.target.value})}
+                  className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30 font-display text-xl font-bold"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest opacity-40">Highlight Statement</label>
+                <textarea
+                  value={about.highlight}
+                  onChange={(e) => setAbout({...about, highlight: e.target.value})}
+                  className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30 h-24 resize-none font-medium"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest opacity-40">Detailed Description</label>
+                <textarea
+                  value={about.description}
+                  onChange={(e) => setAbout({...about, description: e.target.value})}
+                  className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30 h-32 resize-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest opacity-40">Instagram URL</label>
+                  <input
+                    type="text"
+                    value={about.instagram}
+                    onChange={(e) => setAbout({...about, instagram: e.target.value})}
+                    className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30 text-sm"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest opacity-40">Behance URL</label>
+                  <input
+                    type="text"
+                    value={about.behance}
+                    onChange={(e) => setAbout({...about, behance: e.target.value})}
+                    className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30 text-sm"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest opacity-40">LinkedIn URL</label>
+                  <input
+                    type="text"
+                    value={about.linkedin}
+                    onChange={(e) => setAbout({...about, linkedin: e.target.value})}
+                    className="w-full bg-primary border border-accent/10 rounded-2xl p-4 focus:outline-none focus:border-accent/30 text-sm"
+                  />
+                </div>
+              </div>
+
+              <button
+                onClick={saveAbout}
+                className="w-full bg-accent text-primary font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+              >
+                <Save className="w-5 h-5" /> Save About Section
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Contact Tab */}
+        {activeTab === 'contact' && (
+          <div className="space-y-10">
+            <div>
+              <h2 className="text-4xl font-display font-bold">Contact Info</h2>
+              <p className="opacity-40 mt-1">Update your contact details and location</p>
+            </div>
+
+            <div className="bg-accent/5 border border-accent/10 rounded-3xl p-8 space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest opacity-40">Email Address</label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40" />
+                    <input
+                      type="email"
+                      value={contact.email}
+                      onChange={(e) => setContact({...contact, email: e.target.value})}
+                      className="w-full bg-primary border border-accent/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-accent/30"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest opacity-40">Phone Number</label>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40" />
+                    <input
+                      type="text"
+                      value={contact.phone}
+                      onChange={(e) => setContact({...contact, phone: e.target.value})}
+                      className="w-full bg-primary border border-accent/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-accent/30"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest opacity-40">Location</label>
+                  <div className="relative">
+                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40" />
+                    <input
+                      type="text"
+                      value={contact.location}
+                      onChange={(e) => setContact({...contact, location: e.target.value})}
+                      className="w-full bg-primary border border-accent/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-accent/30"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest opacity-40">WhatsApp Number (Digits only)</label>
+                  <div className="relative">
+                    <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40" />
+                    <input
+                      type="text"
+                      value={contact.whatsapp}
+                      onChange={(e) => setContact({...contact, whatsapp: e.target.value})}
+                      className="w-full bg-primary border border-accent/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-accent/30"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={saveContact}
+                className="w-full bg-accent text-primary font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+              >
+                <Save className="w-5 h-5" /> Save Contact Info
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Messages Tab */}
+        {activeTab === 'messages' && (
+          <div className="space-y-10">
+            <div>
+              <h2 className="text-4xl font-display font-bold">Messages</h2>
+              <p className="opacity-40 mt-1">View inquiries from your portfolio visitors</p>
+            </div>
+
+            <div className="space-y-6">
+              {messages.length === 0 ? (
+                <div className="text-center py-20 bg-accent/5 border border-dashed border-accent/10 rounded-3xl">
+                  <p className="opacity-40">No messages yet.</p>
+                </div>
+              ) : (
+                messages.map((msg) => (
+                  <div key={msg.id} className="bg-accent/5 border border-accent/10 rounded-3xl p-8 space-y-4 relative group">
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-3">
+                          <h4 className="text-xl font-bold">{msg.name}</h4>
+                          <span className="text-[10px] font-bold uppercase tracking-widest bg-accent/10 px-2 py-1 rounded-md opacity-60">
+                            {msg.date}
+                          </span>
+                        </div>
+                        <p className="text-sm text-accent/60">{msg.email}</p>
+                      </div>
+                      <button 
+                        onClick={() => handleDeleteMessage(msg.id)}
+                        className="p-3 text-red-400 hover:bg-red-400/10 rounded-xl transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                    <div className="pt-4 border-t border-accent/10">
+                      <p className="text-xs font-bold uppercase tracking-widest opacity-40 mb-2">Subject: {msg.subject}</p>
+                      <p className="text-lg leading-relaxed">{msg.message}</p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}
