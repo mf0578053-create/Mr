@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor } from 'lucide-react';
+import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor, ArrowLeft } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 
@@ -37,66 +38,6 @@ interface Project {
   image: string;
   year: string;
 }
-
-// --- Constants ---
-const DEFAULT_PROJECTS: Project[] = [
-  {
-    id: 1,
-    title: "Lumina Health",
-    category: "Mobile App • Healthtech",
-    image: "https://picsum.photos/seed/lumina/1200/800",
-    year: "2024"
-  },
-  {
-    id: 2,
-    title: "Orbit Dashboard",
-    category: "Web App • SaaS",
-    image: "https://picsum.photos/seed/orbit/1200/800",
-    year: "2023"
-  },
-  {
-    id: 3,
-    title: "Zenith E-commerce",
-    category: "Brand Identity • UI/UX",
-    image: "https://picsum.photos/seed/zenith/1200/800",
-    year: "2023"
-  },
-  {
-    id: 4,
-    title: "Krypton Wallet",
-    category: "Fintech • Web3",
-    image: "https://picsum.photos/seed/krypton/1200/800",
-    year: "2022"
-  },
-  {
-    id: 5,
-    title: "EcoSphere App",
-    category: "Sustainability • Mobile",
-    image: "https://picsum.photos/seed/eco/1200/800",
-    year: "2024"
-  },
-  {
-    id: 6,
-    title: "Nova CRM",
-    category: "Enterprise • Web",
-    image: "https://picsum.photos/seed/nova/1200/800",
-    year: "2023"
-  },
-  {
-    id: 7,
-    title: "Pulse Music",
-    category: "Streaming • UI/UX",
-    image: "https://picsum.photos/seed/pulse/1200/800",
-    year: "2024"
-  },
-  {
-    id: 8,
-    title: "Aura Real Estate",
-    category: "Proptech • Web",
-    image: "https://picsum.photos/seed/aura/1200/800",
-    year: "2022"
-  }
-];
 
 // --- Components ---
 
@@ -400,240 +341,8 @@ const Hero = ({ data }: { data: any }) => (
   </section>
 );
 
-interface ProjectCardProps {
-  project: Project;
-  index: number;
-}
-
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
-  const isEven = index % 2 === 0;
-  
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 100 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-      className={`relative mb-32 md:mb-64 flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 lg:gap-24`}
-    >
-      {/* Project Number Background */}
-      <div className={`absolute -top-20 ${isEven ? '-left-10' : '-right-10'} text-[20vw] font-display font-black opacity-[0.03] pointer-events-none select-none`}>
-        0{index + 1}
-      </div>
-
-      {/* Image Container */}
-      <div className="w-full lg:w-3/5 group cursor-pointer relative">
-        <div className="overflow-hidden rounded-2xl bg-accent/5 aspect-[4/3] lg:aspect-[16/10]">
-          <motion.img
-            src={project.image}
-            alt={project.title}
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-            referrerPolicy="no-referrer"
-          />
-        </div>
-        
-        {/* Floating Tag */}
-        <div className={`absolute top-6 ${isEven ? 'right-6' : 'left-6'} bg-accent text-primary px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl`}>
-          {project.category.split(' • ')[0]}
-        </div>
-      </div>
-
-      {/* Content Container */}
-      <div className={`w-full lg:w-2/5 ${isEven ? 'text-left' : 'text-left lg:text-right'} space-y-6`}>
-        <div className={`flex items-center gap-4 ${isEven ? 'justify-start' : 'justify-start lg:justify-end'}`}>
-          <span className="text-[10px] font-mono opacity-40">0{index + 1}</span>
-          <div className="w-8 h-px bg-accent/20" />
-          <span className="text-[10px] font-mono opacity-40">{project.year}</span>
-        </div>
-        
-        <h3 className="text-4xl md:text-6xl font-display font-bold tracking-tighter leading-none">
-          {project.title}
-        </h3>
-        
-        <p className="text-lg opacity-60 leading-relaxed max-w-sm ml-0 mr-auto lg:ml-auto lg:mr-0">
-          A deep dive into the intersection of user needs and business goals for {project.title.toLowerCase()}.
-        </p>
-
-        <motion.div 
-          whileHover={{ x: isEven ? 10 : -10 }}
-          className={`flex items-center gap-4 group cursor-pointer ${isEven ? 'justify-start' : 'justify-start lg:justify-end'}`}
-        >
-          <span className="text-[10px] font-bold uppercase tracking-widest border-b border-accent/20 pb-1 group-hover:border-accent transition-colors">View Case Study</span>
-          <div className="w-8 h-8 rounded-full border border-accent/20 flex items-center justify-center group-hover:bg-accent group-hover:text-primary transition-all duration-300">
-            <ArrowUpRight size={14} />
-          </div>
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-};
-
-const Work = ({ projects, onViewAll }: { projects: Project[]; onViewAll: () => void }) => (
-  <section id="work" className="px-6 py-40 overflow-hidden">
-    <div className="max-w-7xl mx-auto">
-      <div className="mb-32 space-y-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-px bg-accent" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Portfolio</span>
-        </div>
-        <h2 className="text-6xl md:text-9xl font-display font-bold tracking-tighter leading-none">
-          SELECTED <br /> <span className="text-stroke">WORKS</span>
-        </h2>
-      </div>
-
-      <div className="space-y-20">
-        {projects.slice(0, 4).map((project, i) => (
-          <ProjectCard key={project.id} project={project} index={i} />
-        ))}
-      </div>
-      
-      <div className="mt-20 flex justify-center">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onViewAll}
-          className="group flex items-center gap-4 px-10 py-5 rounded-full border border-accent/20 hover:bg-accent hover:text-primary transition-all duration-500"
-        >
-          <span className="text-xs font-bold uppercase tracking-widest">View All Projects</span>
-          <div className="w-2 h-2 rounded-full bg-accent group-hover:bg-primary transition-colors" />
-        </motion.button>
-      </div>
-    </div>
-  </section>
-);
-
-const AllProjects = ({ projects, onClose }: { projects: Project[]; onClose: () => void }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="fixed inset-0 z-[110] bg-primary overflow-y-auto custom-scrollbar"
-  >
-    {/* Background Decorative Elements */}
-    <div className="fixed inset-0 pointer-events-none overflow-hidden">
-      <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-accent/5 rounded-full blur-[120px]" />
-      <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] bg-accent/3 rounded-full blur-[100px]" />
-    </div>
-
-    <div className="relative max-w-7xl mx-auto px-6 py-24">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-32">
-        <div className="space-y-6">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center gap-4"
-          >
-            <div className="w-12 h-px bg-accent/30" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-accent/60">Archive • {projects.length} Projects</span>
-          </motion.div>
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-7xl md:text-[10rem] font-display font-bold tracking-tighter leading-[0.85]"
-          >
-            THE <br /> <span className="text-stroke opacity-30">ARCHIVE</span>
-          </motion.h2>
-        </div>
-
-        <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          whileHover={{ scale: 1.05, rotate: 90 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onClose}
-          className="group relative p-8 bg-accent/5 hover:bg-accent text-accent hover:text-primary rounded-full transition-all duration-500 border border-accent/10"
-        >
-          <X size={32} className="relative z-10" />
-          <div className="absolute inset-0 rounded-full bg-accent scale-0 group-hover:scale-100 transition-transform duration-500" />
-        </motion.button>
-      </div>
-
-      {/* Projects Grid - Bento Style */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-        {projects.map((project, i) => {
-          const isLarge = i % 5 === 0;
-          const isMedium = i % 5 === 2 || i % 5 === 3;
-          
-          return (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + (i * 0.05), duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className={`group relative cursor-none ${
-                isLarge ? 'md:col-span-12 lg:col-span-8' : 
-                isMedium ? 'md:col-span-6 lg:col-span-6' : 
-                'md:col-span-6 lg:col-span-4'
-              }`}
-            >
-              <div className="relative overflow-hidden rounded-[2rem] bg-accent/5 aspect-[16/10] md:aspect-auto md:h-[400px] lg:h-[500px]">
-                {/* Image */}
-                <motion.img
-                  src={project.image}
-                  alt={project.title}
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
-                  referrerPolicy="no-referrer"
-                />
-
-                {/* Overlay Info */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 flex flex-col justify-end p-10">
-                  <motion.div 
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    className="space-y-4"
-                  >
-                    <div className="flex justify-between items-end">
-                      <div className="space-y-2">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-accent/60">{project.category}</span>
-                        <h3 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-accent">{project.title}</h3>
-                      </div>
-                      <div className="w-16 h-16 rounded-full bg-accent text-primary flex items-center justify-center -rotate-45 group-hover:rotate-0 transition-transform duration-500">
-                        <ArrowUpRight size={28} />
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-
-                {/* Year Badge */}
-                <div className="absolute top-8 right-8 px-4 py-2 rounded-full bg-primary/20 backdrop-blur-md border border-white/10 text-[10px] font-mono text-accent/60">
-                  {project.year}
-                </div>
-              </div>
-
-              {/* Mobile Info (Visible when not hovered on mobile) */}
-              <div className="mt-6 md:hidden flex justify-between items-start px-2">
-                <div>
-                  <h3 className="text-2xl font-display font-bold">{project.title}</h3>
-                  <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">{project.category}</p>
-                </div>
-                <span className="text-xs font-mono opacity-40">{project.year}</span>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Footer Decoration */}
-      <div className="mt-40 pt-20 border-t border-accent/10 flex flex-col md:flex-row justify-between items-center gap-8 opacity-30">
-        <p className="text-[10px] font-bold uppercase tracking-widest">© 2024 Faizan Akram • All Rights Reserved</p>
-        <div className="flex gap-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-100 transition-opacity">Instagram</span>
-          <span className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-100 transition-opacity">Behance</span>
-          <span className="text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:opacity-100 transition-opacity">LinkedIn</span>
-        </div>
-      </div>
-    </div>
-  </motion.div>
-);
-
 const Services = ({ data }: { data: any[] }) => {
+  const navigate = useNavigate();
   const [hoveredIndex, setHoveredIndex] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -781,7 +490,8 @@ const Services = ({ data }: { data: any[] }) => {
                 transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 onMouseEnter={() => setHoveredIndex(service.id)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className={`group relative py-12 border-b border-accent/10 flex flex-col md:flex-row gap-8 md:items-center transition-all duration-700 px-4 -mx-4 rounded-xl cursor-none ${
+                onClick={() => navigate(`/category/${encodeURIComponent(service.title)}`)}
+                className={`group relative py-12 border-b border-accent/10 flex flex-col md:flex-row gap-8 md:items-center transition-all duration-700 px-4 -mx-4 rounded-xl cursor-pointer ${
                   hoveredIndex && hoveredIndex !== service.id ? 'opacity-20 blur-[2px]' : 'opacity-100 blur-0'
                 }`}
               >
@@ -1054,10 +764,110 @@ const Contact = ({ data }: { data: any }) => {
   );
 };
 
+const CategoryGallery = () => {
+  const { categoryName } = useParams();
+  const navigate = useNavigate();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const decodedCategory = decodeURIComponent(categoryName || '');
+
+  useEffect(() => {
+    const savedProjects = localStorage.getItem('portfolio_projects');
+    if (savedProjects) {
+      const allProjects: Project[] = JSON.parse(savedProjects);
+      // Filter projects by category. We check if the project category matches or contains the service title
+      const filtered = allProjects.filter(p => 
+        p.category.toLowerCase().includes(decodedCategory.toLowerCase()) ||
+        decodedCategory.toLowerCase().includes(p.category.toLowerCase())
+      );
+      setProjects(filtered);
+    }
+    window.scrollTo(0, 0);
+  }, [decodedCategory]);
+
+  return (
+    <div className="min-h-screen bg-primary text-accent selection:bg-accent selection:text-primary p-6 md:p-12">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-32">
+          <div className="space-y-6">
+            <motion.button 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              onClick={() => navigate('/')}
+              className="flex items-center gap-4 group"
+            >
+              <div className="w-10 h-10 rounded-full border border-accent/20 flex items-center justify-center group-hover:bg-accent group-hover:text-primary transition-all duration-500">
+                <ArrowLeft size={16} />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Back to home</span>
+            </motion.button>
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center gap-4"
+            >
+              <div className="w-12 h-px bg-accent/30" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-accent/60">Category • {projects.length} Designs</span>
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl md:text-8xl font-display font-bold tracking-tighter leading-none uppercase"
+            >
+              {decodedCategory}
+            </motion.h2>
+          </div>
+        </div>
+
+        {/* Grid */}
+        {projects.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project, i) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + (i * 0.1), duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="group relative"
+              >
+                <div className="relative overflow-hidden rounded-3xl bg-accent/5 aspect-[4/5]">
+                  <motion.img
+                    src={project.image}
+                    alt={project.title}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8">
+                    <h3 className="text-2xl font-display font-bold">{project.title}</h3>
+                    <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">{project.year}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-40 border border-dashed border-accent/10 rounded-[3rem]">
+            <p className="text-lg opacity-40">No designs found for this category yet.</p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              onClick={() => navigate('/')}
+              className="mt-8 px-8 py-4 bg-accent text-primary rounded-full font-bold uppercase tracking-widest text-[10px]"
+            >
+              Explore Other Services
+            </motion.button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const Home = () => {
   const [isCVOpen, setIsCVOpen] = useState(false);
-  const [isAllProjectsOpen, setIsAllProjectsOpen] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([]);
   const [hero, setHero] = useState({});
   const [services, setServices] = useState([]);
   const [about, setAbout] = useState({});
@@ -1074,7 +884,6 @@ const Home = () => {
       }
     };
 
-    load('portfolio_projects', setProjects, DEFAULT_PROJECTS);
     load('portfolio_hero', setHero, null);
     load('portfolio_services', setServices, null);
     load('portfolio_about', setAbout, null);
@@ -1086,19 +895,12 @@ const Home = () => {
       <Navbar onOpenCV={() => setIsCVOpen(true)} />
       <main>
         <Hero data={hero} />
-        <Work projects={projects} onViewAll={() => setIsAllProjectsOpen(true)} />
         <Services data={services} />
         <About data={about} />
         <Contact data={contact} />
       </main>
 
       <CVModal isOpen={isCVOpen} onClose={() => setIsCVOpen(false)} />
-      
-      <AnimatePresence>
-        {isAllProjectsOpen && (
-          <AllProjects projects={projects} onClose={() => setIsAllProjectsOpen(false)} />
-        )}
-      </AnimatePresence>
     </div>
   );
 };
@@ -1108,6 +910,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/category/:categoryName" element={<CategoryGallery />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>

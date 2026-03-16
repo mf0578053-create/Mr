@@ -41,6 +41,7 @@ const AdminDashboard = () => {
   // Projects State
   const [projects, setProjects] = useState<Project[]>([]);
   const [isAddingProject, setIsAddingProject] = useState(false);
+  const [serviceTitles, setServiceTitles] = useState<string[]>([]);
   const [newProject, setNewProject] = useState<Partial<Project>>({
     title: '',
     category: '',
@@ -64,6 +65,22 @@ const AdminDashboard = () => {
 
     const savedMessages = localStorage.getItem('portfolio_messages');
     if (savedMessages) setMessages(JSON.parse(savedMessages));
+
+    // Load service titles for category selection
+    const savedServices = localStorage.getItem('portfolio_services');
+    if (savedServices) {
+      const services = JSON.parse(savedServices);
+      setServiceTitles(services.map((s: any) => s.title));
+    } else {
+      // Default service titles if none in localStorage
+      setServiceTitles([
+        "Website Design & Layout",
+        "E-commerce Store design",
+        "Landing Pages design",
+        "Mobile App Screens design",
+        "Dashboard / Admin Panel design"
+      ]);
+    }
   }, [navigate]);
 
   const triggerToast = () => {
@@ -362,14 +379,18 @@ const AdminDashboard = () => {
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest opacity-40">Category</label>
-                    <input
-                      type="text"
+                    <select
                       value={newProject.category}
                       onChange={(e) => setNewProject({...newProject, category: e.target.value})}
-                      className="w-full bg-accent/5 border border-accent/10 rounded-2xl py-4 px-4 focus:outline-none focus:border-accent/30"
-                      placeholder="e.g. UI/UX Design"
+                      className="w-full bg-accent/5 border border-accent/10 rounded-2xl py-4 px-4 focus:outline-none focus:border-accent/30 appearance-none"
                       required
-                    />
+                    >
+                      <option value="" disabled className="bg-primary">Select Category</option>
+                      {serviceTitles.map(title => (
+                        <option key={title} value={title} className="bg-primary">{title}</option>
+                      ))}
+                      <option value="Other" className="bg-primary">Other</option>
+                    </select>
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest opacity-40">Year</label>
