@@ -641,33 +641,33 @@ const Services = ({ data }: { data: any[] }) => {
   const defaultServices = [
     {
       id: "01",
-      title: "User Research & Strategy",
-      description: "Understanding user behavior, pain points, and business goals to define a clear product roadmap.",
-      image: "https://picsum.photos/seed/research/600/400"
+      title: "Website Design & Layout",
+      description: "Creating modern, responsive, and visually engaging website designs that perfectly align with your brand identity and user needs.",
+      image: "https://picsum.photos/seed/website-design/600/400"
     },
     {
       id: "02",
-      title: "Wireframing & Prototyping",
-      description: "Building the structural foundation and interactive flows to validate ideas early in the process.",
-      image: "https://picsum.photos/seed/wireframe/600/400"
+      title: "E-commerce Store design",
+      description: "Creating high-converting online shopping experiences with intuitive product discovery and seamless checkout flows.",
+      image: "https://picsum.photos/seed/ecommerce/600/400"
     },
     {
       id: "03",
-      title: "Visual Interface Design",
-      description: "Creating high-fidelity, pixel-perfect interfaces that are both aesthetically pleasing and functional.",
-      image: "https://picsum.photos/seed/visual/600/400"
+      title: "Landing Pages design",
+      description: "Crafting high-converting landing pages that effectively communicate your value proposition and drive user action.",
+      image: "https://picsum.photos/seed/landing-page/600/400"
     },
     {
       id: "04",
-      title: "Interaction Design",
-      description: "Defining how users interact with the product through micro-interactions and smooth transitions.",
-      image: "https://picsum.photos/seed/interaction/600/400"
+      title: "Mobile App Screens design",
+      description: "Designing intuitive and engaging mobile interfaces that provide seamless user experiences and drive higher user retention across platforms.",
+      image: "https://picsum.photos/seed/mobile-app/600/400"
     },
     {
       id: "05",
-      title: "Design Systems",
-      description: "Scaling design across platforms with a consistent library of reusable components and guidelines.",
-      image: "https://picsum.photos/seed/systems/600/400"
+      title: "Dashboard / Admin Panel design",
+      description: "Designing comprehensive and user-friendly dashboards that simplify complex data visualization and empower administrative efficiency and control.",
+      image: "https://picsum.photos/seed/dashboard/600/400"
     }
   ];
 
