@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor, ArrowLeft, Menu, Clock, Globe, Camera, Sparkles, Upload } from 'lucide-react';
+import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor, ArrowLeft, Menu, Clock, Globe, Smartphone, ShoppingBag, Layers, Layout, Sparkles, ArrowRight } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
@@ -951,186 +951,179 @@ const Hero = ({ data }: { data: any }) => {
 const Services = ({ data }: { data: any[] }) => {
   const navigate = useNavigate();
   const [hoveredIndex, setHoveredIndex] = useState<string | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const containerRef = React.useRef<HTMLDivElement>(null);
 
   const defaultServices = [
     {
       id: "01",
       title: "Website Design & Layout",
       description: "Creating modern, responsive, and visually engaging website designs that perfectly align with your brand identity and user needs.",
-      image: "https://picsum.photos/seed/website-design/600/400"
+      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=800"
     },
     {
       id: "02",
       title: "E-commerce Store design",
       description: "Creating high-converting online shopping experiences with intuitive product discovery and seamless checkout flows.",
-      image: "https://picsum.photos/seed/ecommerce/600/400"
+      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=800"
     },
     {
       id: "03",
       title: "Landing Pages design",
       description: "Crafting high-converting landing pages that effectively communicate your value proposition and drive user action.",
-      image: "https://picsum.photos/seed/landing-page/600/400"
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
     },
     {
       id: "04",
       title: "Mobile App Screens design",
       description: "Designing intuitive and engaging mobile interfaces that provide seamless user experiences and drive higher user retention across platforms.",
-      image: "https://picsum.photos/seed/mobile-app/600/400"
+      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"
     },
     {
       id: "05",
       title: "Dashboard / Admin Panel design",
       description: "Designing comprehensive and user-friendly dashboards that simplify complex data visualization and empower administrative efficiency and control.",
-      image: "https://picsum.photos/seed/dashboard/600/400"
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800"
     }
   ];
 
   const displayServices = data && data.length > 0 ? data.map((s, i) => ({
     ...s,
     id: (i + 1).toString().padStart(2, '0'),
-    image: s.image || `https://picsum.photos/seed/service${i}/600/400`
+    image: s.image || `https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800`
   })) : defaultServices;
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setMousePos({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      });
+  const getIconForTitle = (title: string) => {
+    const t = title.toLowerCase();
+    if (t.includes('web') || t.includes('layout')) return <Monitor className="w-6 h-6" />;
+    if (t.includes('shop') || t.includes('commerce') || t.includes('e-commerce') || t.includes('store')) return <ShoppingBag className="w-6 h-6" />;
+    if (t.includes('landing') || t.includes('page')) return <Layers className="w-6 h-6" />;
+    if (t.includes('mobile') || t.includes('app') || t.includes('screen')) return <Smartphone className="w-6 h-6" />;
+    if (t.includes('dash') || t.includes('board') || t.includes('admin') || t.includes('panel')) return <Layout className="w-6 h-6" />;
+    return <Sparkles className="w-6 h-6" />;
+  };
+
+  const getColSpan = (index: number) => {
+    switch (index) {
+      case 0: return "md:col-span-3 lg:col-span-2";
+      case 1: return "md:col-span-3 lg:col-span-2";
+      case 2: return "md:col-span-6 lg:col-span-2";
+      case 3: return "md:col-span-3 lg:col-span-3";
+      case 4: return "md:col-span-3 lg:col-span-3";
+      default: return "md:col-span-3 lg:col-span-2";
     }
   };
 
   return (
     <section 
       id="services" 
-      className="px-6 py-40 border-t border-accent/5 relative overflow-hidden"
-      onMouseMove={handleMouseMove}
-      ref={containerRef}
+      className="px-6 py-40 bg-[#0e1712] border-t border-accent/5 relative overflow-hidden"
     >
-      {/* Huge Background Text Reveal */}
-      <AnimatePresence>
-        {hoveredIndex && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.03, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.2 }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
-          >
-            <span className="text-[30vw] font-display font-black uppercase tracking-tighter whitespace-nowrap">
-              {displayServices.find(s => s.id === hoveredIndex)?.title.split(' ')[0]}
-            </span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Background Decorative Tech Dots */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e5e1d803_1px,transparent_1px),linear-gradient(to_bottom,#e5e1d803_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
 
-      {/* Floating Image Follower */}
-      <motion.div
-        className="fixed w-80 h-52 pointer-events-none z-[60] rounded-2xl overflow-hidden shadow-2xl hidden lg:block"
-        animate={{
-          x: mousePos.x + 40,
-          y: mousePos.y - 100,
-          opacity: hoveredIndex ? 1 : 0,
-          scale: hoveredIndex ? 1 : 0.5,
-          rotate: (mousePos.x / 100) - 5 // Subtle dynamic rotation
-        }}
-        transition={{ type: "spring", stiffness: 150, damping: 20, mass: 0.5 }}
-      >
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={hoveredIndex}
-            src={displayServices.find(s => s.id === hoveredIndex)?.image}
-            initial={{ opacity: 0, scale: 1.2 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-        </AnimatePresence>
-      </motion.div>
+      {/* Background light gradient highlight */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-accent/2 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
-          {/* Left Column: Title */}
-          <div className="lg:col-span-4">
-            <div className="sticky top-40 space-y-6">
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="flex items-center gap-4"
-              >
-                <div className="w-12 h-px bg-accent" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Capabilities</span>
-              </motion.div>
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="text-6xl md:text-7xl font-display font-bold tracking-tighter leading-none"
-              >
-                MY <br /> <span className="text-stroke">SERVICES</span>
-              </motion.h2>
-              <motion.p 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-                className="text-sm opacity-50 max-w-xs leading-relaxed"
-              >
-                I provide a full range of design services to help startups and brands build products that people love to use.
-              </motion.p>
+      <div className="max-w-7xl mx-auto relative z-10 space-y-24">
+        
+        {/* Split Header */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+          <div className="lg:col-span-7 space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="w-8 h-px bg-accent/30" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent/60 flex items-center gap-2">
+                <Sparkles className="w-3 h-3 text-accent animate-pulse" />
+                PROFESSIONAL CAPABILITIES
+              </span>
             </div>
+            
+            <h2 className="text-5xl md:text-7xl font-display font-medium tracking-tighter leading-none text-accent">
+              MY <span className="text-stroke">SERVICES</span>
+            </h2>
           </div>
+          
+          <div className="lg:col-span-5 lg:pb-2">
+            <p className="text-sm opacity-60 leading-relaxed max-w-md text-accent/70">
+              Combining research, layout precision, and aesthetic curation to build interfaces that feel effortless to navigate and digital experiences that leave a lasting memory.
+            </p>
+          </div>
+        </div>
 
-          {/* Right Column: Services List */}
-          <div className="lg:col-span-8 space-y-px">
-            {displayServices.map((service, i) => (
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 md:gap-8">
+          {displayServices.map((service, i) => {
+            const colSpan = getColSpan(i);
+            const isHovered = hoveredIndex === service.id;
+            
+            return (
               <motion.div
                 key={service.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 onMouseEnter={() => setHoveredIndex(service.id)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 onClick={() => navigate(`/category/${encodeURIComponent(service.title)}`)}
-                className={`group relative py-12 border-b border-accent/10 flex flex-col md:flex-row gap-8 md:items-center transition-all duration-700 px-4 -mx-4 rounded-xl cursor-pointer ${
-                  hoveredIndex && hoveredIndex !== service.id ? 'opacity-20 blur-[2px]' : 'opacity-100 blur-0'
-                }`}
+                className={`group relative ${colSpan} flex flex-col justify-between p-8 md:p-10 rounded-[2.5rem] bg-[#14211a]/40 border border-accent/10 hover:border-accent/30 transition-all duration-500 select-none cursor-pointer overflow-hidden min-h-[340px]`}
               >
-                <div className="flex items-center gap-6 flex-1">
-                  <span className="text-xs font-mono opacity-30 group-hover:opacity-100 transition-opacity group-hover:text-accent">
-                    {service.id}
-                  </span>
-                  <h3 className="text-3xl md:text-6xl font-display font-bold group-hover:translate-x-8 transition-transform duration-700 group-hover:text-accent">
-                    {service.title}
-                  </h3>
-                </div>
-
-                <div className="md:w-1/3">
-                  <p className="text-sm opacity-50 leading-relaxed group-hover:opacity-100 transition-opacity group-hover:text-accent/80">
-                    {service.description}
-                  </p>
-                </div>
-
-                {/* Arrow Reveal */}
-                <motion.div 
-                  animate={{ 
-                    rotate: hoveredIndex === service.id ? 45 : 0,
-                    scale: hoveredIndex === service.id ? 1.5 : 1,
-                    opacity: hoveredIndex === service.id ? 1 : 0.2
+                {/* Image Backdrop Blend */}
+                <div 
+                  className="absolute inset-0 grayscale transition-all duration-1000 bg-cover bg-center pointer-events-none"
+                  style={{ 
+                    backgroundImage: `url(${service.image})`,
+                    opacity: isHovered ? 0.08 : 0,
+                    transform: isHovered ? 'scale(1.05)' : 'scale(1)'
                   }}
-                  className="hidden md:block text-accent transition-all duration-500"
-                >
-                  <ArrowUpRight size={32} />
-                </motion.div>
+                />
+
+                {/* Card Glow Highlight */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                />
+
+                {/* Top Anchor: System tags & ID */}
+                <div className="flex justify-between items-start relative z-10">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[8px] font-mono tracking-[0.2em] text-accent/40 uppercase">CAPABILITY RECORD</span>
+                    <span className="text-[7px] font-mono tracking-[0.2em] text-accent/35 uppercase flex items-center gap-1.5">
+                      <span className="w-1 h-1 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                      SYS_SEC // {service.id}
+                    </span>
+                  </div>
+                  <span className="text-xl font-mono text-accent/30 group-hover:text-accent/80 transition-colors">
+                    [{service.id}]
+                  </span>
+                </div>
+
+                {/* Mid section: Icon & Title */}
+                <div className="space-y-6 pt-12 relative z-10">
+                  {/* Icon bracket container */}
+                  <div className="w-14 h-14 rounded-2xl bg-[#0e1712] border border-accent/15 flex items-center justify-center text-accent/70 group-hover:text-accent group-hover:border-accent/40 group-hover:scale-105 transition-all duration-500 shadow-inner">
+                    {getIconForTitle(service.title)}
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <h3 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-accent group-hover:text-white transition-colors">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm text-accent/50 group-hover:text-accent/70 leading-relaxed transition-colors max-w-sm">
+                      {service.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom section: Explore CTA */}
+                <div className="pt-8 flex justify-between items-center border-t border-accent/5 relative z-10 mt-auto">
+                  <span className="text-[10px] font-mono tracking-widest text-accent/40 group-hover:text-accent transition-colors">
+                    EXPLORE PROJECTS //
+                  </span>
+                  <div className="w-10 h-10 rounded-full bg-[#0e1712] border border-accent/10 flex items-center justify-center text-accent/40 group-hover:text-primary group-hover:bg-accent group-hover:border-accent group-hover:rotate-45 transition-all duration-500">
+                    <ArrowUpRight size={18} />
+                  </div>
+                </div>
               </motion.div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1144,74 +1137,14 @@ const About = ({ data }: { data: any }) => {
     behance: data.behance || 'https://www.behance.net/faizanakram12'
   };
 
-  const [imageUrl, setImageUrl] = useState(
-    localStorage.getItem('portfolio_about_image') || 
-    data.image || 
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800'
-  );
-  const [isEditing, setIsEditing] = useState(false);
-  const [tempUrl, setTempUrl] = useState(imageUrl);
-  const [showToast, setShowToast] = useState(false);
-
-  // Keep imageUrl in sync with data if backend changes
-  useEffect(() => {
-    if (data && data.image) {
-      setImageUrl(data.image);
-      setTempUrl(data.image);
-    }
-  }, [data]);
-
-  const handleSaveImage = (e: React.FormEvent) => {
-    e.preventDefault();
-    localStorage.setItem('portfolio_about_image', tempUrl);
-    setImageUrl(tempUrl);
-    setIsEditing(false);
-    setShowToast(true);
-    setTimeout(() => {
-      setShowToast(false);
-    }, 2500);
-  };
-
-  const presets = [
-    {
-      name: "CREATIVE CASUAL",
-      url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      name: "EDITORIAL PROFILE",
-      url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      name: "ABSTRACT ART_01",
-      url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      name: "RETRO RENDER",
-      url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&q=80&w=800"
-    }
-  ];
+  const imageUrl = data.image || 
+    'https://res.cloudinary.com/dsacnpxmq/image/upload/v1780908440/56aae7d7-8201-4e47-b99a-7fc5f86358d6_fovco4.png';
 
   return (
     <section id="about" className="px-6 py-40 bg-accent text-primary relative">
-      
-      {/* Toast Notification */}
-      <AnimatePresence>
-        {showToast && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20, x: 20 }}
-            animate={{ opacity: 1, y: 0, x: 0 }}
-            exit={{ opacity: 0, y: -20, x: 20 }}
-            className="fixed top-8 right-8 z-[130] bg-[#14211a] text-accent px-6 py-4.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-accent/20"
-          >
-            <Sparkles className="w-5 h-5 text-accent" />
-            <span className="text-xs font-bold font-mono tracking-wider">PORTRAIT CONTEXT SYNCED // SUCCESS</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24 items-center">
         
-        {/* Left Column: Combined Typography & Premium Organic Image Spot */}
+        {/* Left Column: Combined Typography & Premium Clean Frame Spot */}
         <div className="lg:col-span-5 flex flex-col gap-10">
           <motion.h2 
             initial={{ opacity: 0, x: -50 }}
@@ -1223,12 +1156,12 @@ const About = ({ data }: { data: any }) => {
             {data.title || 'DESIGN WITH PURPOSE.'}
           </motion.h2>
 
-          {/* Unique, high-fashion architectural image portal */}
+          {/* Clean, high-fashion architectural image portal without overlays or clicks */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="relative w-full max-w-sm group select-none cursor-pointer"
+            className="relative w-full max-w-sm group select-none"
           >
             {/* Ambient shadow / grid board behind portrait */}
             <div className="absolute inset-0 bg-primary/5 rounded-[3rem] border border-dashed border-primary/20 translate-x-4 translate-y-4 transition-transform duration-700 group-hover:translate-x-6 group-hover:translate-y-6" />
@@ -1238,43 +1171,9 @@ const About = ({ data }: { data: any }) => {
               <img 
                 src={imageUrl} 
                 alt="Faizan Akram Portrait" 
-                className="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103"
                 referrerPolicy="no-referrer"
               />
-
-              {/* Unique technical & interactive overlay labels */}
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-primary/95 via-primary/40 to-transparent p-6 text-accent flex flex-col justify-end h-1/2">
-                <p className="text-[9px] font-mono tracking-widest opacity-60 uppercase mb-1">INTERACTIVE FRAME</p>
-                <div className="flex justify-between items-end">
-                  <div>
-                    <h4 className="font-display font-medium text-lg text-accent tracking-tight">MR. FAZI</h4>
-                    <p className="text-[8px] font-mono opacity-50 uppercase tracking-[0.2em] mt-0.5">LAT/LON • RAW DESIGN // INTENT</p>
-                  </div>
-                  {/* Subtle dynamic soundwave bar indicator */}
-                  <div className="flex gap-0.5 h-6 items-end pb-1 opacity-70">
-                    <span className="w-1 bg-accent/40 rounded-full h-3 animate-pulse" />
-                    <span className="w-1 bg-accent/80 rounded-full h-5 animate-pulse" style={{ animationDelay: '0.2s' }} />
-                    <span className="w-1 bg-accent rounded-full h-4 animate-pulse" style={{ animationDelay: '0.4s' }} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating Tech Pill Badge */}
-              <div className="absolute top-4 left-4 bg-primary/95 text-accent px-3 py-1 rounded-full text-[8px] font-mono font-bold uppercase tracking-[0.2em] border border-accent/15 backdrop-blur-sm shadow-md flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                <span>PROFILE // SYS_01 // OK</span>
-              </div>
-
-              {/* Hover Image Editing Button */}
-              <button 
-                onClick={() => setIsEditing(true)}
-                className="absolute inset-0 bg-primary/25 backdrop-blur-[5px] flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-accent font-mono text-[9px] font-bold uppercase tracking-widest"
-              >
-                <div className="w-12 h-12 rounded-full bg-accent text-primary flex items-center justify-center shadow-lg transform -translate-y-2 group-hover:translate-y-0 transition-all duration-500 hover:scale-110">
-                  <Camera size={18} />
-                </div>
-                <span>Sync Portrait Image</span>
-              </button>
             </div>
           </motion.div>
         </div>
@@ -1297,7 +1196,7 @@ const About = ({ data }: { data: any }) => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-lg opacity-70 leading-relaxed"
           >
-            {data.description || "With over 5 years of experience in the digital space, I've helped startups and established brands define their visual language and user experience. My approach is rooted in research, empathy, and a relentless pursuit of simplicity."}
+            {data.description || "With over 2 years of experience in the digital space, I've helped startups and established brands define their visual language and user experience. My approach is rooted in research, empathy, and a relentless pursuit of simplicity."}
           </motion.p>
           
           <motion.div 
@@ -1340,97 +1239,6 @@ const About = ({ data }: { data: any }) => {
           </motion.div>
         </div>
       </div>
-
-      {/* Dynamic Profile Picker Modal (AnimatePresence) */}
-      <AnimatePresence>
-        {isEditing && (
-          <div className="fixed inset-0 z-[140] flex items-center justify-center p-6 bg-primary/80 backdrop-blur-xl">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-md bg-[#14211a] border border-accent/20 rounded-[2.5rem] p-8 shadow-2xl relative text-accent"
-            >
-              <button 
-                onClick={() => setIsEditing(false)}
-                className="absolute top-6 right-6 p-2 rounded-full hover:bg-accent/5 text-accent/60 hover:text-accent transition-colors"
-              >
-                <X size={20} />
-              </button>
-
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-display font-medium uppercase tracking-tight text-accent flex items-center gap-2">
-                    <Camera size={18} className="text-accent" />
-                    Configure Portrait
-                  </h3>
-                  <p className="text-[10px] uppercase font-mono tracking-widest opacity-40 mt-1">Select from dynamic presets or paste custom url</p>
-                </div>
-
-                {/* Preset Options */}
-                <div className="space-y-2">
-                  <span className="text-[9px] uppercase font-bold tracking-widest opacity-30 block">Select Preset Asset</span>
-                  <div className="grid grid-cols-2 gap-3">
-                    {presets.map((preset) => (
-                      <button
-                        key={preset.name}
-                        type="button"
-                        onClick={() => setTempUrl(preset.url)}
-                        className={`p-3 rounded-2xl border text-left flex flex-col justify-between transition-all group overflow-hidden relative min-h-20 ${
-                          tempUrl === preset.url 
-                            ? 'border-accent bg-accent/10' 
-                            : 'border-accent/10 bg-accent/2 hover:border-accent/30'
-                        }`}
-                      >
-                        <div className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity">
-                          <img src={preset.url} alt="" className="w-full h-full object-cover" />
-                        </div>
-                        <span className="text-[8px] font-mono leading-[1.3] font-bold z-10">{preset.name}</span>
-                        <span className="text-[7px] font-mono opacity-45 z-10 mt-auto">SYS_LINK_OK</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Custom URL Field */}
-                <form onSubmit={handleSaveImage} className="space-y-4">
-                  <div className="space-y-2">
-                    <span className="text-[9px] uppercase font-bold tracking-widest opacity-30 block">Paste Custom URL</span>
-                    <div className="relative">
-                      <input
-                        type="url"
-                        value={tempUrl}
-                        onChange={(e) => setTempUrl(e.target.value)}
-                        placeholder="https://images.unsplash.com/photo-..."
-                        className="w-full bg-accent/5 border border-accent/10 rounded-2xl py-4.5 px-5 text-xs text-accent font-mono placeholder:text-accent/20 focus:outline-none focus:border-accent/40"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="pt-2 flex gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setIsEditing(false)}
-                      className="flex-1 py-4.5 rounded-2xl border border-accent/10 text-accent hover:bg-accent/5 text-[10px] font-bold uppercase tracking-widest transition-colors font-mono"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="flex-1 py-4.5 rounded-2xl bg-accent text-primary hover:bg-accent/90 text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
-                    >
-                      <Sparkles size={14} />
-                      Sync Portrait
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
     </section>
   );
 };
