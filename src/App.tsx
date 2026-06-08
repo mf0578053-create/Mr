@@ -1688,8 +1688,150 @@ const CategoryGallery = () => {
   );
 };
 
+const Preloader = ({ onComplete }: { onComplete: () => void; key?: string }) => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let timer: any;
+    const start = Date.now();
+    const duration = 2400; // 2.4 seconds
+
+    const update = () => {
+      const elapsed = Date.now() - start;
+      const progressRatio = Math.min(elapsed / duration, 1);
+      
+      // Snappy progress increase curve
+      const easedProgress = Math.round((1 - Math.pow(1 - progressRatio, 3)) * 100);
+      setProgress(easedProgress);
+
+      if (progressRatio < 1) {
+        timer = setTimeout(update, 16);
+      } else {
+        setTimeout(onComplete, 400); // Small pause at 100% for impact
+      }
+    };
+
+    timer = setTimeout(update, 16);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  const words = ["MR.", "FAZI"];
+  const subtitle = "UIUX DESIGNER";
+
+  return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ 
+        y: "-100%",
+        transition: { duration: 1, ease: [0.76, 0, 0.24, 1] }
+      }}
+      className="fixed inset-0 bg-accent z-[9999] flex flex-col justify-between p-8 md:p-16 text-primary overflow-hidden select-none"
+    >
+      {/* Decorative subtle background grid drawn with primary green color */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#14211a03_1px,transparent_1px),linear-gradient(to_bottom,#14211a03_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+      
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.04, 0.1, 0.04]
+        }}
+        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" 
+      />
+
+      {/* Top Meta Details */}
+      <div className="flex justify-between items-start w-full relative z-10 text-[9px] font-mono tracking-[0.25em] text-primary/40 uppercase">
+        <div className="flex items-center gap-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
+          <span>PORTFOLIO INITIALIZATION // SYS_01</span>
+        </div>
+        <div>EST. TIMEZONE // PK</div>
+      </div>
+
+      {/* Centerpiece Text with Staggered Kinetic Mask Reveal */}
+      <div className="flex flex-col items-center justify-center text-center relative z-10 max-w-4xl mx-auto my-auto space-y-8">
+        <div className="flex flex-col sm:flex-row items-center gap-x-6 gap-y-2 select-none justify-center">
+          {words.map((word, wordIndex) => (
+            <div key={wordIndex} className="overflow-hidden flex gap-[0.02em] py-2">
+              {word.split("").map((char, charIndex) => {
+                // Calculate a progressive staggered delay
+                const globalIndex = wordIndex * 3 + charIndex;
+                return (
+                  <motion.span
+                    key={charIndex}
+                    initial={{ y: "115%", rotate: wordIndex % 2 === 0 ? 8 : -8, scale: 0.85 }}
+                    animate={{ y: 0, rotate: 0, scale: 1 }}
+                    transition={{
+                      delay: globalIndex * 0.06,
+                      duration: 1.1,
+                      ease: [0.16, 1, 0.3, 1]
+                    }}
+                    className="text-6xl md:text-9xl font-syne font-extrabold tracking-tighter leading-none text-primary"
+                    style={{ display: "inline-block" }}
+                  >
+                    {char}
+                  </motion.span>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+
+        {/* Dynamic and elegant tracking expand subtitle */}
+        <div className="overflow-hidden py-1">
+          <motion.p
+            initial={{ opacity: 0, letterSpacing: "0.15em", y: "100%" }}
+            animate={{ opacity: 1, letterSpacing: "0.5em", y: 0 }}
+            transition={{
+              delay: 0.6,
+              duration: 1.2,
+              ease: [0.16, 1, 0.3, 1]
+            }}
+            className="text-[10px] md:text-sm font-mono font-bold tracking-[0.5em] text-primary/70 uppercase whitespace-nowrap pl-[0.5em]"
+          >
+            {subtitle}
+          </motion.p>
+        </div>
+
+        {/* Framing border accent */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.8, duration: 1.2 }}
+          className="absolute inset-x-0 -inset-y-12 border border-primary/5 rounded-[4rem] pointer-events-none"
+        />
+      </div>
+
+      {/* Footer Area with Numerical Counter */}
+      <div className="w-full relative z-10 space-y-6">
+        <div className="flex justify-between items-end">
+          <div className="space-y-1">
+            <span className="text-[7px] font-mono tracking-[0.2em] text-primary/35 uppercase block">LOADING SYSTEM</span>
+            <span className="text-[9px] font-mono tracking-[0.2em] text-primary/60 uppercase">
+              RESOURCES SYNCED // OK
+            </span>
+          </div>
+          
+          <div className="text-4xl md:text-6xl font-syne font-extrabold tracking-tighter tabular-nums text-primary/95">
+            {progress.toString().padStart(3, '0')}%
+          </div>
+        </div>
+
+        {/* Sleek ultra-thin linear loading line */}
+        <div className="h-[2px] w-full bg-primary/10 relative overflow-hidden rounded-full">
+          <motion.div 
+            className="absolute left-0 top-0 h-full bg-primary rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const Home = () => {
   const [isCVOpen, setIsCVOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [hero, setHero] = useState({});
   const [services, setServices] = useState([]);
   const [about, setAbout] = useState({});
@@ -1713,18 +1855,26 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-primary text-accent selection:bg-accent selection:text-primary">
-      <Navbar onOpenCV={() => setIsCVOpen(true)} />
-      <main>
-        <Hero data={hero} />
-        <About data={about} />
-        <Services data={services} />
-        <Working />
-        <Contact data={contact} />
-      </main>
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <Preloader key="preloader" onComplete={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
 
-      <CVModal isOpen={isCVOpen} onClose={() => setIsCVOpen(false)} />
-    </div>
+      <div className="bg-primary text-accent selection:bg-accent selection:text-primary">
+        <Navbar onOpenCV={() => setIsCVOpen(true)} />
+        <main>
+          <Hero data={hero} />
+          <About data={about} />
+          <Services data={services} />
+          <Working />
+          <Contact data={contact} />
+        </main>
+
+        <CVModal isOpen={isCVOpen} onClose={() => setIsCVOpen(false)} />
+      </div>
+    </>
   );
 };
 
