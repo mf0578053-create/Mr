@@ -1647,8 +1647,15 @@ const Preloader = ({ onComplete }: { onComplete: () => void; key?: string }) => 
     return () => clearTimeout(timer);
   }, [onComplete]);
 
+  // Dynamic phase title based on progress to show professional workflow
+  const getPhaseText = () => {
+    if (progress < 25) return "PHASE 01 // COGNITIVE DISCOVERY & AUDIT";
+    if (progress < 50) return "PHASE 02 // BLUEPRINTING & IA MAPPING";
+    if (progress < 75) return "PHASE 03 // SENSORY INTERACTION & WIREFRAMES";
+    return "PHASE 04 // POLISHING ASSETS & HANDOFF";
+  };
+
   const words = ["MR.", "FAZI"];
-  const subtitle = "UIUX DESIGNER";
 
   return (
     <motion.div
@@ -1659,93 +1666,206 @@ const Preloader = ({ onComplete }: { onComplete: () => void; key?: string }) => 
       }}
       className="fixed inset-0 bg-accent z-[9999] flex flex-col justify-between p-8 md:p-16 text-primary overflow-hidden select-none"
     >
-      {/* Decorative subtle background grid drawn with primary green color */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#14211a03_1px,transparent_1px),linear-gradient(to_bottom,#14211a03_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
-      
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.04, 0.1, 0.04]
-        }}
-        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" 
-      />
-
-      {/* Top Meta Details */}
-      <div className="flex justify-between items-start w-full relative z-10 text-[9px] font-mono tracking-[0.25em] text-primary/40 uppercase">
-        <div className="flex items-center gap-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
-          <span>PORTFOLIO INITIALIZATION // SYS_01</span>
-        </div>
-        <div>EST. TIMEZONE // PK</div>
+      {/* Absolute Technical Margins - Left Edge */}
+      <div className="absolute left-4 top-1/2 -translate-y-1/2 -rotate-90 hidden xl:flex items-center gap-4 text-[8px] font-mono tracking-[0.3em] text-primary/30 uppercase whitespace-nowrap origin-left pl-8">
+        <span>CORE // ENGINE: RENDER_V5.1</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+        <span>GLOW_MESH: LOCKED</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+        <span>FPS: 60_MAX</span>
       </div>
 
-      {/* Centerpiece Text with Staggered Kinetic Mask Reveal */}
-      <div className="flex flex-col items-center justify-center text-center relative z-10 max-w-4xl mx-auto my-auto space-y-8">
-        <div className="flex flex-col sm:flex-row items-center gap-x-6 gap-y-2 select-none justify-center">
-          {words.map((word, wordIndex) => (
-            <div key={wordIndex} className="overflow-hidden flex gap-[0.02em] py-2">
-              {word.split("").map((char, charIndex) => {
-                // Calculate a progressive staggered delay
-                const globalIndex = wordIndex * 3 + charIndex;
-                return (
-                  <motion.span
-                    key={charIndex}
-                    initial={{ y: "115%", rotate: wordIndex % 2 === 0 ? 8 : -8, scale: 0.85 }}
-                    animate={{ y: 0, rotate: 0, scale: 1 }}
-                    transition={{
-                      delay: globalIndex * 0.06,
-                      duration: 1.1,
-                      ease: [0.16, 1, 0.3, 1]
-                    }}
-                    className="text-6xl md:text-9xl font-syne font-extrabold tracking-tighter leading-none text-primary"
-                    style={{ display: "inline-block" }}
-                  >
-                    {char}
-                  </motion.span>
-                );
-              })}
-            </div>
-          ))}
+      {/* Absolute Technical Margins - Right Edge */}
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 rotate-90 hidden xl:flex items-center gap-4 text-[8px] font-mono tracking-[0.3em] text-primary/30 uppercase whitespace-nowrap origin-right pr-8">
+        <span>PORTFOLIO // CREATOR: MR. FAZI</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+        <span>ROLE: LEAD UI_UX DESIGNER</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+        <span>YEAR: ©2026</span>
+      </div>
+
+      {/* Decorative ultra-subtle drafting coordinate lines */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#14211a03_1px,transparent_1px),linear-gradient(to_bottom,#14211a03_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+      
+      {/* Precision grid axis lines */}
+      <div className="absolute top-1/2 left-0 w-full h-[1px] bg-primary/3 border-t border-dashed border-primary/5 pointer-events-none" />
+      <div className="absolute left-1/2 top-0 h-full w-[1px] bg-primary/3 border-l border-dashed border-primary/5 pointer-events-none" />
+
+      {/* Soft dynamic ambient glowing radial mesh */}
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.15, 1],
+          opacity: [0.03, 0.08, 0.03]
+        }}
+        transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" 
+      />
+
+      {/* Top Meta Details Row */}
+      <div className="flex justify-between items-start w-full relative z-10 text-[9px] font-mono tracking-[0.25em] text-primary/45 uppercase">
+        <div className="flex items-center gap-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+          <span>PORTFOLIO INITIALIZATION // SYS_01</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <span>LOC // PK</span>
+          <span className="opacity-30">|</span>
+          <span>EST_TME // GMT+5</span>
+        </div>
+      </div>
+
+      {/* Centerpiece: Highly Creative Interactive Prototyping & Design Canvas */}
+      <div className="flex flex-col items-center justify-center text-center relative z-10 max-w-4xl mx-auto my-auto space-y-10">
+        
+        {/* Designer Prototyping Vector Canvas (Shows wireframe construction) */}
+        <div className="relative w-44 h-44 flex items-center justify-center">
+          
+          {/* Circular drafting guide line spinning slowly */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 rounded-full border border-dashed border-primary/15"
+          />
+
+          {/* Secondary rotating compass ring */}
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-4 rounded-full border border-dotted border-primary/20"
+          />
+
+          {/* Corner anchor point indicators */}
+          <div className="absolute top-0 left-0 w-1.5 h-1.5 bg-primary/30 border border-primary/60 rounded-sm" />
+          <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-primary/30 border border-primary/60 rounded-sm" />
+          <div className="absolute bottom-0 left-0 w-1.5 h-1.5 bg-primary/30 border border-primary/60 rounded-sm" />
+          <div className="absolute bottom-0 right-0 w-1.5 h-1.5 bg-primary/30 border border-primary/60 rounded-sm" />
+
+          {/* Interactive animated vector pen path rendering a dynamic geometric heart or diamond node */}
+          <svg className="w-24 h-24 text-primary" viewBox="0 0 100 100" fill="none">
+            {/* Horizontal and Vertical crosshair lines within viewport */}
+            <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 3" className="opacity-20" />
+            <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 3" className="opacity-20" />
+            
+            {/* Vector bounding circle */}
+            <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.75" className="opacity-30" />
+            
+            {/* Animated Bezier path drawing a stylized minimalist design loop */}
+            <motion.path
+              d="M 50 15 C 65 15, 80 30, 50 85 C 20 30, 35 15, 50 15 Z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="currentColor"
+              fillOpacity={0.03 + (progress / 100) * 0.12} // Generates a professional hi-fi "fill" as loading finishes
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 2, ease: "easeInOut" }}
+              className="text-primary/70"
+            />
+
+            {/* Pulsing Active Node handles */}
+            <motion.circle
+              cx="50"
+              cy="15"
+              r="2.5"
+              fill="#14211a"
+              stroke="#e5e1d8"
+              strokeWidth="1"
+              animate={{ scale: [1, 1.4, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+            <motion.circle
+              cx="50"
+              cy="85"
+              r="2.5"
+              fill="#14211a"
+              stroke="#e5e1d8"
+              strokeWidth="1"
+              animate={{ scale: [1, 1.4, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
+            />
+          </svg>
+
+          {/* Precise coordinate coordinate overlay label */}
+          <span className="absolute bottom-2 font-mono text-[7px] tracking-widest opacity-40">
+            X_POS: 50.00 // Y_POS: 50.00
+          </span>
         </div>
 
-        {/* Dynamic and elegant tracking expand subtitle */}
-        <div className="overflow-hidden py-1">
-          <motion.p
-            initial={{ opacity: 0, letterSpacing: "0.15em", y: "100%" }}
-            animate={{ opacity: 1, letterSpacing: "0.5em", y: 0 }}
-            transition={{
-              delay: 0.6,
-              duration: 1.2,
-              ease: [0.16, 1, 0.3, 1]
-            }}
-            className="text-[10px] md:text-sm font-mono font-bold tracking-[0.5em] text-primary/70 uppercase whitespace-nowrap pl-[0.5em]"
-          >
-            {subtitle}
-          </motion.p>
+        {/* Cinematic Header Text with Precise Staggered Kinetic Masks */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row items-center gap-x-6 gap-y-3 select-none justify-center">
+            {words.map((word, wordIndex) => (
+              <div key={wordIndex} className="overflow-hidden flex gap-[0.05em] py-1">
+                {word.split("").map((char, charIndex) => {
+                  const globalIndex = wordIndex * 3 + charIndex;
+                  return (
+                    <motion.span
+                      key={charIndex}
+                      initial={{ y: "110%", rotate: wordIndex % 2 === 0 ? 3 : -3, scale: 0.95 }}
+                      animate={{ y: 0, rotate: 0, scale: 1 }}
+                      transition={{
+                        delay: globalIndex * 0.05,
+                        duration: 1,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
+                      className="text-4xl sm:text-5xl md:text-7xl font-syncopate font-bold uppercase tracking-[0.15em] leading-none text-primary"
+                      style={{ display: "inline-block" }}
+                    >
+                      {char}
+                    </motion.span>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+
+          {/* Elegant expanding designer subtitle */}
+          <div className="overflow-hidden py-0.5">
+            <motion.p
+              initial={{ opacity: 0, letterSpacing: "0.2em", y: "100%" }}
+              animate={{ opacity: 1, letterSpacing: "0.4em", y: 0 }}
+              transition={{
+                delay: 0.5,
+                duration: 1,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+              className="text-[9px] sm:text-10px md:text-xs font-jakarta font-bold text-primary/60 uppercase whitespace-nowrap pl-[0.4em] select-none"
+            >
+              CREATIVE UIUX PORTFOLIO
+            </motion.p>
+          </div>
         </div>
 
-        {/* Framing border accent */}
+        {/* Framing design viewport accents */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.94 }}
+          initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.8, duration: 1.2 }}
-          className="absolute inset-x-0 -inset-y-12 border border-primary/5 rounded-[4rem] pointer-events-none"
+          transition={{ delay: 0.7, duration: 1 }}
+          className="absolute inset-x-0 -inset-y-12 border border-primary/5 rounded-[3rem] pointer-events-none"
         />
       </div>
 
-      {/* Footer Area with Numerical Counter */}
+      {/* Footer Area with Numerical Counter & Active Stage Tracking */}
       <div className="w-full relative z-10 space-y-6">
+        
+        {/* Progress Metrics & Stage Label */}
         <div className="flex justify-between items-end">
-          <div className="space-y-1">
-            <span className="text-[7px] font-mono tracking-[0.2em] text-primary/35 uppercase block">LOADING SYSTEM</span>
-            <span className="text-[9px] font-mono tracking-[0.2em] text-primary/60 uppercase">
-              RESOURCES SYNCED // OK
-            </span>
+          <div className="space-y-1.5 text-left">
+            <span className="text-[7px] font-mono tracking-[0.2em] text-primary/35 uppercase block">ACTIVE CREATIVE WORKFLOW</span>
+            <motion.span 
+              key={getPhaseText()}
+              initial={{ opacity: 0, x: -5 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="text-[9px] sm:text-[10px] font-mono tracking-[0.15em] text-primary/70 uppercase block font-bold"
+            >
+              {getPhaseText()}
+            </motion.span>
           </div>
           
-          <div className="text-4xl md:text-6xl font-syne font-extrabold tracking-tighter tabular-nums text-primary/95">
-            {progress.toString().padStart(3, '0')}%
+          <div className="text-3xl sm:text-5xl md:text-6xl font-syncopate font-bold tracking-tight tabular-nums text-primary/95 flex items-baseline">
+            <span>{progress.toString().padStart(3, '0')}</span>
+            <span className="text-[10px] sm:text-xs font-mono tracking-normal text-primary/30 ml-1.5">%</span>
           </div>
         </div>
 

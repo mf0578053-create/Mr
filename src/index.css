@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&family=Unbounded:wght@750;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&family=Unbounded:wght@750;900&family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -6,6 +6,8 @@
   --font-display: "Space Grotesk", sans-serif;
   --font-syne: "Syne", sans-serif;
   --font-unbounded: "Unbounded", sans-serif;
+  --font-syncopate: "Syncopate", sans-serif;
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
   
   --color-primary: #14211a;
   --color-accent: #e5e1d8;
