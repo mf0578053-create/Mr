@@ -653,278 +653,226 @@ const Hero = ({ data }: { data: any }) => {
         </div>
 
         {/* Right Column: Premium Multi-Mode Interactive Creative Console */}
-        <div className="lg:col-span-6 flex justify-center">
+        <div className="lg:col-span-6 flex justify-center w-full">
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-lg"
+            className="w-full max-w-xl lg:max-w-2xl xl:max-w-[42rem] relative"
           >
-            {/* Frame Box */}
-            <div className="bg-primary/50 border border-accent/15 rounded-[2rem] p-6 space-y-6 shadow-[0_45px_100px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden group">
+            {/* Outer Frame styled perfectly with glass borders */}
+            <div className="relative aspect-[4/3] w-full rounded-[2.5rem] bg-[#14211a]/40 border border-accent/10 overflow-hidden flex items-center justify-center shadow-[0_45px_100px_rgba(0,0,0,0.6)] group">
               
-              {/* Floating micro indicators of live connection */}
-              <div className="absolute top-4 right-6 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[7px] font-mono opacity-30 uppercase tracking-widest">Interactive Sandbox • Active</span>
-              </div>
+              {/* Background elegant abstract representation of a design grid */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(229,225,216,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(229,225,216,0.02)_1px,transparent_1px)] bg-[size:30px_30px] pointer-events-none" />
+              
+              {/* High-quality Unsplash Abstract Background Image (Slow floating zoom) */}
+              <motion.img
+                src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80"
+                alt="UI UX Background"
+                referrerPolicy="no-referrer"
+                animate={{
+                  scale: [1, 1.08, 1],
+                  rotate: [0, 2, 0],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity pointer-events-none select-none"
+              />
 
-              {/* Console Tabs Row */}
-              <div className="flex bg-accent/5 p-1 rounded-xl border border-accent/5 gap-1">
-                {[
-                  { key: 'blueprint', label: 'UX Blueprint', desc: 'Wireframe Logic' },
-                  { key: 'canvas', label: 'UI Artistry', desc: 'Sensation Mesh' },
-                  { key: 'code', label: 'Token Code', desc: 'Linked React output' }
-                ].map((tab) => {
-                  const isActive = activeTab === tab.key;
-                  return (
-                    <button
-                      key={tab.key}
-                      onClick={() => setActiveTab(tab.key as any)}
-                      className={`flex-1 py-3 px-2 rounded-lg text-center transition-all duration-300 select-none ${
-                        isActive 
-                          ? 'bg-accent text-primary shadow-lg shadow-accent/10' 
-                          : 'hover:bg-accent/8 text-accent/50 hover:text-accent'
-                      }`}
-                    >
-                      <span className="block text-[9px] font-bold uppercase tracking-wider leading-none">{tab.label}</span>
-                      <span className={`text-[7px] font-mono tracking-wide mt-0.5 block leading-none ${
-                        isActive ? 'text-primary/60' : 'opacity-40'
-                      }`}>
-                        {tab.desc}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+              {/* Glowing soft ambient mesh circles */}
+              <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-accent/5 rounded-full blur-[90px] pointer-events-none" />
+              <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-accent/3 rounded-full blur-[70px] pointer-events-none" />
 
-              {/* Sandbox Interactive Stage screen */}
-              <div 
-                ref={workspaceRef}
-                onMouseMove={handleWorkspacePointerStr}
-                className="aspect-[4/3] rounded-2xl bg-primary/80 border border-accent/10 relative overflow-hidden flex flex-col justify-between p-5 shadow-[inset_0_15px_40px_rgba(0,0,0,0.7)] cursor-crosshair group-hover:border-accent/25 transition-colors duration-500"
+              {/* Design Guides / Construction Overlay Lines */}
+              <div className="absolute top-10 left-0 w-full h-px bg-accent/5 border-t border-dashed border-accent/5 pointer-events-none" />
+              <div className="absolute bottom-20 left-0 w-full h-px bg-accent/5 border-t border-dashed border-accent/5 pointer-events-none" />
+              <div className="absolute top-0 left-16 h-full w-px bg-accent/5 border-l border-dashed border-accent/5 pointer-events-none" />
+              <div className="absolute top-0 right-20 h-full w-px bg-accent/5 border-l border-dashed border-accent/5 pointer-events-none" />
+
+              {/* Interactive Vector Node Points (Pulsing design anchors) */}
+              <div className="absolute top-1/4 left-[15%] w-2 h-2 bg-accent/30 rounded-full border border-accent/80 animate-ping pointer-events-none" />
+              <div className="absolute top-[65%] right-[20%] w-2 h-2 bg-accent/30 rounded-full border border-accent/80 animate-ping pointer-events-none" style={{ animationDelay: '1s' }} />
+
+              {/* Layer 1: The Browser UI Design Canvas (Floats smoothly) */}
+              <motion.div
+                animate={{
+                  y: [-8, 8, -8],
+                  x: [-3, 3, -3],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute left-8 lg:left-12 top-12 lg:top-16 w-[70%] lg:w-[68%] bg-[#0e1712]/95 border border-accent/15 rounded-2xl shadow-2xl p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-5 z-10 backdrop-blur-md select-none"
               >
-                {/* Visual coordinate lines tracking current custom pointer */}
-                <div 
-                  className="absolute pointer-events-none border-t border-dashed border-accent/10 left-0 w-full" 
-                  style={{ top: `${coords.y}%` }} 
-                />
-                <div 
-                  className="absolute pointer-events-none border-l border-dashed border-accent/10 top-0 h-full" 
-                  style={{ left: `${coords.x}%` }} 
-                />
+                {/* Window header */}
+                <div className="flex justify-between items-center pb-2 border-b border-accent/5">
+                  <div className="flex gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#e5e1d8]/20" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#e5e1d8]/20" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#e5e1d8]/20" />
+                  </div>
+                  <div className="bg-accent/5 px-4 py-0.5 rounded text-[8px] sm:text-[9px] lg:text-[10px] font-mono tracking-widest text-accent/40">
+                    FAZI_DESIGNS.STUDIO
+                  </div>
+                  <Layout size={12} className="text-accent/30" />
+                </div>
 
-                {/* Tab Component State 1: Blueprint */}
-                {activeTab === 'blueprint' && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="w-full h-full flex flex-col justify-between relative z-10"
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="space-y-1">
-                        <span className="text-[8px] font-mono bg-accent/10 text-accent/80 px-2 py-0.5 rounded uppercase tracking-widest">ARCHITECTURE BLUEPRINT</span>
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-accent/90">Grid & Proportions Grid</h4>
-                      </div>
-                      <span className="text-[9px] font-mono text-accent/40">SCALE: 1:1.4</span>
+                {/* Simulated Web wireframe page body */}
+                <div className="space-y-3 pt-1">
+                  <div className="flex justify-between items-center">
+                    <div className="h-2 sm:h-2.5 w-14 sm:w-18 bg-accent/30 rounded" />
+                    <div className="flex gap-2">
+                      <div className="h-1.5 sm:h-2 w-6 sm:w-8 bg-accent/15 rounded" />
+                      <div className="h-1.5 sm:h-2 w-6 sm:w-8 bg-accent/15 rounded" />
                     </div>
+                  </div>
 
-                    {/* Interactive Dotted Visualizer Boxes */}
-                    <div className="grid grid-cols-12 gap-3 my-2">
-                      <div className="col-span-3 border border-dotted border-accent/30 rounded-lg p-2.5 h-16 flex flex-col justify-between hover:bg-accent/5 transition-colors">
-                        <div className="h-2 w-8 bg-accent/20 rounded" />
-                        <span className="text-[7px] font-mono text-accent/45">FLEXBAR_W: 24%</span>
+                  <div className="space-y-1.5 py-2">
+                    <div className="h-3 sm:h-4 lg:h-5 w-3/4 bg-accent/60 rounded" />
+                    <div className="h-1.5 sm:h-2 lg:h-2.5 w-1/2 bg-accent/30 rounded" />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                    <div className="bg-accent/5 border border-accent/10 rounded-lg p-2 sm:p-3 h-14 sm:h-16 lg:h-20 flex flex-col justify-between">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-accent/20 flex items-center justify-center">
+                        <Monitor size={10} className="text-accent/70" />
                       </div>
-                      <div className="col-span-6 border border-dashed border-accent/50 rounded-lg p-2.5 h-16 flex flex-col justify-between relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.03)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.03)_50%,rgba(255,255,255,0.03)_75%,transparent_75%,transparent)] bg-[size:10px_10px]" />
-                        <div className="h-2 w-16 bg-accent/40 rounded z-10" />
-                        <span className="text-[7px] font-mono text-accent z-10">CANVAS_MODEL_ZONE</span>
-                      </div>
-                      <div className="col-span-3 border border-dotted border-accent/30 rounded-lg p-2.5 h-16 flex flex-col justify-between hover:bg-accent/5 transition-colors">
-                        <div className="h-2 w-6 bg-accent/20 rounded" />
-                        <span className="text-[7px] font-mono text-accent/45">TOKENS_C1</span>
-                      </div>
+                      <div className="h-1 sm:h-1.5 w-8 sm:w-10 bg-accent/20 rounded" />
                     </div>
-
-                    <div className="flex justify-between items-center bg-accent/5 rounded-lg p-3 border border-accent/10">
-                      <div className="space-y-0.5">
-                        <span className="text-[7px] font-mono opacity-40 uppercase block">Pointer Position Locator</span>
-                        <span className="text-xs font-mono font-bold tracking-widest text-accent">X: {coords.x}px • Y: {coords.y}px</span>
+                    <div className="bg-accent/5 border border-accent/10 rounded-lg p-2 sm:p-3 h-14 sm:h-16 lg:h-20 flex flex-col justify-between">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-accent/20 flex items-center justify-center">
+                        <Smartphone size={10} className="text-accent/70" />
                       </div>
-                      <div className="text-right text-[8px] font-mono text-accent/50">
-                        STATUS: CALIBRATED <br />
-                        BOUNDS: 480 x 360
+                      <div className="h-1 sm:h-1.5 w-8 sm:w-10 bg-accent/20 rounded" />
+                    </div>
+                    <div className="bg-accent/5 border border-accent/10 rounded-lg p-2 sm:p-3 h-14 sm:h-16 lg:h-20 flex flex-col justify-between">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-accent/20 flex items-center justify-center">
+                        <Layers size={10} className="text-accent/70" />
                       </div>
+                      <div className="h-1 sm:h-1.5 w-8 sm:w-10 bg-accent/20 rounded" />
                     </div>
-                  </motion.div>
-                )}
+                  </div>
+                </div>
+              </motion.div>
 
-                {/* Tab Component State 2: UI Artistry */}
-                {activeTab === 'canvas' && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="w-full h-full flex flex-col justify-between relative z-10"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div className="space-y-0.5">
-                        <span className="text-[8px] font-mono bg-accent/10 text-accent/80 px-2 py-0.5 rounded uppercase tracking-widest">MORPH SURFACE</span>
-                        <p className="text-[8px] opacity-40">GLOW INTENSITY: {glowPower}%</p>
-                      </div>
-                      <span className="text-[9px] font-mono text-accent/55 uppercase tracking-wider">{selectedGradient.label}</span>
+              {/* Layer 2: Mobile App Interface Mockup (Overlaps the browser and floats on different frequency) */}
+              <motion.div
+                animate={{
+                  y: [12, -12, 12],
+                  x: [4, -4, 4],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute right-8 lg:right-12 bottom-8 lg:bottom-12 w-[42%] bg-accent text-primary border border-primary/10 rounded-[2rem] shadow-2xl p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-5 z-20 select-none cursor-default"
+              >
+                {/* Phone Notch/Speaker */}
+                <div className="flex justify-center -mt-2">
+                  <div className="w-16 sm:w-20 h-3 sm:h-4 bg-primary/10 rounded-full flex items-center justify-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+                    <span className="w-6 sm:w-8 h-1 bg-primary/20 rounded-full" />
+                  </div>
+                </div>
+
+                {/* Simulated Beautiful UI Card */}
+                <div className="space-y-3 pt-2">
+                  <div className="flex justify-between items-center text-[8px] sm:text-[9px] lg:text-[10px] font-mono font-bold tracking-wider text-primary/40 uppercase">
+                    <span>Active Screen</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#14211a] animate-pulse" />
+                  </div>
+
+                  {/* App Hero Card */}
+                  <div className="relative h-20 sm:h-24 lg:h-28 rounded-xl bg-[#14211a] text-accent p-2.5 sm:p-3.5 flex flex-col justify-between overflow-hidden shadow-lg">
+                    {/* Glowing effect inside card */}
+                    <div className="absolute -right-4 -bottom-4 w-16 sm:w-20 h-16 sm:h-20 bg-accent/10 rounded-full blur-xl pointer-events-none" />
+                    <ShoppingBag size={12} className="text-accent/70 sm:size-14 lg:size-16" />
+                    <div className="space-y-1">
+                      <span className="text-[6px] sm:text-[7px] lg:text-[8px] font-mono tracking-widest text-accent/50 block">PROTOTYPE</span>
+                      <span className="text-[10px] sm:text-[11px] lg:text-[13px] font-display font-bold leading-none block uppercase">Checkout Flow</span>
                     </div>
+                  </div>
 
-                    {/* Centered Glowing Shape customized in real-time by the inputs */}
-                    <div className="flex-1 flex items-center justify-center relative">
-                      <motion.div
-                        animate={{
-                          borderRadius: `${50 - (orbMorph / 2)}% ${50 + (orbMorph / 2)}% ${40 + (orbMorph / 3)}% ${60 - (orbMorph / 3)}%`,
-                          rotate: [0, 360],
-                          scale: [1, 1.05, 1],
-                        }}
-                        transition={{
-                          borderRadius: { type: 'spring', stiffness: 50, damping: 10 },
-                          rotate: { repeat: Infinity, duration: 16, ease: 'linear' },
-                          scale: { repeat: Infinity, duration: 4, ease: 'easeInOut' }
-                        }}
-                        className={`w-28 h-28 bg-gradient-to-tr ${selectedGradient.cssClass} relative flex items-center justify-center transition-all duration-300`}
-                        style={{
-                          filter: `blur(${Math.max(0, (100 - glowPower) / 10)}px)`,
-                          boxShadow: `0 0 ${glowPower / 2}px ${glowPower / 5}px rgba(${
-                            activeGradient === 'cyber' ? '190,0,255' : activeGradient === 'aurora' ? '5,243,162' : '255,0,118'
-                          }, 0.55)`
-                        }}
-                      >
-                        {/* Interactive floating particles inside sphere */}
-                        <div className="absolute inset-2 border border-white/10 rounded-full flex items-center justify-center overflow-hidden">
-                          <motion.div 
-                            animate={{ y: [-15, 15, -15], rotate: [0, 180, 0] }}
-                            transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
-                            className="w-4 h-4 bg-white/20 rounded-full mix-blend-color-dodge filter blur-xs"
-                          />
-                        </div>
-                      </motion.div>
-                    </div>
-
-                    {/* Quick switch of engine themes inside stage */}
-                    <div className="flex justify-between items-center">
-                      <span className="text-[7px] font-mono text-accent/40 uppercase">Theme profile preset</span>
-                      <div className="flex gap-2 text-[8px] font-bold uppercase font-mono">
-                        <button 
-                          onClick={() => setActiveGradient('cyber')}
-                          className={`px-2 py-1 rounded transition-colors ${activeGradient === 'cyber' ? 'bg-accent/20 text-accent border border-accent/35' : 'opacity-40 hover:opacity-100'}`}
-                        >
-                          Cyber
-                        </button>
-                        <button 
-                          onClick={() => setActiveGradient('aurora')}
-                          className={`px-2 py-1 rounded transition-colors ${activeGradient === 'aurora' ? 'bg-accent/20 text-accent border border-accent/35' : 'opacity-40 hover:opacity-100'}`}
-                        >
-                          Aurora
-                        </button>
-                        <button 
-                          onClick={() => setActiveGradient('sunset')}
-                          className={`px-2 py-1 rounded transition-colors ${activeGradient === 'sunset' ? 'bg-accent/20 text-accent border border-accent/35' : 'opacity-40 hover:opacity-100'}`}
-                        >
-                          Sunset
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Tab Component State 3: Token Code */}
-                {activeTab === 'code' && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="w-full h-full flex flex-col justify-between relative z-10"
-                  >
-                    <div className="flex justify-between items-center pb-2 border-b border-accent/10">
+                  {/* Settings Item */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center bg-primary/5 p-2 sm:p-2.5 lg:p-3 rounded-xl border border-primary/5">
                       <div className="flex items-center gap-2">
-                        <div className="flex gap-1">
-                          <span className="w-1.5 h-1.5 bg-red-400 rounded-full" />
-                          <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full" />
-                          <span className="w-1.5 h-1.5 bg-green-400 rounded-full" />
-                        </div>
-                        <span className="text-[8px] font-mono text-accent/40">FaziCanvasMesh.tsx</span>
+                        <span className="w-2 h-2 rounded-full bg-primary/30" />
+                        <span className="text-[8px] sm:text-[9px] lg:text-[10px] font-bold tracking-wide uppercase">Dark Mode Layout</span>
                       </div>
-                      <span className="text-[7px] font-mono text-emerald-500 bg-emerald-500/10 px-1 border border-emerald-500/15 rounded">SYNC_OK</span>
+                      <div className="w-6 sm:w-8 lg:w-10 h-3.5 sm:h-4.5 lg:h-5 bg-[#14211a] rounded-full p-0.5 flex justify-end">
+                        <span className="w-2.5 sm:w-3.5 lg:w-4 h-2.5 sm:h-3.5 lg:h-4 rounded-full bg-accent shadow" />
+                      </div>
                     </div>
-
-                    {/* Preformated synchronized JSX syntax highlights */}
-                    <pre className="flex-1 my-2 overflow-auto font-mono text-[8px] text-accent/75 leading-relaxed bg-black/40 p-2.5 rounded-lg py-3 border border-accent/5">
-                      <span className="text-fuchsia-400">import</span> React <span className="text-fuchsia-400">from</span> <span className="text-emerald-300">"react"</span>; <br />
-                      <span className="text-fuchsia-400">import</span> &#123; motion &#125; <span className="text-fuchsia-400">from</span> <span className="text-emerald-300">"motion/react"</span>; <br />
-                      <br />
-                      <span className="text-yellow-200">export const</span> <span className="text-sky-300">VisualMeshOrb</span> = () =&gt; &#123; <br />
-                      &nbsp;&nbsp;<span className="text-fuchsia-400">return</span> ( <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-red-400">motion.div</span> <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;style=&#123;&#123; <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-300">borderRadius</span>: <span className="text-emerald-300">"{orbMorph}% {(100 - orbMorph)}% {orbMorph}% 50%"</span>, <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-300">colors</span>: <span className="text-emerald-300">"[{selectedGradient.hex}]"</span>, <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-300">glowBlur</span>: <span className="text-orange-300">"{Math.round(glowPower / 2.5)}px"</span>, <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-300">coordsLocator</span>: <span className="text-emerald-300">"x: {coords.x}, y: {coords.y}"</span> <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#125;&#125; <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;className=<span className="text-emerald-300">"w-32 h-32 blur-glow-engine"</span> <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;/&gt; <br />
-                      &nbsp;&nbsp;); <br />
-                      &#125;;
-                    </pre>
-
-                    <div className="flex justify-between items-center text-[7px] font-mono text-accent/30 bg-accent/2 p-1 px-2 rounded border border-accent/5">
-                      <span>LINES: 14 • BYTES: 285</span>
-                      <span>UTF-8 ENCODING</span>
+                    <div className="flex justify-between items-center bg-primary/5 p-2 sm:p-2.5 lg:p-3 rounded-xl border border-primary/5">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-primary/30" />
+                        <span className="text-[8px] sm:text-[9px] lg:text-[10px] font-bold tracking-wide uppercase">Sensory Mesh</span>
+                      </div>
+                      <div className="w-6 sm:w-8 lg:w-10 h-3.5 sm:h-4.5 lg:h-5 bg-primary/20 rounded-full p-0.5 flex justify-start">
+                        <span className="w-2.5 sm:w-3.5 lg:w-4 h-2.5 sm:h-3.5 lg:h-4 rounded-full bg-white shadow" />
+                      </div>
                     </div>
-                  </motion.div>
-                )}
-
-                {/* Simulated Screen bezel footer */}
-                <span className="text-[7px] font-mono opacity-20 uppercase tracking-widest block text-center border-t border-accent/5 pt-3">
-                  SYSTEM ENGINE v4.2.6 • COGNITIVE USER DISCOVERY
-                </span>
-              </div>
-
-              {/* Controllable customizers for UI Artistry tab */}
-              <div className="space-y-4 border-t border-accent/10 pt-5">
-                <div className="flex justify-between items-center">
-                  <span className="text-[9px] font-mono opacity-40 uppercase tracking-widest">Adjust Design Tokens</span>
-                  <span className="text-[8px] font-bold text-accent font-mono">CONTROLS</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-5 text-[9px] font-mono">
-                  {/* Slider 1: Morph Shape */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[8px] opacity-60">
-                      <span>MORPH POWER:</span>
-                      <span className="text-accent font-bold font-mono">{orbMorph}px</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="10"
-                      max="90"
-                      value={orbMorph}
-                      onChange={(e) => setOrbMorph(Number(e.target.value))}
-                      className="w-full accent-accent bg-accent/10 rounded-lg appearance-none h-1.5 cursor-pointer outline-none"
-                    />
-                  </div>
-
-                  {/* Slider 2: Glow Power */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[8px] opacity-60">
-                      <span>RADIAL GLOW:</span>
-                      <span className="text-accent font-bold font-mono">{glowPower}%</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="10"
-                      max="100"
-                      value={glowPower}
-                      onChange={(e) => setGlowPower(Number(e.target.value))}
-                      className="w-full accent-accent bg-accent/10 rounded-lg appearance-none h-1.5 cursor-pointer outline-none"
-                    />
                   </div>
                 </div>
+              </motion.div>
+
+              {/* Layer 3: Floating Design Anchor Badge / Palette Block */}
+              <motion.div
+                animate={{
+                  y: [-15, 15, -15],
+                  rotate: [-3, 3, -3]
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute left-[8%] lg:left-[10%] bottom-8 lg:bottom-12 bg-[#0e1712]/90 border border-accent/15 rounded-xl p-3 sm:p-4 z-30 flex items-center gap-3 backdrop-blur-md shadow-lg select-none"
+              >
+                <div className="flex gap-1">
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#14211a] border border-accent/20" />
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#e5e1d8] border border-primary/20" />
+                  <span className="w-3.5 h-3.5 rounded-full bg-emerald-500" />
+                </div>
+                <div className="border-l border-accent/10 pl-2.5">
+                  <span className="block text-[6px] font-mono tracking-widest text-accent/40 leading-none">COLOR PROFILE</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono font-bold text-accent">#E5E1D8 // HEX</span>
+                </div>
+              </motion.div>
+
+              {/* Simulated Floating Cursor tool representing interactive crafting */}
+              <motion.div
+                animate={{
+                  x: [40, 160, 220, 120, 40],
+                  y: [120, 80, 240, 190, 120],
+                }}
+                transition={{
+                  duration: 14,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute pointer-events-none z-40"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 4L11 20L14.5 13.5L21 11L4 4Z" fill="#e5e1d8" stroke="#14211a" strokeWidth="2" strokeLinejoin="round" />
+                </svg>
+                <div className="ml-4 mt-2 px-2 py-1 bg-accent text-primary text-[7px] sm:text-[8px] font-mono font-black rounded uppercase shadow-md border border-primary/10 tracking-widest">
+                  MR.FAZI
+                </div>
+              </motion.div>
+
+              {/* Status / Bezel footer for absolute realism */}
+              <div className="absolute bottom-4 left-6 right-6 flex justify-between items-center text-[7px] font-mono opacity-30 uppercase tracking-widest border-t border-accent/5 pt-3">
+                <span>UI/UX PROTOTYPING ENGINE</span>
+                <span>SYS_ACTIVE // 60 FPS</span>
               </div>
 
             </div>
@@ -1054,7 +1002,7 @@ const Services = ({ data }: { data: any[] }) => {
             const colSpan = getColSpan(i);
             const isHovered = hoveredIndex === service.id;
             
-            return (
+             return (
               <motion.div
                 key={service.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -1063,8 +1011,7 @@ const Services = ({ data }: { data: any[] }) => {
                 transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 onMouseEnter={() => setHoveredIndex(service.id)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => navigate(`/category/${encodeURIComponent(service.title)}`)}
-                className={`group relative ${colSpan} flex flex-col justify-between p-8 md:p-10 rounded-[2.5rem] bg-[#14211a]/40 border border-accent/10 hover:border-accent/30 transition-all duration-500 select-none cursor-pointer overflow-hidden min-h-[340px]`}
+                className={`group relative ${colSpan} flex flex-col justify-between p-8 md:p-10 rounded-[2.5rem] bg-[#14211a]/40 border border-accent/10 hover:border-accent/25 transition-all duration-500 select-none cursor-default overflow-hidden min-h-[340px]`}
               >
                 {/* Image Backdrop Blend */}
                 <div 
@@ -1090,7 +1037,7 @@ const Services = ({ data }: { data: any[] }) => {
                       SYS_SEC // {service.id}
                     </span>
                   </div>
-                  <span className="text-xl font-mono text-accent/30 group-hover:text-accent/80 transition-colors">
+                  <span className="text-xl font-mono text-accent/30 group-hover:text-accent/60 transition-colors">
                     [{service.id}]
                   </span>
                 </div>
@@ -1098,7 +1045,7 @@ const Services = ({ data }: { data: any[] }) => {
                 {/* Mid section: Icon & Title */}
                 <div className="space-y-6 pt-12 relative z-10">
                   {/* Icon bracket container */}
-                  <div className="w-14 h-14 rounded-2xl bg-[#0e1712] border border-accent/15 flex items-center justify-center text-accent/70 group-hover:text-accent group-hover:border-accent/40 group-hover:scale-105 transition-all duration-500 shadow-inner">
+                  <div className="w-14 h-14 rounded-2xl bg-[#0e1712] border border-accent/15 flex items-center justify-center text-accent/70 group-hover:text-accent group-hover:border-accent/30 group-hover:scale-103 transition-all duration-500 shadow-inner">
                     {getIconForTitle(service.title)}
                   </div>
                   
@@ -1112,13 +1059,13 @@ const Services = ({ data }: { data: any[] }) => {
                   </div>
                 </div>
 
-                {/* Bottom section: Explore CTA */}
+                {/* Bottom section: Info Tag */}
                 <div className="pt-8 flex justify-between items-center border-t border-accent/5 relative z-10 mt-auto">
-                  <span className="text-[10px] font-mono tracking-widest text-accent/40 group-hover:text-accent transition-colors">
-                    EXPLORE PROJECTS //
+                  <span className="text-[10px] font-mono tracking-widest text-accent/30 group-hover:text-accent/50 transition-colors">
+                    SERVICE OVERVIEW //
                   </span>
-                  <div className="w-10 h-10 rounded-full bg-[#0e1712] border border-accent/10 flex items-center justify-center text-accent/40 group-hover:text-primary group-hover:bg-accent group-hover:border-accent group-hover:rotate-45 transition-all duration-500">
-                    <ArrowUpRight size={18} />
+                  <div className="w-10 h-10 rounded-full bg-[#0e1712] border border-accent/5 flex items-center justify-center text-accent/30 transition-all duration-500">
+                    <Sparkles size={14} className="text-accent/30 group-hover:text-accent/50 group-hover:scale-110 transition-transform duration-500" />
                   </div>
                 </div>
               </motion.div>
@@ -1391,8 +1338,7 @@ const Working = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                onClick={() => navigate(`/category/${encodeURIComponent(project.category)}`)}
-                className="group cursor-pointer space-y-6"
+                className="group cursor-default space-y-6"
               >
                 <div className="relative overflow-hidden rounded-[2.5rem] bg-primary/5 aspect-[16/11]">
                   <motion.img
@@ -1403,30 +1349,16 @@ const Working = () => {
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[1.2s]"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute top-6 right-6 w-12 h-12 rounded-full bg-accent/80 backdrop-blur-md border border-primary/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100">
-                    <ArrowUpRight size={20} className="text-primary" />
-                  </div>
                 </div>
                 <div className="flex justify-between items-start px-4">
                   <div className="space-y-1">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-primary/50">{project.category}</span>
-                    <h3 className="text-2xl font-display font-bold group-hover:text-primary/80 transition-colors">{project.title}</h3>
+                    <h3 className="text-2xl font-display font-bold text-primary/90 transition-colors">{project.title}</h3>
                   </div>
                   <span className="text-xs font-mono opacity-40">{project.year}</span>
                 </div>
               </motion.div>
             ))}
-          </div>
-
-          <div className="flex justify-center pt-8">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate(`/category/${encodeURIComponent('Website Design & Layout')}`)}
-              className="px-12 py-5 bg-primary text-accent rounded-full font-bold uppercase tracking-widest text-xs hover:bg-primary/90 transition-colors shadow-2xl shadow-primary/5"
-            >
-              Browse All Categories
-            </motion.button>
           </div>
         </div>
 
