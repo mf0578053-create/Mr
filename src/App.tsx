@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor, ArrowLeft, Menu, Clock, Globe, Smartphone, ShoppingBag, Layers, Layout, Sparkles, ArrowRight, Palette, Image, Printer, Share2, PenTool } from 'lucide-react';
+import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor, ArrowLeft, Menu, Clock, Globe, Smartphone, ShoppingBag, Layers, Layout, Sparkles, ArrowRight, Palette, Image, Printer, Share2, PenTool, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
@@ -36,6 +36,7 @@ interface Project {
   title: string;
   category: string;
   image: string;
+  images?: string[];
   year: string;
 }
 
@@ -1294,15 +1295,22 @@ const Working = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [showAll, setShowAll] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   useEffect(() => {
     const savedProjects = localStorage.getItem('portfolio_projects');
     const defaultProjects: Project[] = [
       {
         id: 1,
-        title: "Lumina Healthcare App",
-        category: "Mobile App Screens design",
-        image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200",
+        title: "WeVersity Courses & Hiring Campaign Series",
+        category: "Mobile & Graphic Design Series",
+        image: "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785163611/3c4249c5-78ca-4d5a-839e-21942bdc0ca1_vwrnnr.png",
+        images: [
+          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785163611/3c4249c5-78ca-4d5a-839e-21942bdc0ca1_vwrnnr.png",
+          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785163590/App_2_ct0lti.png",
+          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785163586/App_3_offks3.png"
+        ],
         year: "2024"
       },
       {
@@ -1314,27 +1322,13 @@ const Working = () => {
       },
       {
         id: 3,
-        title: "Vortex SaaS Dashboard",
-        category: "Dashboard / Admin Panel design",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
-        year: "2024"
-      },
-      {
-        id: 4,
         title: "Nova Social Media Campaign Assets",
         category: "Social Media & Visual Creatives",
         image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=1200",
         year: "2024"
       },
       {
-        id: 5,
-        title: "Elysium Premium E-commerce",
-        category: "E-commerce Store design",
-        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
-        year: "2024"
-      },
-      {
-        id: 6,
+        id: 4,
         title: "Velvet Luxury Packaging & Print",
         category: "Packaging & Product Branding",
         image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=1200",
@@ -1343,10 +1337,17 @@ const Working = () => {
     ];
 
     if (savedProjects) {
-      const parsed = JSON.parse(savedProjects);
-      if (parsed && parsed.length > 0) {
-        setProjects(parsed);
-      } else {
+      try {
+        const parsed = JSON.parse(savedProjects);
+        // Check if old saved data had separate project boxes for App_2 or App_3
+        const hasOldSeparateBoxes = parsed.some((p: any) => p.image && (p.image.includes('App_2_ct0lti') || p.image.includes('App_3_offks3')));
+        if (!hasOldSeparateBoxes && parsed && parsed.length > 0 && parsed[0]?.images && parsed[0]?.images?.length > 1) {
+          setProjects(parsed);
+        } else {
+          setProjects(defaultProjects);
+          localStorage.setItem('portfolio_projects', JSON.stringify(defaultProjects));
+        }
+      } catch (e) {
         setProjects(defaultProjects);
         localStorage.setItem('portfolio_projects', JSON.stringify(defaultProjects));
       }
@@ -1357,6 +1358,20 @@ const Working = () => {
   }, []);
 
   const displayedProjects = showAll ? projects : projects.slice(0, 2);
+
+  const handlePrev = () => {
+    if (projects.length === 0) return;
+    const prevIdx = (selectedIndex - 1 + projects.length) % projects.length;
+    setSelectedIndex(prevIdx);
+    setSelectedProject(projects[prevIdx]);
+  };
+
+  const handleNext = () => {
+    if (projects.length === 0) return;
+    const nextIdx = (selectedIndex + 1) % projects.length;
+    setSelectedIndex(nextIdx);
+    setSelectedProject(projects[nextIdx]);
+  };
 
   return (
     <section id="working" className="px-6 py-40 bg-accent text-primary border-t border-primary/5 relative overflow-hidden">
@@ -1376,40 +1391,62 @@ const Working = () => {
             </div>
             <div className="lg:col-span-6">
               <p className="text-lg opacity-60 leading-relaxed max-w-xl">
-                Explore a curation of high-end interfaces, brand identities, and modern visual design built with strategic intent and flawless layout standards.
+                Explore a curation of high-end interfaces, brand identities, and modern visual design built with strategic intent and flawless layout standards. Click any design box to scroll through all post screens.
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {displayedProjects.map((project, idx) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className="group cursor-default space-y-6"
-              >
-                <div className="relative overflow-hidden rounded-[2.5rem] bg-primary/5 aspect-[16/11]">
-                  <motion.img
-                    src={project.image}
-                    alt={project.title}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[1.2s]"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <div className="flex justify-between items-start px-4">
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary/50">{project.category}</span>
-                    <h3 className="text-2xl font-display font-bold text-primary/90 transition-colors">{project.title}</h3>
+            {displayedProjects.map((project, idx) => {
+              const imageCount = project.images && project.images.length > 0 ? project.images.length : 1;
+              return (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setSelectedIndex(idx);
+                  }}
+                  className="group cursor-pointer space-y-6"
+                >
+                  <div className="relative overflow-hidden rounded-[2.5rem] bg-primary/5 aspect-[16/11]">
+                    <motion.img
+                      src={project.image}
+                      alt={project.title}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                    />
+
+                    {/* Multiple Posts Badge */}
+                    {imageCount > 1 && (
+                      <div className="absolute top-4 right-4 z-10 px-3.5 py-1.5 bg-primary/90 text-accent rounded-full text-[10px] font-mono font-bold uppercase tracking-widest backdrop-blur-md border border-accent/20 flex items-center gap-1.5 shadow-xl">
+                        <Layers size={13} className="text-accent" />
+                        <span>{imageCount} POSTS</span>
+                      </div>
+                    )}
+
+                    {/* Hover Overlay with Eye Badge */}
+                    <div className="absolute inset-0 bg-primary/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center p-4">
+                      <span className="px-6 py-3 bg-accent text-primary rounded-full text-xs font-mono font-bold uppercase tracking-widest shadow-2xl flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                        <Eye size={16} /> {imageCount > 1 ? `VIEW ALL ${imageCount} POSTS` : 'VIEW FULL POST'}
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-xs font-mono opacity-40">{project.year}</span>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="flex justify-between items-start px-4">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-primary/50">{project.category}</span>
+                      <h3 className="text-2xl font-display font-bold text-primary/90 group-hover:text-primary transition-colors">{project.title}</h3>
+                    </div>
+                    <span className="text-xs font-mono opacity-40">{project.year}</span>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
 
           {projects.length > 2 && (
@@ -1428,6 +1465,132 @@ const Working = () => {
         </div>
 
       </div>
+
+      {/* FULL POST LIGHTBOX MODAL */}
+      <AnimatePresence>
+        {selectedProject && (() => {
+          const postImages = selectedProject.images && selectedProject.images.length > 0
+            ? selectedProject.images
+            : [selectedProject.image];
+
+          return (
+            <div className="fixed inset-0 z-[120] flex items-center justify-center p-3 sm:p-6 md:p-10">
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedProject(null)}
+                className="absolute inset-0 bg-primary/95 backdrop-blur-2xl"
+              />
+
+              {/* Content Container */}
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="relative w-full max-w-6xl max-h-[94vh] bg-accent text-primary rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl z-10 border border-primary/10"
+              >
+                {/* Modal Top Bar */}
+                <div className="p-5 sm:p-6 border-b border-primary/10 flex justify-between items-center bg-primary/5">
+                  <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+                    <span className="px-3 py-1 bg-primary text-accent rounded-full text-[10px] font-mono font-bold uppercase tracking-widest">
+                      {selectedProject.category}
+                    </span>
+                    {postImages.length > 1 && (
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-mono font-bold uppercase tracking-widest border border-primary/10 flex items-center gap-1.5">
+                        <Layers size={12} /> {postImages.length} POSTS IN SERIES
+                      </span>
+                    )}
+                    <span className="text-xs font-mono opacity-50">{selectedProject.year}</span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setSelectedProject(null)}
+                      className="p-2.5 bg-primary/10 hover:bg-primary/20 rounded-full text-primary transition-colors cursor-pointer"
+                      aria-label="Close modal"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Modal Body with Vertical Scrollable Posts */}
+                <div className="flex-1 overflow-y-auto p-4 sm:p-10 custom-scrollbar bg-accent/50">
+                  <div className="w-full max-w-4xl mx-auto flex flex-col items-center gap-10 sm:gap-14">
+                    <div className="text-center space-y-2">
+                      <h2 className="text-2xl sm:text-4xl font-display font-bold tracking-tight text-primary">
+                        {selectedProject.title}
+                      </h2>
+                      {postImages.length > 1 && (
+                        <p className="text-xs font-mono opacity-60 uppercase tracking-widest">
+                          Scroll down to view all {postImages.length} posts in high resolution
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Stacked Images for Vertical Scrolling */}
+                    <div className="w-full space-y-12 sm:space-y-16">
+                      {postImages.map((imgUrl, pIdx) => (
+                        <div key={pIdx} id={`post-img-${pIdx}`} className="space-y-4">
+                          {postImages.length > 1 && (
+                            <div className="flex justify-between items-center px-2">
+                              <span className="text-xs font-mono font-bold uppercase tracking-wider opacity-60 flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-primary" />
+                                POST {pIdx + 1} OF {postImages.length}
+                              </span>
+                              <a
+                                href={imgUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs font-mono font-bold text-primary/80 hover:text-primary underline flex items-center gap-1"
+                              >
+                                OPEN FULL RES <ArrowUpRight size={14} />
+                              </a>
+                            </div>
+                          )}
+
+                          <div className="w-full rounded-3xl overflow-hidden shadow-2xl border border-primary/10 bg-primary/5 transition-all">
+                            <img
+                              src={imgUrl}
+                              alt={`${selectedProject.title} - Post ${pIdx + 1}`}
+                              className="w-full h-auto object-contain mx-auto"
+                              referrerPolicy="no-referrer"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Modal Bottom Bar with Navigation */}
+                <div className="p-4 sm:p-6 border-t border-primary/10 bg-primary/5 flex justify-between items-center">
+                  <button
+                    onClick={handlePrev}
+                    className="px-5 py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-accent rounded-full text-xs font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer"
+                  >
+                    <ChevronLeft size={16} /> PREVIOUS PROJECT
+                  </button>
+
+                  <span className="text-xs font-mono font-bold opacity-60">
+                    PROJECT {selectedIndex + 1} OF {projects.length}
+                  </span>
+
+                  <button
+                    onClick={handleNext}
+                    className="px-5 py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-accent rounded-full text-xs font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer"
+                  >
+                    NEXT PROJECT <ChevronRight size={16} />
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          );
+        })()}
+      </AnimatePresence>
     </section>
   );
 };

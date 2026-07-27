@@ -20,6 +20,7 @@ interface Project {
   title: string;
   category: string;
   image: string;
+  images?: string[];
   year: string;
 }
 
