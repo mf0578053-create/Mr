@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor, ArrowLeft, Menu, Clock, Globe, Smartphone, ShoppingBag, Layers, Layout, Sparkles, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor, ArrowLeft, Menu, Clock, Globe, Smartphone, ShoppingBag, Layers, Layout, Sparkles, ArrowRight, Palette, Image, Printer, Share2, PenTool } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
@@ -426,7 +426,7 @@ const CVModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
                     <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">Core Skills</h3>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {['UI/UX Design', 'Graphic Design', 'Wireframing', 'Prototyping', 'User Research', 'Branding', 'Responsive Design'].map(skill => (
+                    {['UI/UX Design', 'Graphic Design', 'Logo Design', 'Brand Identity', 'Wireframing', 'Prototyping', 'Social Media Creatives', 'Print & Packaging', 'Responsive Design'].map(skill => (
                       <span key={skill} className="px-4 py-2 bg-accent/5 border border-accent/10 rounded-full text-[10px] font-bold uppercase tracking-widest">
                         {skill}
                       </span>
@@ -442,9 +442,11 @@ const CVModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
                   <div className="grid grid-cols-2 gap-4">
                     {[
                       { name: 'Figma', icon: <Monitor size={16} /> },
-                      { name: 'Photoshop', icon: <Award size={16} /> },
-                      { name: 'Illustrator', icon: <Award size={16} /> },
-                      { name: 'Adobe XD', icon: <Monitor size={16} /> }
+                      { name: 'Photoshop', icon: <Palette size={16} /> },
+                      { name: 'Illustrator', icon: <PenTool size={16} /> },
+                      { name: 'InDesign', icon: <Printer size={16} /> },
+                      { name: 'Adobe XD', icon: <Monitor size={16} /> },
+                      { name: 'Canva Pro', icon: <Image size={16} /> }
                     ].map(tool => (
                       <div key={tool.name} className="flex items-center gap-3 p-4 bg-accent/5 border border-accent/10 rounded-2xl">
                         <div className="text-accent">{tool.icon}</div>
@@ -484,7 +486,7 @@ const CVModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
 const Hero = ({ data }: { data: any }) => {
   const [activeTab, setActiveTab] = useState<'blueprint' | 'canvas' | 'code'>('canvas');
   const [activeWordIndex, setActiveWordIndex] = useState(0);
-  const words = ["UI/UX ARCHITECTURE", "MOTION PLAYGROUNDS", "HIGH-FIDELITY SAAS", "IMMERSIVE BRANDING"];
+  const words = ["UI/UX ARCHITECTURE", "BRAND IDENTITY & LOGOS", "GRAPHIC & PRINT DESIGN", "SOCIAL MEDIA CREATIVES", "HIGH-FIDELITY SAAS"];
 
   // Sandbox parameters for design customizer
   const [orbMorph, setOrbMorph] = useState(30);
@@ -561,7 +563,7 @@ const Hero = ({ data }: { data: any }) => {
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-accent/5 border border-accent/10 rounded-full cursor-pointer hover:bg-accent/10 transition-colors duration-300">
               <span className="w-1.5 h-1.5 bg-accent rounded-full animate-ping" />
               <span className="text-[9px] uppercase tracking-[0.3em] font-mono font-bold text-accent/80">
-                {data.subHeadline || 'CREATIVE INTERACTION SPECIALIST'}
+                {data.subHeadline || 'UI/UX & GRAPHIC DESIGN SPECIALIST'}
               </span>
             </div>
 
@@ -601,7 +603,7 @@ const Hero = ({ data }: { data: any }) => {
             transition={{ delay: 0.15, duration: 1 }}
             className="text-sm md:text-base opacity-60 max-w-xl leading-relaxed uppercase tracking-wider text-left font-sans"
           >
-            {data.description || 'Hi, I’m Mr.Fazi. I engineer highly interactive digital models that merge bold visual art with pristine structural engineering. Feel free to play with the interactive sandbox to the right.'}
+            {data.description || 'Hi, I’m Mr.Fazi. I am a UI/UX & Graphic Designer dedicated to crafting intuitive digital products, iconic logo identities, and impactful print visuals. Explore my creative work and interactive sandbox below.'}
           </motion.p>
 
           {/* Modern CTA Grid */}
@@ -888,7 +890,7 @@ const Hero = ({ data }: { data: any }) => {
           transition={{ repeat: Infinity, duration: 24, ease: "linear" }}
           className="inline-block text-[8vh] font-display font-black uppercase tracking-tighter"
         >
-          {data.tickerText || 'UI/UX DESIGN • PRODUCT STRATEGY • BRAND IDENTITY • INTERACTION DESIGN • FLUID MOTION WORKFLOW • PROTOYPING SYSTEMS • '}
+          {data.tickerText || 'UI/UX DESIGN • GRAPHIC DESIGN • BRAND IDENTITY • LOGO CREATION • SOCIAL MEDIA ASSETS • PRINT & PACKAGING • INTERACTION DESIGN • PROTOTYPING SYSTEMS • '}
         </motion.div>
       </div>
 
@@ -930,6 +932,30 @@ const Services = ({ data }: { data: any[] }) => {
       title: "Dashboard / Admin Panel design",
       description: "Designing comprehensive and user-friendly dashboards that simplify complex data visualization and empower administrative efficiency and control.",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      id: "06",
+      title: "Brand Identity & Logo Design",
+      description: "Crafting distinctive logos, visual styleguides, custom typography, and cohesive brand systems for memorable business identity.",
+      image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      id: "07",
+      title: "Graphic & Print Design",
+      description: "Creating high-impact brochures, posters, flyers, business cards, and print collateral tailored for offline brand presence.",
+      image: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      id: "08",
+      title: "Social Media & Visual Creatives",
+      description: "Designing high-engagement Instagram posts, ad banners, promotional assets, and social media templates.",
+      image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      id: "09",
+      title: "Packaging & Product Branding",
+      description: "Designing eye-catching product packaging, labels, unboxing experiences, and realistic 3D brand presentation mockups.",
+      image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=800"
     }
   ];
 
@@ -946,11 +972,16 @@ const Services = ({ data }: { data: any[] }) => {
     if (t.includes('landing') || t.includes('page')) return <Layers className="w-6 h-6" />;
     if (t.includes('mobile') || t.includes('app') || t.includes('screen')) return <Smartphone className="w-6 h-6" />;
     if (t.includes('dash') || t.includes('board') || t.includes('admin') || t.includes('panel')) return <Layout className="w-6 h-6" />;
+    if (t.includes('brand') || t.includes('logo') || t.includes('identity')) return <Palette className="w-6 h-6" />;
+    if (t.includes('graphic') || t.includes('print')) return <Printer className="w-6 h-6" />;
+    if (t.includes('social') || t.includes('creative') || t.includes('banner')) return <Share2 className="w-6 h-6" />;
+    if (t.includes('packag') || t.includes('product')) return <Image className="w-6 h-6" />;
     return <Sparkles className="w-6 h-6" />;
   };
 
   const getColSpan = (index: number) => {
-    switch (index) {
+    const mod = index % 5;
+    switch (mod) {
       case 0: return "md:col-span-3 lg:col-span-2";
       case 1: return "md:col-span-3 lg:col-span-2";
       case 2: return "md:col-span-6 lg:col-span-2";
@@ -1193,6 +1224,7 @@ const About = ({ data }: { data: any }) => {
 const Working = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const savedProjects = localStorage.getItem('portfolio_projects');
@@ -1206,23 +1238,37 @@ const Working = () => {
       },
       {
         id: 2,
+        title: "Aura Brand Identity & Logo System",
+        category: "Brand Identity & Logo Design",
+        image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1200",
+        year: "2024"
+      },
+      {
+        id: 3,
         title: "Vortex SaaS Dashboard",
         category: "Dashboard / Admin Panel design",
         image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
         year: "2024"
       },
       {
-        id: 3,
+        id: 4,
+        title: "Nova Social Media Campaign Assets",
+        category: "Social Media & Visual Creatives",
+        image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=1200",
+        year: "2024"
+      },
+      {
+        id: 5,
         title: "Elysium Premium E-commerce",
         category: "E-commerce Store design",
         image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
         year: "2024"
       },
       {
-        id: 4,
-        title: "Apex Landing Page",
-        category: "Landing Pages design",
-        image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=1200",
+        id: 6,
+        title: "Velvet Luxury Packaging & Print",
+        category: "Packaging & Product Branding",
+        image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=1200",
         year: "2024"
       }
     ];
@@ -1241,83 +1287,19 @@ const Working = () => {
     }
   }, []);
 
-  const steps = [
-    {
-      num: "01",
-      title: "Discover & Research",
-      desc: "Deep diving into your brand's core values, target audience habits, and industry benchmarks to define strategic targets."
-    },
-    {
-      num: "02",
-      title: "Wireframing & UX Architecture",
-      desc: "Structuring interface layouts with logical user flows and intuitive information architecture blueprints before styling."
-    },
-    {
-      num: "03",
-      title: "Premium UI Design",
-      desc: "Dressing blueprints with gorgeous theme choices, sleek font hierarchies, bespoke graphics, and clean motion layouts."
-    },
-    {
-      num: "04",
-      title: "Interactive Prototype & Handoff",
-      desc: "Creating high-fidelity clickable mockups and fully documented pixel-perfect developer style guides."
-    }
-  ];
+  const displayedProjects = showAll ? projects : projects.slice(0, 2);
 
   return (
     <section id="working" className="px-6 py-40 bg-accent text-primary border-t border-primary/5 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto space-y-40">
+      <div className="max-w-7xl mx-auto space-y-20">
         
-        {/* SUBSECTION 1: WORKING PROCESS */}
+        {/* SELECTED PROJECTS SHOWCASE */}
         <div className="space-y-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
             <div className="lg:col-span-6 space-y-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-px bg-primary/30" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/60">01 / MY METHOD</span>
-              </div>
-              <h2 className="text-5xl md:text-8xl font-display font-bold tracking-tighter leading-none">
-                WORKING <br /> <span className="text-stroke">PROCESS</span>
-              </h2>
-            </div>
-            <div className="lg:col-span-6">
-              <p className="text-lg opacity-60 leading-relaxed max-w-xl">
-                A highly structured, human-centric design methodology engineered to translate complex brand ideas into pixel-perfect digital interactive experiences.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -8 }}
-                className="bg-primary/2 hover:bg-primary/5 border border-primary/10 p-8 rounded-3xl space-y-8 group transition-all duration-500"
-              >
-                <div className="flex justify-between items-center">
-                  <span className="text-3xl font-display font-black text-primary/20 group-hover:text-primary transition-colors duration-500">{step.num}</span>
-                  <span className="w-2 h-2 bg-primary opacity-20 rounded-full group-hover:scale-150 group-hover:opacity-100 transition-all duration-500" />
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-xl font-display font-bold">{step.title}</h3>
-                  <p className="text-sm opacity-55 font-normal leading-relaxed">{step.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* SUBSECTION 2: SELECTED PROJECTS SHOWCASE */}
-        <div className="space-y-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
-            <div className="lg:col-span-6 space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-px bg-primary/30" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/60">02 / PORTFOLIO</span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/60">PORTFOLIO</span>
               </div>
               <h2 className="text-5xl md:text-8xl font-display font-bold tracking-tighter leading-none">
                 WORKING <br /> <span className="text-stroke">GALLERY</span>
@@ -1325,13 +1307,13 @@ const Working = () => {
             </div>
             <div className="lg:col-span-6">
               <p className="text-lg opacity-60 leading-relaxed max-w-xl">
-                Explore a curation of high-end interfaces and modern layouts built with strategic intent, flawless layouts, and smooth intuitive motion guidelines.
+                Explore a curation of high-end interfaces, brand identities, and modern visual design built with strategic intent and flawless layout standards.
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {projects.slice(0, 4).map((project, idx) => (
+            {displayedProjects.map((project, idx) => (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 40 }}
@@ -1360,6 +1342,20 @@ const Working = () => {
               </motion.div>
             ))}
           </div>
+
+          {projects.length > 2 && (
+            <div className="flex justify-center pt-8">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setShowAll(!showAll)}
+                className="inline-flex items-center gap-4 px-8 py-4 bg-primary text-accent rounded-full text-xs font-mono font-bold tracking-[0.25em] uppercase hover:bg-primary/90 transition-all duration-300 shadow-xl group cursor-pointer"
+              >
+                <span>{showAll ? "SHOW LESS" : "SEE ALL PROJECTS"}</span>
+                <ArrowUpRight className={`w-4 h-4 transition-transform duration-300 ${showAll ? 'rotate-180' : 'group-hover:translate-x-1 group-hover:-translate-y-1'}`} />
+              </motion.button>
+            </div>
+          )}
         </div>
 
       </div>

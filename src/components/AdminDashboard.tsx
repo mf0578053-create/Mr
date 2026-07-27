@@ -78,7 +78,11 @@ const AdminDashboard = () => {
         "E-commerce Store design",
         "Landing Pages design",
         "Mobile App Screens design",
-        "Dashboard / Admin Panel design"
+        "Dashboard / Admin Panel design",
+        "Brand Identity & Logo Design",
+        "Graphic & Print Design",
+        "Social Media & Visual Creatives",
+        "Packaging & Product Branding"
       ]);
     }
   }, [navigate]);
