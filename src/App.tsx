@@ -1315,9 +1315,17 @@ const Working = () => {
       },
       {
         id: 2,
-        title: "Aura Brand Identity & Logo System",
-        category: "Brand Identity & Logo Design",
-        image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1200",
+        title: "Creative Brand & Social Media Campaign Series",
+        category: "Graphic Design & Branding",
+        image: "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166153/105_nfkffv.jpg",
+        images: [
+          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166153/105_nfkffv.jpg",
+          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166157/106_npocgv.jpg",
+          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166156/107_xq09gc.jpg",
+          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166166/108_co71vu.jpg",
+          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166166/109_eh4mts.jpg",
+          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166159/110_yu8gt1.jpg"
+        ],
         year: "2024"
       },
       {
@@ -1339,9 +1347,9 @@ const Working = () => {
     if (savedProjects) {
       try {
         const parsed = JSON.parse(savedProjects);
-        // Check if old saved data had separate project boxes for App_2 or App_3
-        const hasOldSeparateBoxes = parsed.some((p: any) => p.image && (p.image.includes('App_2_ct0lti') || p.image.includes('App_3_offks3')));
-        if (!hasOldSeparateBoxes && parsed && parsed.length > 0 && parsed[0]?.images && parsed[0]?.images?.length > 1) {
+        // Check if Box 2 has the new 6-image series
+        const hasNewBox2Series = parsed && parsed.length >= 2 && parsed[1]?.images && parsed[1]?.images?.some((img: string) => img.includes('105_nfkffv'));
+        if (hasNewBox2Series) {
           setProjects(parsed);
         } else {
           setProjects(defaultProjects);
