@@ -176,17 +176,6 @@ const Navbar = ({ onOpenCV }: { onOpenCV: () => void }) => {
 
           {/* Right Meta Badges */}
           <div className="flex items-center gap-6">
-            {/* Live Clock / Location - Desktop Only */}
-            <div className="hidden lg:flex items-center gap-4 text-right select-none border-r border-accent/10 pr-6">
-              <div className="flex flex-col justify-center">
-                <div className="flex items-center gap-1.5 justify-end text-[9px] font-bold uppercase tracking-wider text-accent/50">
-                  <Globe size={10} className="animate-spin-slow text-accent/50" />
-                  <span>PK • {timeStr || 'Faisalabad'}</span>
-                </div>
-                <span className="text-[8px] font-mono opacity-30 mt-0.5">EST. TIMEZONE</span>
-              </div>
-            </div>
-
             {/* Resume CV Button - Desktops */}
             <motion.button
               onClick={onOpenCV}
@@ -266,14 +255,6 @@ const Navbar = ({ onOpenCV }: { onOpenCV: () => void }) => {
               {/* Footer info inside drawer */}
               <div className="space-y-8 border-t border-accent/10 pt-8">
                 <div className="space-y-3">
-                  <p className="text-[9px] font-bold uppercase tracking-[0.3em] opacity-40">Local Time</p>
-                  <div className="flex items-center gap-2">
-                    <Clock size={12} className="opacity-40 animate-pulse" />
-                    <span className="text-sm font-mono tracking-widest">{timeStr || 'Faisalabad, PK'}</span>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
                   <p className="text-[9px] font-bold uppercase tracking-[0.3em] opacity-40">Socials</p>
                   <div className="flex gap-4">
                     <a href="https://www.instagram.com/mr.fazi.uiux.x/" target="_blank" rel="noopener noreferrer" className="p-2 border border-accent/10 rounded-full hover:bg-accent hover:text-primary transition-all">
@@ -318,152 +299,239 @@ const SparklesIcon = () => (
 const CVModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
   <AnimatePresence>
     {isOpen && (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-10">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="absolute inset-0 bg-primary/95 backdrop-blur-xl"
+          className="absolute inset-0 bg-primary/95 backdrop-blur-2xl"
         />
         
         <motion.div
-          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          initial={{ scale: 0.94, opacity: 0, y: 30 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.9, opacity: 0, y: 20 }}
-          className="relative w-full max-w-4xl max-h-[90vh] bg-primary border border-accent/10 rounded-[2rem] overflow-hidden flex flex-col shadow-2xl"
+          exit={{ scale: 0.94, opacity: 0, y: 30 }}
+          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          className="relative w-full max-w-5xl max-h-[92vh] bg-primary border border-accent/15 rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl shadow-black/80"
         >
-          {/* Header */}
-          <div className="p-8 md:p-12 border-b border-accent/10 flex justify-between items-start bg-accent/5">
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center">
-                  <span className="text-primary font-display font-black text-2xl">F</span>
+          {/* Top Banner & Header */}
+          <div className="relative p-6 sm:p-10 border-b border-accent/10 bg-accent/5 overflow-hidden">
+            {/* Background ambient mesh */}
+            <div className="absolute -top-24 -right-24 w-72 h-72 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+              <div className="flex items-center gap-5">
+                <div className="relative group">
+                  <div className="w-20 h-20 bg-accent text-primary rounded-2xl flex items-center justify-center font-syncopate font-black text-3xl shadow-xl shadow-accent/10">
+                    FA
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-primary rounded-full" title="Available for work" />
                 </div>
-                <div>
-                  <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tighter">FAIZAN AKRAM</h2>
-                  <p className="text-accent/60 font-bold uppercase tracking-widest text-[10px]">UI/UX & Graphic Designer</p>
+
+                <div className="space-y-1.5">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-accent/15 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-accent/80">Available for Hire & Freelance</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-4xl font-syncopate font-black tracking-tight text-accent">
+                    FAIZAN AKRAM
+                  </h2>
+                  <p className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-accent/60">
+                    UI/UX & Graphic Designer
+                  </p>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-6 text-[10px] font-bold uppercase tracking-widest opacity-60">
-                <div className="flex items-center gap-2">
-                  <MapPin size={14} className="text-accent" />
-                  Faisalabad, Pakistan
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail size={14} className="text-accent" />
-                  mf0578053@gmail.com
-                </div>
-              </div>
+
+
+
+              <button 
+                onClick={onClose}
+                className="absolute top-6 right-6 p-3 bg-accent/10 hover:bg-accent/20 text-accent rounded-full transition-all duration-300 hover:rotate-90 cursor-pointer"
+                aria-label="Close CV"
+              >
+                <X size={20} />
+              </button>
             </div>
-            <button 
-              onClick={onClose}
-              className="p-3 bg-accent/10 hover:bg-accent/20 rounded-full transition-colors"
-            >
-              <X size={20} />
-            </button>
           </div>
 
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto p-8 md:p-12 space-y-12 custom-scrollbar">
-            {/* Summary */}
-            <section className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-px bg-accent/20" />
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">Professional Summary</h3>
-              </div>
-              <p className="text-lg opacity-70 leading-relaxed font-medium">
-                Creative UI/UX & Graphic Designer with over 2+ years of experience in designing user-centered digital products and visual identities. Skilled in transforming complex ideas into clean, functional, and visually appealing designs. Strong collaborator with developers and stakeholders, focused on usability, consistency, and modern design standards.
-              </p>
-            </section>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-              {/* Experience */}
-              <div className="lg:col-span-7 space-y-8">
+          {/* Body Content */}
+          <div className="flex-1 overflow-y-auto p-6 sm:p-10 space-y-10 custom-scrollbar">
+            
+            {/* Executive Summary */}
+            <div className="p-6 sm:p-8 bg-accent/5 border border-accent/10 rounded-3xl relative overflow-hidden group hover:border-accent/20 transition-all">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-accent" />
+              <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-px bg-accent/20" />
-                  <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">Experience</h3>
+                  <Sparkles size={16} className="text-accent" />
+                  <h3 className="text-xs font-mono font-bold uppercase tracking-[0.3em] text-accent">About Me</h3>
                 </div>
-                
-                <div className="space-y-12">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-start">
+                <p className="text-sm sm:text-base opacity-85 leading-relaxed font-sans">
+                  Passionate <strong className="text-accent font-semibold">UI/UX & Graphic Designer</strong> with over 2+ years of expertise in building intuitive digital products, responsive web interfaces, and high-impact brand identities. Specialized in bridging the gap between user needs and modern aesthetics—creating wireframes, interactive prototypes, logos, social media assets, and print collateral.
+                </p>
+              </div>
+            </div>
+
+            {/* Grid layout for Experience & Skills */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              
+              {/* Left Column: Work Experience */}
+              <div className="lg:col-span-7 space-y-6">
+                <div className="flex items-center gap-3">
+                  <Briefcase size={18} className="text-accent" />
+                  <h3 className="text-xs font-mono font-bold uppercase tracking-[0.3em] text-accent">Work Experience</h3>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Job 1 */}
+                  <div className="p-6 bg-accent/5 border border-accent/10 rounded-3xl space-y-4 hover:border-accent/25 transition-all">
+                    <div className="flex flex-wrap justify-between items-start gap-2 border-b border-accent/10 pb-4">
                       <div>
-                        <h4 className="text-xl font-bold">Senior UI/UX Designer</h4>
-                        <p className="text-accent/60 text-xs font-bold uppercase tracking-widest">Creative Solutions Agency</p>
+                        <h4 className="text-lg font-bold text-accent">Senior UI/UX Designer</h4>
+                        <p className="text-xs font-mono text-accent/60 uppercase tracking-wider font-semibold">Creative Solutions Agency</p>
                       </div>
+                      <span className="px-3 py-1 bg-accent/10 border border-accent/15 rounded-full text-[10px] font-mono font-bold text-accent">
+                        2023 - PRESENT
+                      </span>
                     </div>
-                    <ul className="space-y-3 opacity-60 text-sm">
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" /> Designed end-to-end user journeys for 5+ large-scale e-commerce platforms.</li>
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" /> Created wireframes, high-fidelity UI designs, and interactive prototypes.</li>
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" /> Collaborated closely with developers to deliver pixel-perfect, responsive layouts.</li>
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" /> Improved user experience by applying design systems and usability best practices.</li>
+
+                    <ul className="space-y-2.5 text-xs sm:text-sm opacity-80 leading-relaxed">
+                      <li className="flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                        <span>Designed end-to-end user journeys for 5+ large-scale e-commerce platforms and Web apps.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                        <span>Constructed wireframes, high-fidelity UI screens, and interactive prototypes in Figma.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                        <span>Collaborated directly with front-end developers for pixel-perfect implementation.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                        <span>Established design systems and UI component libraries for brand consistency.</span>
+                      </li>
                     </ul>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-start">
+                  {/* Job 2 */}
+                  <div className="p-6 bg-accent/5 border border-accent/10 rounded-3xl space-y-4 hover:border-accent/25 transition-all">
+                    <div className="flex flex-wrap justify-between items-start gap-2 border-b border-accent/10 pb-4">
                       <div>
-                        <h4 className="text-xl font-bold">Graphic & Product Designer</h4>
-                        <p className="text-accent/60 text-xs font-bold uppercase tracking-widest">Design Hub Studio</p>
+                        <h4 className="text-lg font-bold text-accent">Graphic & Product Designer</h4>
+                        <p className="text-xs font-mono text-accent/60 uppercase tracking-wider font-semibold">Design Hub Studio</p>
                       </div>
+                      <span className="px-3 py-1 bg-accent/10 border border-accent/15 rounded-full text-[10px] font-mono font-bold text-accent">
+                        2022 - 2023
+                      </span>
                     </div>
-                    <ul className="space-y-3 opacity-60 text-sm">
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" /> Developed complete brand identity packages for 10+ startups.</li>
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" /> Designed logos, social media creatives, marketing materials, and product visuals.</li>
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" /> Managed tight deadlines while maintaining high design quality.</li>
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" /> Worked directly with clients to understand requirements and deliver creative solutions.</li>
+
+                    <ul className="space-y-2.5 text-xs sm:text-sm opacity-80 leading-relaxed">
+                      <li className="flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                        <span>Developed complete brand identity packages and logo design systems for 10+ startups.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                        <span>Created social media creatives, ad banners, brochures, and product packaging layouts.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                        <span>Managed multiple client pipelines with strict turnarounds and high client satisfaction.</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              {/* Skills & Tools */}
-              <div className="lg:col-span-5 space-y-12">
-                <div className="space-y-6">
+              {/* Right Column: Skills & Tools */}
+              <div className="lg:col-span-5 space-y-8">
+                
+                {/* Core Expertise Badges */}
+                <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-px bg-accent/20" />
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">Core Skills</h3>
+                    <Award size={18} className="text-accent" />
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-[0.3em] text-accent">Core Expertise</h3>
                   </div>
+
                   <div className="flex flex-wrap gap-2">
-                    {['UI/UX Design', 'Graphic Design', 'Logo Design', 'Brand Identity', 'Wireframing', 'Prototyping', 'Social Media Creatives', 'Print & Packaging', 'Responsive Design'].map(skill => (
-                      <span key={skill} className="px-4 py-2 bg-accent/5 border border-accent/10 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                    {[
+                      'UI/UX Design', 
+                      'Graphic Design', 
+                      'Logo Identity', 
+                      'Brand Strategy', 
+                      'Wireframing', 
+                      'Interactive Prototyping', 
+                      'Social Media Assets', 
+                      'Print & Packaging', 
+                      'Design Systems',
+                      'Responsive Web'
+                    ].map(skill => (
+                      <span 
+                        key={skill} 
+                        className="px-3.5 py-2 bg-accent/5 border border-accent/15 rounded-xl text-xs font-mono font-medium text-accent/90 hover:bg-accent hover:text-primary transition-all duration-300"
+                      >
                         {skill}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="space-y-6">
+                {/* Software & Tools Grid */}
+                <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-px bg-accent/20" />
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">Tools & Software</h3>
+                    <Monitor size={18} className="text-accent" />
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-[0.3em] text-accent">Design Stack</h3>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+
+                  <div className="grid grid-cols-2 gap-3">
                     {[
-                      { name: 'Figma', icon: <Monitor size={16} /> },
-                      { name: 'Photoshop', icon: <Palette size={16} /> },
-                      { name: 'Illustrator', icon: <PenTool size={16} /> },
-                      { name: 'InDesign', icon: <Printer size={16} /> },
-                      { name: 'Adobe XD', icon: <Monitor size={16} /> },
-                      { name: 'Canva Pro', icon: <Image size={16} /> }
+                      { name: 'Figma', category: 'UI/UX & Proto', icon: <Monitor size={16} /> },
+                      { name: 'Photoshop', category: 'Graphics & Editing', icon: <Palette size={16} /> },
+                      { name: 'Illustrator', category: 'Vectors & Logos', icon: <PenTool size={16} /> },
+                      { name: 'InDesign', category: 'Print & Layout', icon: <Printer size={16} /> },
+                      { name: 'Adobe XD', category: 'Prototyping', icon: <Monitor size={16} /> },
+                      { name: 'Canva Pro', category: 'Quick Creatives', icon: <Image size={16} /> }
                     ].map(tool => (
-                      <div key={tool.name} className="flex items-center gap-3 p-4 bg-accent/5 border border-accent/10 rounded-2xl">
-                        <div className="text-accent">{tool.icon}</div>
-                        <span className="text-xs font-bold uppercase tracking-widest">{tool.name}</span>
+                      <div 
+                        key={tool.name} 
+                        className="p-3.5 bg-accent/5 border border-accent/10 hover:border-accent/25 rounded-2xl flex items-center gap-3 transition-all group"
+                      >
+                        <div className="p-2 bg-accent/10 rounded-xl text-accent group-hover:bg-accent group-hover:text-primary transition-colors">
+                          {tool.icon}
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-accent uppercase tracking-wider">{tool.name}</p>
+                          <p className="text-[9px] font-mono text-accent/50">{tool.category}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
+
+                {/* Language & Education Quick Info */}
+                <div className="p-5 bg-accent/5 border border-accent/10 rounded-2xl flex justify-between items-center text-xs font-mono">
+                  <div>
+                    <span className="text-[10px] uppercase text-accent/50 block font-bold">Languages</span>
+                    <span className="font-bold text-accent">English, Urdu, Punjabi</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] uppercase text-accent/50 block font-bold">Location</span>
+                    <span className="font-bold text-accent">Pakistan (Remote)</span>
+                  </div>
+                </div>
+
               </div>
             </div>
+
           </div>
 
-          {/* Footer Action */}
-          <div className="p-8 border-t border-accent/10 bg-accent/5 flex justify-center">
+          {/* Fixed Sticky Footer Actions */}
+          <div className="p-6 border-t border-accent/15 bg-accent/10 backdrop-blur-md flex justify-center items-center">
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => {
                 const link = document.createElement('a');
                 link.href = 'https://res.cloudinary.com/dsacnpxmq/image/upload/fl_attachment/v1769061231/FAizanAkramCV_qe9qzy.jpg';
@@ -472,9 +540,10 @@ const CVModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
                 link.click();
                 document.body.removeChild(link);
               }}
-              className="px-12 py-4 bg-accent text-primary rounded-full font-bold uppercase tracking-widest text-[10px] shadow-xl shadow-accent/10"
+              className="w-full sm:w-auto px-10 py-4 bg-accent text-primary rounded-full font-mono font-bold uppercase tracking-[0.2em] text-xs shadow-xl shadow-accent/10 flex items-center justify-center gap-3 cursor-pointer"
             >
-              Download CV
+              <ArrowUpRight size={16} className="rotate-180" />
+              <span>DOWNLOAD OFFICIAL CV</span>
             </motion.button>
           </div>
         </motion.div>
