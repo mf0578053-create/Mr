@@ -60,31 +60,50 @@ const AdminDashboard = () => {
       return;
     }
 
-    // Load all data from localStorage
-    const savedProjects = localStorage.getItem('portfolio_projects');
-    if (savedProjects) setProjects(JSON.parse(savedProjects));
+    // Load all data from localStorage safely
+    try {
+      const savedProjects = localStorage.getItem('portfolio_projects');
+      if (savedProjects) {
+        const parsed = JSON.parse(savedProjects);
+        if (Array.isArray(parsed)) setProjects(parsed);
+      }
+    } catch (e) {
+      console.error('Error parsing portfolio_projects:', e);
+    }
 
-    const savedMessages = localStorage.getItem('portfolio_messages');
-    if (savedMessages) setMessages(JSON.parse(savedMessages));
+    try {
+      const savedMessages = localStorage.getItem('portfolio_messages');
+      if (savedMessages) {
+        const parsed = JSON.parse(savedMessages);
+        if (Array.isArray(parsed)) setMessages(parsed);
+      }
+    } catch (e) {
+      console.error('Error parsing portfolio_messages:', e);
+    }
 
     // Load service titles for category selection
-    const savedServices = localStorage.getItem('portfolio_services');
-    if (savedServices) {
-      const services = JSON.parse(savedServices);
-      setServiceTitles(services.map((s: any) => s.title));
-    } else {
-      // Default service titles if none in localStorage
-      setServiceTitles([
-        "Website Design & Layout",
-        "E-commerce Store design",
-        "Landing Pages design",
-        "Mobile App Screens design",
-        "Dashboard / Admin Panel design",
-        "Brand Identity & Logo Design",
-        "Graphic & Print Design",
-        "Social Media & Visual Creatives",
-        "Packaging & Product Branding"
-      ]);
+    try {
+      const savedServices = localStorage.getItem('portfolio_services');
+      if (savedServices) {
+        const services = JSON.parse(savedServices);
+        if (Array.isArray(services)) {
+          setServiceTitles(services.map((s: any) => typeof s === 'string' ? s : s?.title || ''));
+        }
+      } else {
+        setServiceTitles([
+          "Website Design & Layout",
+          "E-commerce Store design",
+          "Landing Pages design",
+          "Mobile App Screens design",
+          "Dashboard / Admin Panel design",
+          "Brand Identity & Logo Design",
+          "Graphic & Print Design",
+          "Social Media & Visual Creatives",
+          "Packaging & Product Branding"
+        ]);
+      }
+    } catch (e) {
+      console.error('Error parsing portfolio_services:', e);
     }
   }, [navigate]);
 
@@ -131,10 +150,23 @@ const AdminDashboard = () => {
     triggerToast();
   };
 
+  const handleToggleReadStatus = (id: number) => {
+    const updated = messages.map(m => {
+      if (m.id === id) {
+        return { ...m, status: m.status === 'read' ? 'unread' : 'read' };
+      }
+      return m;
+    });
+    setMessages(updated);
+    localStorage.setItem('portfolio_messages', JSON.stringify(updated));
+  };
+
+  const unreadCount = messages.filter(m => m.status === 'unread').length;
+
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'projects', label: 'Projects', icon: Briefcase },
-    { id: 'messages', label: 'Messages', icon: Mail },
+    { id: 'messages', label: 'Messages', icon: Mail, badge: unreadCount > 0 ? unreadCount : undefined },
   ];
 
   return (
@@ -156,14 +188,23 @@ const AdminDashboard = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                 activeTab === tab.id 
                   ? 'bg-accent text-primary' 
                   : 'hover:bg-accent/5 opacity-60 hover:opacity-100'
               }`}
             >
-              <tab.icon className="w-4 h-4" />
-              {tab.label}
+              <div className="flex items-center gap-3">
+                <tab.icon className="w-4 h-4" />
+                {tab.label}
+              </div>
+              {tab.badge && (
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  activeTab === tab.id ? 'bg-primary text-accent' : 'bg-accent text-primary'
+                }`}>
+                  {tab.badge}
+                </span>
+              )}
             </button>
           ))}
         </nav>
@@ -318,39 +359,85 @@ const AdminDashboard = () => {
         {/* Messages Tab */}
         {activeTab === 'messages' && (
           <div className="space-y-10">
-            <div>
-              <h2 className="text-4xl font-display font-bold">Messages</h2>
-              <p className="opacity-40 mt-1">View inquiries from your portfolio visitors</p>
+            <div className="flex justify-between items-end">
+              <div>
+                <h2 className="text-4xl font-display font-bold">Messages</h2>
+                <p className="opacity-40 mt-1">View inquiries sent from your portfolio contact form</p>
+              </div>
+              <span className="text-xs font-mono opacity-50 font-bold uppercase tracking-widest">
+                {messages.length} TOTAL • {unreadCount} UNREAD
+              </span>
             </div>
 
             <div className="space-y-6">
               {messages.length === 0 ? (
-                <div className="text-center py-20 bg-accent/5 border border-dashed border-accent/10 rounded-3xl">
-                  <p className="opacity-40">No messages yet.</p>
+                <div className="text-center py-20 bg-accent/5 border border-dashed border-accent/10 rounded-3xl space-y-2">
+                  <Mail className="w-10 h-10 opacity-20 mx-auto" />
+                  <p className="opacity-40">No messages received yet.</p>
+                  <p className="text-xs opacity-30">When someone submits a message on your contact form, it will automatically show up here!</p>
                 </div>
               ) : (
                 messages.map((msg) => (
-                  <div key={msg.id} className="bg-accent/5 border border-accent/10 rounded-3xl p-8 space-y-4 relative group">
-                    <div className="flex justify-between items-start">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-3">
+                  <div 
+                    key={msg.id} 
+                    className={`border rounded-3xl p-6 sm:p-8 space-y-4 relative group transition-all ${
+                      msg.status === 'unread' 
+                        ? 'bg-accent/10 border-accent/30 shadow-lg' 
+                        : 'bg-accent/5 border-accent/10 opacity-90'
+                    }`}
+                  >
+                    <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-3 flex-wrap">
                           <h4 className="text-xl font-bold">{msg.name}</h4>
-                          <span className="text-[10px] font-bold uppercase tracking-widest bg-accent/10 px-2 py-1 rounded-md opacity-60">
+                          <button
+                            onClick={() => handleToggleReadStatus(msg.id)}
+                            className={`text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border transition-colors cursor-pointer ${
+                              msg.status === 'unread'
+                                ? 'bg-amber-400/20 text-amber-300 border-amber-400/30'
+                                : 'bg-accent/10 text-accent/60 border-accent/10'
+                            }`}
+                          >
+                            {msg.status === 'unread' ? 'UNREAD' : 'READ'}
+                          </button>
+                          <span className="text-[10px] font-mono opacity-40">
                             {msg.date}
                           </span>
                         </div>
-                        <p className="text-sm text-accent/60">{msg.email}</p>
+                        <a 
+                          href={`mailto:${msg.email}`}
+                          className="text-sm text-accent/70 hover:text-accent underline font-mono inline-block"
+                        >
+                          {msg.email}
+                        </a>
                       </div>
-                      <button 
-                        onClick={() => handleDeleteMessage(msg.id)}
-                        className="p-3 text-red-400 hover:bg-red-400/10 rounded-xl transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </button>
+
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={`mailto:${msg.email}?subject=Re: ${encodeURIComponent(msg.subject || 'Portfolio Inquiry')}`}
+                          className="px-4 py-2 bg-accent text-primary text-xs font-bold rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2"
+                        >
+                          <Mail className="w-3.5 h-3.5" /> Reply
+                        </a>
+                        <button 
+                          onClick={() => handleDeleteMessage(msg.id)}
+                          className="p-2.5 text-red-400 hover:bg-red-400/10 rounded-xl transition-colors cursor-pointer"
+                          title="Delete Message"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
-                    <div className="pt-4 border-t border-accent/10">
-                      <p className="text-xs font-bold uppercase tracking-widest opacity-40 mb-2">Subject: {msg.subject}</p>
-                      <p className="text-lg leading-relaxed">{msg.message}</p>
+
+                    <div className="pt-4 border-t border-accent/10 space-y-1">
+                      {msg.subject && (
+                        <p className="text-xs font-bold uppercase tracking-widest opacity-50">
+                          Subject: <span className="text-accent opacity-90">{msg.subject}</span>
+                        </p>
+                      )}
+                      <p className="text-base sm:text-lg leading-relaxed whitespace-pre-wrap text-accent/90">
+                        {msg.message}
+                      </p>
                     </div>
                   </div>
                 ))

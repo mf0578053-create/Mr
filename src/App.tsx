@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor, ArrowLeft, Menu, Clock, Globe, Smartphone, ShoppingBag, Layers, Layout, Sparkles, ArrowRight, Palette, Image, Printer, Share2, PenTool, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Briefcase, Award, Code, Monitor, ArrowLeft, Menu, Clock, Globe, Smartphone, ShoppingBag, Layers, Layout, Sparkles, ArrowRight, Palette, Image, Printer, Share2, PenTool, Eye, ChevronLeft, ChevronRight, Lock } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
@@ -1745,8 +1745,11 @@ const Contact = ({ data }: { data: any }) => {
           </div>
           <p>© 2024 MR.FAZI DESIGN STUDIO</p>
         </div>
-        <div className="flex gap-12">
+        <div className="flex gap-8 items-center">
           <span className="opacity-40">Pakistan • Remote</span>
+          <Link to="/admin" className="opacity-50 hover:opacity-100 transition-opacity text-xs font-mono uppercase tracking-widest flex items-center gap-1.5 text-accent">
+            <Lock size={12} /> Admin
+          </Link>
         </div>
       </div>
     </div>
@@ -2172,6 +2175,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/category/:categoryName" element={<CategoryGallery />} />
+        <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
