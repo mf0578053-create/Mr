@@ -1295,7 +1295,7 @@ const About = ({ data }: { data: any }) => {
 const Working = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
@@ -1345,25 +1345,36 @@ const Working = () => {
       }
     ];
 
-    if (savedProjects) {
-      try {
-        const parsed = JSON.parse(savedProjects);
-        // Check if Box 2 has the new 6-image series
-        const hasNewBox2Series = parsed && parsed.length >= 2 && parsed[1]?.images && parsed[1]?.images?.some((img: string) => img.includes('105_nfkffv'));
-        if (hasNewBox2Series) {
-          setProjects(parsed);
-        } else {
-          setProjects(defaultProjects);
-          localStorage.setItem('portfolio_projects', JSON.stringify(defaultProjects));
+    const loadProjects = () => {
+      const savedProjects = localStorage.getItem('portfolio_projects');
+      if (savedProjects) {
+        try {
+          const parsed = JSON.parse(savedProjects);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setProjects(parsed);
+            return;
+          }
+        } catch (e) {
+          console.error(e);
         }
-      } catch (e) {
-        setProjects(defaultProjects);
-        localStorage.setItem('portfolio_projects', JSON.stringify(defaultProjects));
       }
-    } else {
       setProjects(defaultProjects);
       localStorage.setItem('portfolio_projects', JSON.stringify(defaultProjects));
-    }
+    };
+
+    loadProjects();
+
+    const handleUpdate = () => {
+      loadProjects();
+    };
+
+    window.addEventListener('storage', handleUpdate);
+    window.addEventListener('portfolio_projects_updated', handleUpdate);
+
+    return () => {
+      window.removeEventListener('storage', handleUpdate);
+      window.removeEventListener('portfolio_projects_updated', handleUpdate);
+    };
   }, []);
 
   const displayedProjects = showAll ? projects : projects.slice(0, 2);

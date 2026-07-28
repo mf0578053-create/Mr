@@ -149,21 +149,25 @@ const AdminDashboard = () => {
     const updated = projects.filter(p => p.id !== id);
     setProjects(updated);
     localStorage.setItem('portfolio_projects', JSON.stringify(updated));
+    window.dispatchEvent(new Event('portfolio_projects_updated'));
     triggerToast();
   };
 
   const handleAddProject = (e: React.FormEvent) => {
     e.preventDefault();
+    const imgUrl = newProject.image || `https://picsum.photos/seed/${Date.now()}/1200/800`;
     const project: Project = {
       id: Date.now(),
       title: newProject.title || 'Untitled Project',
       category: newProject.category || 'Uncategorized',
-      image: newProject.image || `https://picsum.photos/seed/${Date.now()}/1200/800`,
+      image: imgUrl,
+      images: [imgUrl],
       year: newProject.year || new Date().getFullYear().toString()
     };
     const updated = [project, ...projects];
     setProjects(updated);
     localStorage.setItem('portfolio_projects', JSON.stringify(updated));
+    window.dispatchEvent(new Event('portfolio_projects_updated'));
     setIsAddingProject(false);
     setNewProject({ title: '', category: '', image: '', year: new Date().getFullYear().toString() });
     triggerToast();
