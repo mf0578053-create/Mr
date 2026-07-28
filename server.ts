@@ -3,13 +3,76 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import { v2 as cloudinary } from "cloudinary";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Configure Cloudinary with user credentials
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "ngwyxu9p",
+  api_key: process.env.CLOUDINARY_API_KEY || "375479575969959",
+  api_secret: process.env.CLOUDINARY_API_SECRET || "XBNURf3V1frUCF88WAYpArU1L5o",
+  secure: true,
+});
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  // Middlewares for parsing JSON and URL-encoded data (allows base64 image upload)
+  app.use(express.json({ limit: "25mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "25mb" }));
+
+  // API Route: Cloudinary Upload Endpoint
+  app.post("/api/upload", async (req, res) => {
+    try {
+      const { image, folder = "portfolio_uploads" } = req.body;
+      if (!image) {
+        return res.status(400).json({ error: "No image data provided" });
+      }
+
+      // Upload to Cloudinary with automatic quality & format optimization
+      const result = await cloudinary.uploader.upload(image, {
+        folder,
+        resource_type: "auto",
+        transformation: [
+          { quality: "auto", fetch_format: "auto" }
+        ]
+      });
+
+      // Construct optimized URL with f_auto,q_auto
+      const optimizedUrl = result.secure_url.replace(
+        "/upload/",
+        "/upload/f_auto,q_auto/"
+      );
+
+      return res.json({
+        success: true,
+        public_id: result.public_id,
+        url: result.secure_url,
+        optimized_url: optimizedUrl,
+        format: result.format,
+        width: result.width,
+        height: result.height,
+      });
+    } catch (error: any) {
+      console.error("Cloudinary Upload Error:", error);
+      return res.status(500).json({
+        success: false,
+        error: error.message || "Failed to upload image to Cloudinary",
+      });
+    }
+  });
+
+  // API Route: Cloudinary Config check
+  app.get("/api/cloudinary/config", (req, res) => {
+    res.json({
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME || "ngwyxu9p",
+      apiKeyConfigured: true,
+      status: "connected",
+    });
+  });
 
   let vite: any;
   if (process.env.NODE_ENV !== "production") {
@@ -48,3 +111,4 @@ async function startServer() {
 }
 
 startServer();
+

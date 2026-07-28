@@ -12,8 +12,12 @@ import {
   ChevronRight,
   User,
   X,
-  Save
+  Save,
+  Upload,
+  Image as ImageIcon,
+  Loader2
 } from 'lucide-react';
+import { uploadToCloudinary, getOptimizedCloudinaryUrl } from '../utils/cloudinary';
 
 interface Project {
   id: number;
@@ -42,6 +46,8 @@ const AdminDashboard = () => {
   // Projects State
   const [projects, setProjects] = useState<Project[]>([]);
   const [isAddingProject, setIsAddingProject] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   const [serviceTitles, setServiceTitles] = useState<string[]>([]);
   const [newProject, setNewProject] = useState<Partial<Project>>({
     title: '',
@@ -49,6 +55,27 @@ const AdminDashboard = () => {
     image: '',
     year: new Date().getFullYear().toString()
   });
+
+  const handleFileUploadToCloudinary = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    setUploadError('');
+
+    try {
+      const res = await uploadToCloudinary(file, 'portfolio_projects');
+      setNewProject(prev => ({
+        ...prev,
+        image: res.optimized_url
+      }));
+      triggerToast();
+    } catch (err: any) {
+      setUploadError(err.message || 'Failed to upload to Cloudinary');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   // Messages State
   const [messages, setMessages] = useState<Message[]>([]);
@@ -329,7 +356,7 @@ const AdminDashboard = () => {
                 <div key={project.id} className="group bg-accent/5 border border-accent/10 rounded-3xl overflow-hidden flex flex-col">
                   <div className="aspect-video relative overflow-hidden">
                     <img 
-                      src={project.image} 
+                      src={getOptimizedCloudinaryUrl(project.image)} 
                       alt={project.title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       referrerPolicy="no-referrer"
@@ -496,15 +523,64 @@ const AdminDashboard = () => {
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest opacity-40">Image URL</label>
-                  <input
-                    type="url"
-                    value={newProject.image}
-                    onChange={(e) => setNewProject({...newProject, image: e.target.value})}
-                    className="w-full bg-accent/5 border border-accent/10 rounded-2xl py-4 px-4 focus:outline-none focus:border-accent/30"
-                    placeholder="https://..."
-                  />
+                {/* Cloudinary Image Upload / URL Input */}
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <label className="text-xs font-bold uppercase tracking-widest opacity-40">Project Image (Cloudinary)</label>
+                    <span className="text-[10px] font-mono opacity-50">Cloud: ngwyxu9p</span>
+                  </div>
+
+                  {/* Direct File Upload to Cloudinary */}
+                  <div className="p-4 bg-accent/5 border border-dashed border-accent/20 rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-accent/40 transition-colors relative">
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={handleFileUploadToCloudinary}
+                      disabled={isUploading}
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+                    />
+                    {isUploading ? (
+                      <div className="flex items-center gap-2 text-sm font-bold text-accent">
+                        <Loader2 className="w-5 h-5 animate-spin" /> Uploading to Cloudinary...
+                      </div>
+                    ) : (
+                      <div className="text-center space-y-1">
+                        <Upload className="w-6 h-6 mx-auto opacity-50" />
+                        <p className="text-xs font-bold">Click or Drag Image to Upload to Cloudinary</p>
+                        <p className="text-[10px] opacity-40">Automatically applies f_auto & q_auto optimization</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {uploadError && (
+                    <p className="text-xs text-red-400 font-medium">{uploadError}</p>
+                  )}
+
+                  {/* Image URL Input */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold uppercase tracking-wider opacity-40">Or Enter Direct Image URL</label>
+                    <input
+                      type="url"
+                      value={newProject.image}
+                      onChange={(e) => setNewProject({...newProject, image: e.target.value})}
+                      className="w-full bg-accent/5 border border-accent/10 rounded-2xl py-3 px-4 text-sm focus:outline-none focus:border-accent/30 font-mono"
+                      placeholder="https://res.cloudinary.com/ngwyxu9p/..."
+                    />
+                  </div>
+
+                  {/* Image Preview */}
+                  {newProject.image && (
+                    <div className="relative rounded-2xl overflow-hidden border border-accent/20 aspect-video bg-accent/5">
+                      <img 
+                        src={getOptimizedCloudinaryUrl(newProject.image)} 
+                        alt="Preview" 
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute bottom-2 right-2 px-2.5 py-1 bg-primary/80 backdrop-blur-md rounded-lg text-[9px] font-mono font-bold uppercase tracking-widest text-accent">
+                        Cloudinary Preview
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <button type="submit" className="w-full bg-accent text-primary font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90">
                   <Save className="w-5 h-5" /> Save Project

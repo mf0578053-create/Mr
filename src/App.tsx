@@ -5,6 +5,7 @@ import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Instagram, X, MapPin, Br
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
+import { getOptimizedCloudinaryUrl } from './utils/cloudinary';
 
 // --- Custom Icons ---
 const Behance = ({ size = 24, className = "" }: { size?: number; className?: string }) => (
@@ -1422,7 +1423,7 @@ const Working = () => {
                 >
                   <div className="relative overflow-hidden rounded-[2.5rem] bg-primary/5 aspect-[16/11]">
                     <motion.img
-                      src={project.image}
+                      src={getOptimizedCloudinaryUrl(project.image)}
                       alt={project.title}
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -1562,7 +1563,7 @@ const Working = () => {
 
                           <div className="w-full rounded-3xl overflow-hidden shadow-2xl border border-primary/10 bg-primary/5 transition-all">
                             <img
-                              src={imgUrl}
+                              src={getOptimizedCloudinaryUrl(imgUrl)}
                               alt={`${selectedProject.title} - Post ${pIdx + 1}`}
                               className="w-full h-auto object-contain mx-auto"
                               referrerPolicy="no-referrer"
