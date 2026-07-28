@@ -1,6 +1,6 @@
-import { connectToDatabase } from '../src/lib/mongodb';
-import { ProjectModel } from '../src/models/Project';
-import { defaultProjects } from '../src/data/defaultProjects';
+import { connectToDatabase } from '../src/lib/mongodb.js';
+import { ProjectModel } from '../src/models/Project.js';
+import { defaultProjects } from '../src/data/defaultProjects.js';
 
 export default async function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');

@@ -17,7 +17,8 @@ if (!cached) {
 }
 
 export async function connectToDatabase(): Promise<typeof mongoose> {
-  const uri = process.env.MONGODB_URI?.trim();
+  const DEFAULT_URI = 'mongodb+srv://FaizanAkram:faizanakram@faizan.rrohdhf.mongodb.net/portfolio?retryWrites=true&w=majority';
+  const uri = (process.env.MONGODB_URI || DEFAULT_URI).trim();
   if (!uri || (!uri.startsWith('mongodb://') && !uri.startsWith('mongodb+srv://'))) {
     throw new Error('MONGODB_URI is not set or invalid. Connection string must start with "mongodb://" or "mongodb+srv://".');
   }

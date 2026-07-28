@@ -1,5 +1,5 @@
-import { connectToDatabase } from '../src/lib/mongodb';
-import { Contact } from '../src/models/Contact';
+import { connectToDatabase } from '../src/lib/mongodb.js';
+import { Contact } from '../src/models/Contact.js';
 
 export default async function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');

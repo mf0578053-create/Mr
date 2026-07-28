@@ -4,10 +4,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import { v2 as cloudinary } from "cloudinary";
-import { connectToDatabase } from "./src/lib/mongodb";
-import { Contact } from "./src/models/Contact";
-import { ProjectModel } from "./src/models/Project";
-import { defaultProjects } from "./src/data/defaultProjects";
+import { connectToDatabase } from "./src/lib/mongodb.js";
+import { Contact } from "./src/models/Contact.js";
+import { ProjectModel } from "./src/models/Project.js";
+import { defaultProjects } from "./src/data/defaultProjects.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
