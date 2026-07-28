@@ -1294,7 +1294,21 @@ const Working = () => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   useEffect(() => {
-    const loadProjects = () => {
+    const loadProjects = async () => {
+      try {
+        const res = await fetch('/api/projects');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            setProjects(json.data);
+            localStorage.setItem('portfolio_projects', JSON.stringify(json.data));
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch projects from API:', err);
+      }
+
       const loaded = getSavedProjects();
       setProjects(loaded);
     };

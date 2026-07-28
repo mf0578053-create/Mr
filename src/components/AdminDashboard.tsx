@@ -79,9 +79,26 @@ const AdminDashboard = () => {
       return;
     }
 
-    // Load all projects safely with default fallback
-    const loadedProjects = getSavedProjects();
-    setProjects(loadedProjects);
+    // Load all projects safely with MongoDB endpoint + local storage fallback
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch('/api/projects');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            setProjects(json.data);
+            localStorage.setItem('portfolio_projects', JSON.stringify(json.data));
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch projects from MongoDB endpoint:', err);
+      }
+      const loadedProjects = getSavedProjects();
+      setProjects(loadedProjects);
+    };
+
+    fetchProjects();
 
     // Load messages from MongoDB endpoint /api/contact with localStorage fallback
     const fetchMessages = async () => {
@@ -159,19 +176,34 @@ const AdminDashboard = () => {
   };
 
   // Projects Handlers
-  const handleDeleteProject = (id: number) => {
-    const updated = projects.filter(p => p.id !== id);
-    setProjects(updated);
-    localStorage.setItem('portfolio_projects', JSON.stringify(updated));
+  const handleDeleteProject = async (id: number) => {
+    const updatedLocally = projects.filter(p => p.id !== id);
+    setProjects(updatedLocally);
+    localStorage.setItem('portfolio_projects', JSON.stringify(updatedLocally));
     window.dispatchEvent(new Event('portfolio_projects_updated'));
     window.dispatchEvent(new Event('storage'));
     triggerToast();
+
+    try {
+      const res = await fetch(`/api/projects?id=${id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          setProjects(json.data);
+          localStorage.setItem('portfolio_projects', JSON.stringify(json.data));
+        }
+      }
+    } catch (err) {
+      console.error('Failed to delete project on server:', err);
+    }
   };
 
-  const handleAddProject = (e: React.FormEvent) => {
+  const handleAddProject = async (e: React.FormEvent) => {
     e.preventDefault();
     const imgUrl = newProject.image || `https://picsum.photos/seed/${Date.now()}/1200/800`;
-    const project: Project = {
+    const projectPayload: Project = {
       id: Date.now(),
       title: newProject.title || 'Untitled Project',
       category: newProject.category || 'Website Design & Layout',
@@ -179,7 +211,8 @@ const AdminDashboard = () => {
       images: [imgUrl],
       year: newProject.year || new Date().getFullYear().toString()
     };
-    const updated = [project, ...projects];
+
+    const updated = [projectPayload, ...projects];
     setProjects(updated);
     localStorage.setItem('portfolio_projects', JSON.stringify(updated));
     window.dispatchEvent(new Event('portfolio_projects_updated'));
@@ -187,6 +220,23 @@ const AdminDashboard = () => {
     setIsAddingProject(false);
     setNewProject({ title: '', category: '', image: '', year: new Date().getFullYear().toString() });
     triggerToast();
+
+    try {
+      const res = await fetch('/api/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(projectPayload),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          setProjects(json.data);
+          localStorage.setItem('portfolio_projects', JSON.stringify(json.data));
+        }
+      }
+    } catch (err) {
+      console.error('Failed to save project to MongoDB server:', err);
+    }
   };
 
   // Messages Handlers

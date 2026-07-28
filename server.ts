@@ -6,6 +6,8 @@ import fs from "fs";
 import { v2 as cloudinary } from "cloudinary";
 import { connectToDatabase } from "./src/lib/mongodb";
 import { Contact } from "./src/models/Contact";
+import { ProjectModel } from "./src/models/Project";
+import { defaultProjects } from "./src/data/defaultProjects";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -123,6 +125,75 @@ async function startServer() {
         success: false,
         error: error.message || "Failed to fetch contact submissions.",
       });
+    }
+  });
+
+  // API Route: Projects MongoDB CRUD
+  app.get("/api/projects", async (req, res) => {
+    try {
+      await connectToDatabase();
+      let projects = await ProjectModel.find().sort({ createdAt: -1 });
+      if (!projects || projects.length === 0) {
+        try {
+          await ProjectModel.insertMany(defaultProjects);
+          projects = await ProjectModel.find().sort({ createdAt: -1 });
+        } catch (seedErr) {
+          console.error("Error seeding initial projects to MongoDB:", seedErr);
+        }
+      }
+      return res.json({ success: true, data: projects });
+    } catch (error: any) {
+      console.error("MongoDB Fetch Projects Error:", error);
+      return res.status(500).json({
+        success: false,
+        error: error.message || "Failed to fetch projects.",
+      });
+    }
+  });
+
+  app.post("/api/projects", async (req, res) => {
+    try {
+      const { title, category, image, images, year, id } = req.body || {};
+      if (!title || !image) {
+        return res.status(400).json({ success: false, error: "Title and image are required." });
+      }
+
+      await connectToDatabase();
+      const newId = id || Date.now();
+      const projectImages = Array.isArray(images) && images.length > 0 ? images : [image];
+
+      const newProject = await ProjectModel.create({
+        id: newId,
+        title,
+        category: category || "Website Design & Layout",
+        image,
+        images: projectImages,
+        year: year || new Date().getFullYear().toString(),
+        createdAt: new Date(),
+      });
+
+      const updatedProjects = await ProjectModel.find().sort({ createdAt: -1 });
+      return res.status(201).json({ success: true, data: updatedProjects, newProject });
+    } catch (error: any) {
+      console.error("MongoDB Add Project Error:", error);
+      return res.status(500).json({ success: false, error: error.message || "Failed to save project." });
+    }
+  });
+
+  app.delete("/api/projects", async (req, res) => {
+    try {
+      const idToDelete = req.query.id || req.body?.id;
+      if (!idToDelete) {
+        return res.status(400).json({ success: false, error: "Project ID is required to delete." });
+      }
+
+      await connectToDatabase();
+      await ProjectModel.deleteOne({ id: Number(idToDelete) });
+      const updatedProjects = await ProjectModel.find().sort({ createdAt: -1 });
+      return res.json({ success: true, data: updatedProjects });
+    } catch (error: any) {
+      console.error("MongoDB Delete Project Error:", error);
+      return res.status(500).json({ success: false, error: error.message || "Failed to delete project." });
     }
   });
 
