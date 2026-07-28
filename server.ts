@@ -106,7 +106,7 @@ async function startServer() {
         data: newContact,
       });
     } catch (error: any) {
-      console.error("MongoDB Contact Error:", error);
+      console.warn("MongoDB Contact Warning:", error.message);
       return res.status(500).json({
         success: false,
         error: error.message || "Failed to save message to MongoDB.",
@@ -120,7 +120,7 @@ async function startServer() {
       const contacts = await Contact.find().sort({ createdAt: -1 }).limit(100);
       return res.json({ success: true, data: contacts });
     } catch (error: any) {
-      console.error("MongoDB Fetch Contact Error:", error);
+      console.warn("MongoDB Fetch Contact Warning:", error.message);
       return res.status(500).json({
         success: false,
         error: error.message || "Failed to fetch contact submissions.",
@@ -143,10 +143,11 @@ async function startServer() {
       }
       return res.json({ success: true, data: projects });
     } catch (error: any) {
-      console.error("MongoDB Fetch Projects Error:", error);
-      return res.status(500).json({
+      console.warn("MongoDB Fetch Projects Warning:", error.message);
+      return res.json({
         success: false,
         error: error.message || "Failed to fetch projects.",
+        fallbackData: defaultProjects
       });
     }
   });
@@ -175,7 +176,7 @@ async function startServer() {
       const updatedProjects = await ProjectModel.find().sort({ createdAt: -1 });
       return res.status(201).json({ success: true, data: updatedProjects, newProject });
     } catch (error: any) {
-      console.error("MongoDB Add Project Error:", error);
+      console.warn("MongoDB Add Project Warning:", error.message);
       return res.status(500).json({ success: false, error: error.message || "Failed to save project." });
     }
   });
@@ -192,7 +193,7 @@ async function startServer() {
       const updatedProjects = await ProjectModel.find().sort({ createdAt: -1 });
       return res.json({ success: true, data: updatedProjects });
     } catch (error: any) {
-      console.error("MongoDB Delete Project Error:", error);
+      console.warn("MongoDB Delete Project Warning:", error.message);
       return res.status(500).json({ success: false, error: error.message || "Failed to delete project." });
     }
   });

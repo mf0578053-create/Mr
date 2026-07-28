@@ -93,10 +93,11 @@ export default async function handler(req: any, res: any) {
 
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error: any) {
-    console.error('MongoDB Projects API Error:', error);
-    return res.status(500).json({
+    console.warn('MongoDB Projects API Warning:', error.message);
+    return res.status(200).json({
       success: false,
       error: error.message || 'Failed to process project request.',
+      fallbackData: defaultProjects,
     });
   }
 }

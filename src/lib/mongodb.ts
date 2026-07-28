@@ -17,9 +17,9 @@ if (!cached) {
 }
 
 export async function connectToDatabase(): Promise<typeof mongoose> {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) {
-    throw new Error('Please define the MONGODB_URI environment variable in Vercel or .env');
+  const uri = process.env.MONGODB_URI?.trim();
+  if (!uri || (!uri.startsWith('mongodb://') && !uri.startsWith('mongodb+srv://'))) {
+    throw new Error('MONGODB_URI is not set or invalid. Connection string must start with "mongodb://" or "mongodb+srv://".');
   }
 
   if (cached?.conn) {
