@@ -18,15 +18,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { uploadToCloudinary, getOptimizedCloudinaryUrl } from '../utils/cloudinary';
-
-interface Project {
-  id: number;
-  title: string;
-  category: string;
-  image: string;
-  images?: string[];
-  year: string;
-}
+import { getSavedProjects, Project } from '../data/defaultProjects';
 
 interface Message {
   id: number;
@@ -87,16 +79,9 @@ const AdminDashboard = () => {
       return;
     }
 
-    // Load all data from localStorage safely
-    try {
-      const savedProjects = localStorage.getItem('portfolio_projects');
-      if (savedProjects) {
-        const parsed = JSON.parse(savedProjects);
-        if (Array.isArray(parsed)) setProjects(parsed);
-      }
-    } catch (e) {
-      console.error('Error parsing portfolio_projects:', e);
-    }
+    // Load all projects safely with default fallback
+    const loadedProjects = getSavedProjects();
+    setProjects(loadedProjects);
 
     try {
       const savedMessages = localStorage.getItem('portfolio_messages');
@@ -150,6 +135,7 @@ const AdminDashboard = () => {
     setProjects(updated);
     localStorage.setItem('portfolio_projects', JSON.stringify(updated));
     window.dispatchEvent(new Event('portfolio_projects_updated'));
+    window.dispatchEvent(new Event('storage'));
     triggerToast();
   };
 
@@ -159,7 +145,7 @@ const AdminDashboard = () => {
     const project: Project = {
       id: Date.now(),
       title: newProject.title || 'Untitled Project',
-      category: newProject.category || 'Uncategorized',
+      category: newProject.category || 'Website Design & Layout',
       image: imgUrl,
       images: [imgUrl],
       year: newProject.year || new Date().getFullYear().toString()
@@ -168,6 +154,7 @@ const AdminDashboard = () => {
     setProjects(updated);
     localStorage.setItem('portfolio_projects', JSON.stringify(updated));
     window.dispatchEvent(new Event('portfolio_projects_updated'));
+    window.dispatchEvent(new Event('storage'));
     setIsAddingProject(false);
     setNewProject({ title: '', category: '', image: '', year: new Date().getFullYear().toString() });
     triggerToast();

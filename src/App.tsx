@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 import { getOptimizedCloudinaryUrl } from './utils/cloudinary';
+import { getSavedProjects, Project } from './data/defaultProjects';
 
 // --- Custom Icons ---
 const Behance = ({ size = 24, className = "" }: { size?: number; className?: string }) => (
@@ -32,14 +33,7 @@ const Behance = ({ size = 24, className = "" }: { size?: number; className?: str
 );
 
 // --- Types ---
-interface Project {
-  id: number;
-  title: string;
-  category: string;
-  image: string;
-  images?: string[];
-  year: string;
-}
+
 
 // --- Components ---
 
@@ -1300,66 +1294,9 @@ const Working = () => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   useEffect(() => {
-    const savedProjects = localStorage.getItem('portfolio_projects');
-    const defaultProjects: Project[] = [
-      {
-        id: 1,
-        title: "WeVersity Courses & Hiring Campaign Series",
-        category: "Mobile & Graphic Design Series",
-        image: "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785163611/3c4249c5-78ca-4d5a-839e-21942bdc0ca1_vwrnnr.png",
-        images: [
-          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785163611/3c4249c5-78ca-4d5a-839e-21942bdc0ca1_vwrnnr.png",
-          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785163590/App_2_ct0lti.png",
-          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785163586/App_3_offks3.png"
-        ],
-        year: "2024"
-      },
-      {
-        id: 2,
-        title: "Creative Brand & Social Media Campaign Series",
-        category: "Graphic Design & Branding",
-        image: "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166153/105_nfkffv.jpg",
-        images: [
-          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166153/105_nfkffv.jpg",
-          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166157/106_npocgv.jpg",
-          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166156/107_xq09gc.jpg",
-          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166166/108_co71vu.jpg",
-          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166166/109_eh4mts.jpg",
-          "https://res.cloudinary.com/dsacnpxmq/image/upload/v1785166159/110_yu8gt1.jpg"
-        ],
-        year: "2024"
-      },
-      {
-        id: 3,
-        title: "Nova Social Media Campaign Assets",
-        category: "Social Media & Visual Creatives",
-        image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=1200",
-        year: "2024"
-      },
-      {
-        id: 4,
-        title: "Velvet Luxury Packaging & Print",
-        category: "Packaging & Product Branding",
-        image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=1200",
-        year: "2024"
-      }
-    ];
-
     const loadProjects = () => {
-      const savedProjects = localStorage.getItem('portfolio_projects');
-      if (savedProjects) {
-        try {
-          const parsed = JSON.parse(savedProjects);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setProjects(parsed);
-            return;
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      }
-      setProjects(defaultProjects);
-      localStorage.setItem('portfolio_projects', JSON.stringify(defaultProjects));
+      const loaded = getSavedProjects();
+      setProjects(loaded);
     };
 
     loadProjects();
