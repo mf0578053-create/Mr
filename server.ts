@@ -138,8 +138,11 @@ async function startServer() {
           await ProjectModel.insertMany(defaultProjects);
           projects = await ProjectModel.find().sort({ createdAt: -1 });
         } catch (seedErr) {
-          console.error("Error seeding initial projects to MongoDB:", seedErr);
+          return res.json({ success: true, data: defaultProjects });
         }
+      }
+      if (!projects || projects.length === 0) {
+        projects = defaultProjects as any;
       }
       return res.json({ success: true, data: projects });
     } catch (error: any) {

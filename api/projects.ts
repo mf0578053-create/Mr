@@ -21,14 +21,21 @@ export default async function handler(req: any, res: any) {
     if (req.method === 'GET') {
       let projects = await ProjectModel.find().sort({ createdAt: -1 });
 
-      // If database is empty, seed with initial default projects
+      // If database is empty, attempt seeding or fallback to default projects
       if (!projects || projects.length === 0) {
         try {
           await ProjectModel.insertMany(defaultProjects);
           projects = await ProjectModel.find().sort({ createdAt: -1 });
         } catch (seedErr) {
-          console.error('Error seeding initial projects to MongoDB:', seedErr);
+          return res.status(200).json({
+            success: true,
+            data: defaultProjects,
+          });
         }
+      }
+
+      if (!projects || projects.length === 0) {
+        projects = defaultProjects as any;
       }
 
       return res.status(200).json({
