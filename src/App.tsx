@@ -1556,13 +1556,48 @@ const Contact = ({ data }: { data: any }) => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage('');
+    setIsSuccess(false);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Send form submission to MongoDB endpoint /api/contact
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Failed to send message.');
+      }
+
+      // Also sync to local storage for admin message log
+      const messages = JSON.parse(localStorage.getItem('portfolio_messages') || '[]');
+      const newMessage = {
+        id: result.data?._id || Date.now(),
+        ...formData,
+        date: new Date().toLocaleString(),
+        status: 'unread'
+      };
+      localStorage.setItem('portfolio_messages', JSON.stringify([newMessage, ...messages]));
+      window.dispatchEvent(new Event('storage'));
+
+      setIsSuccess(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      setTimeout(() => setIsSuccess(false), 5000);
+    } catch (err: any) {
+      console.error('Contact Form Submission Error:', err);
+      
+      // Fallback save locally if database is not reachable yet
       const messages = JSON.parse(localStorage.getItem('portfolio_messages') || '[]');
       const newMessage = {
         id: Date.now(),
@@ -1572,12 +1607,12 @@ const Contact = ({ data }: { data: any }) => {
       };
       localStorage.setItem('portfolio_messages', JSON.stringify([newMessage, ...messages]));
       
-      setIsSubmitting(false);
       setIsSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
       setTimeout(() => setIsSuccess(false), 5000);
-    }, 1000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

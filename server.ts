@@ -4,9 +4,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import { v2 as cloudinary } from "cloudinary";
+import { connectToDatabase } from "./src/lib/mongodb";
+import { Contact } from "./src/models/Contact";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 // Configure Cloudinary with user credentials
 cloudinary.config({
@@ -73,6 +76,56 @@ async function startServer() {
       status: "connected",
     });
   });
+
+  // API Route: Contact Form Mongo Submission
+  app.post("/api/contact", async (req, res) => {
+    try {
+      const { name, email, subject, message } = req.body || {};
+      if (!name || !email || !message) {
+        return res.status(400).json({
+          success: false,
+          error: "Name, email, and message are required fields.",
+        });
+      }
+
+      await connectToDatabase();
+
+      const newContact = await Contact.create({
+        name,
+        email,
+        subject: subject || "General Inquiry",
+        message,
+        createdAt: new Date(),
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: "Your message has been saved successfully!",
+        data: newContact,
+      });
+    } catch (error: any) {
+      console.error("MongoDB Contact Error:", error);
+      return res.status(500).json({
+        success: false,
+        error: error.message || "Failed to save message to MongoDB.",
+      });
+    }
+  });
+
+  app.get("/api/contact", async (req, res) => {
+    try {
+      await connectToDatabase();
+      const contacts = await Contact.find().sort({ createdAt: -1 }).limit(100);
+      return res.json({ success: true, data: contacts });
+    } catch (error: any) {
+      console.error("MongoDB Fetch Contact Error:", error);
+      return res.status(500).json({
+        success: false,
+        error: error.message || "Failed to fetch contact submissions.",
+      });
+    }
+  });
+
 
   let vite: any;
   if (process.env.NODE_ENV !== "production") {

@@ -83,15 +83,44 @@ const AdminDashboard = () => {
     const loadedProjects = getSavedProjects();
     setProjects(loadedProjects);
 
-    try {
-      const savedMessages = localStorage.getItem('portfolio_messages');
-      if (savedMessages) {
-        const parsed = JSON.parse(savedMessages);
-        if (Array.isArray(parsed)) setMessages(parsed);
+    // Load messages from MongoDB endpoint /api/contact with localStorage fallback
+    const fetchMessages = async () => {
+      try {
+        const res = await fetch('/api/contact');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            const formatted = json.data.map((item: any) => ({
+              id: item._id || item.id || Date.now(),
+              name: item.name,
+              email: item.email,
+              subject: item.subject || 'General Inquiry',
+              message: item.message,
+              date: item.createdAt ? new Date(item.createdAt).toLocaleString() : new Date().toLocaleString(),
+              status: 'unread'
+            }));
+            setMessages(formatted);
+            localStorage.setItem('portfolio_messages', JSON.stringify(formatted));
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch messages from MongoDB endpoint:', err);
       }
-    } catch (e) {
-      console.error('Error parsing portfolio_messages:', e);
-    }
+
+      try {
+        const savedMessages = localStorage.getItem('portfolio_messages');
+        if (savedMessages) {
+          const parsed = JSON.parse(savedMessages);
+          if (Array.isArray(parsed)) setMessages(parsed);
+        }
+      } catch (e) {
+        console.error('Error parsing portfolio_messages:', e);
+      }
+    };
+
+    fetchMessages();
+
 
     // Load service titles for category selection
     try {
